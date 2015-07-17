@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Touch Tracker Marker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name = "apple-mobile-web-app-capable" content="yes" />
+    <link rel="apple-touch-icon" href="image/apple-touch-icon.png" />
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="True">
+    
+    <style type="text/css">
+      body { margin: 0px; overflow: hidden; background-color: #fff; }
+      canvas { border: 1px solid black; }
+    </style>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.2.min.js"></script>
+    <script type="text/javascript">
+      function checkValidOption() {
+        var x = document.getElementById("myList").selectedIndex;
+
+        switch(x){
+          case 0:
+            break;
+          case 1:
+            handlerFunction1();
+            break;
+          case 2:
+            handlerFunction2();
+            break;
+          case 3:
+            handlerFunction3();
+            break;
+          default:
+            alert("catch default");
+            break;
+        }
+      }
+
+      function handlerFunction1(){
+
+      }
+
+      function handlerFunction2(){
+
+      }
+
+      function handlerFunction3(){
+
+      }
+    </script>
+  </head>
+  <body>    
+    <div> 
+      <select id = "myList" name="myList" onchange="checkValidOption();">
+        <option value = "0">Category...</option>
+        <option value = "1">Component 1</option>
+        <option value = "2">Component 2</option>
+        <option value = "3">Component 3</option>
+      </select>
+    </div>
+    <img id="pic" src="about:blank" alt="A close up of an image">
+
+    <script type="text/javascript">
+      // Getting a file through XMLHttpRequest as an arraybuffer and creating a Blob
+      var picStorage = localStorage.getItem("pic"),
+          pic = document.getElementById("pic");
+    if (picStorage) {
+        // Reuse existing Data URL from localStorage
+        pic.setAttribute("src", picStorage);
+    }
+    else {
+        // Create XHR, BlobBuilder and FileReader objects
+        var xhr = new XMLHttpRequest(),
+            blob,
+            fileReader = new FileReader();
+
+        xhr.open("GET", "image/image001.png", true);
+        // Set the responseType to arraybuffer. "blob" is an option too, rendering BlobBuilder unnecessary, but the support for "blob" is not widespread enough yet
+        xhr.responseType = "arraybuffer";
+
+        xhr.addEventListener("load", function () {
+            if (xhr.status === 200) {
+                // Create a blob from the response
+                blob = new Blob([xhr.response], {type: "image/png"});
+
+                // onload needed since Google Chrome doesn't support addEventListener for FileReader
+                fileReader.onload = function (evt) {
+                    // Read out file contents as a Data URL
+                    var result = evt.target.result;
+                    // Set image src to Data URL
+                    pic.setAttribute("src", result);
+                    // Store Data URL in localStorage
+                    try {
+                        localStorage.setItem("pic", result);
+                    }
+                    catch (e) {
+                        console.log("Storage failed: " + e);
+                    }
+                };
+                // Load blob as Data URL
+                fileReader.readAsDataURL(blob);
+            }
+        }, false);
+        // Send XHR
+        xhr.send();
+    }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Touch Tracker Marker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name = "apple-mobile-web-app-capable" content="yes" />
+    <link rel="apple-touch-icon" href="image/apple-touch-icon.png" />
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="True">
+    
+    <style type="text/css">
+      body { margin: 0px; overflow: hidden; background-color: #fff; }
+      canvas { border: 1px solid black; }
+    </style>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.2.min.js"></script>
+    <script type="text/javascript">
+      var canvas;
+      var ctx;
+      var updateStarted = false;
+      var timer;
+
+      var touches = [];
+      var w = 0;
+      var h = 0;
+      var img_src;
+
+      /*
+       * initial - Capture and track finger touch
+       */
+      function initial() {
+        canvas = document.getElementById('canvas');
+        ctx = canvas.getContext('2d');
+        
+        var nw = window.innerWidth;
+        var nh = window.innerHeight;
+
+        if ((w != nw) || (h != nh)) {
+          w = nw;
+          h = nh;
+          canvas.style.width = w+'px';
+          canvas.style.height = h+'px';
+          canvas.width = w;
+          canvas.height = h;
+        }
+
+        canvas.addEventListener('touchstart', function(event) {
+          event.preventDefault();
+          touches = event.touches;
+          ctx.clearRect(0, 0, w, h);
+          var i, len = touches.length;
+          for (i=0; i<len; i++) {
+            var touch = touches[i];
+            var px = touch.pageX;
+            var py = touch.pageY;
+
+            ctx.beginPath();
+            ctx.arc(px, py, 10, 0, 2*Math.PI, true);
+
+            ctx.fillStyle = "rgba(110, 179, 202, 1)";
+            ctx.fill();
+          }
+
+          console.log('start');
+        });
+        canvas.addEventListener('touchend', function() {
+          event.preventDefault();
+          ctx.clearRect(0, 0, w, h);
+        });
+        canvas.addEventListener('touchmove', function(event) {
+          event.preventDefault();
+          touches = event.touches;
+
+          ctx.clearRect(0, 0, w, h);
+          
+          var i, len = touches.length;
+          for (i=0; i<len; i++) {
+            var touch = touches[i];
+            var px = touch.pageX;
+            var py = touch.pageY;
+
+            ctx.beginPath();
+            ctx.arc(px, py, 10, 0, 2*Math.PI, true);
+
+            ctx.fillStyle = "rgba(110, 179, 202, 1)";
+            ctx.fill();
+          }
+        });
+      }
+
+      /* 
+       * drawImage - Load the image with the right width and height
+       *             at the right location
+       * w: image width
+       * h: image height
+       * x: x value of the location
+       * y: y value of the location
+       */
+      function drawImage(imageObj) { 
+        var stage = new Kinetic.Stage({
+          container: "container",
+          width: 500,
+          height: 300
+        });
+        var layer = new Kinetic.Layer();
+
+        // darth vader
+        var darthVaderImg = new Kinetic.Image({
+          image: imageObj,
+          x: 100,
+          y: 100,
+          width: 200,
+          height: 200,
+          draggable: true
+        });
+
+        // add cursor styling
+        darthVaderImg.on('mouseover', function() {
+          document.body.style.cursor = 'pointer';
+        });
+        darthVaderImg.on('mouseout', function() {
+          document.body.style.cursor = 'default';
+        });
+
+        layer.add(darthVaderImg);
+        stage.add(layer);
+      }
+
+      function checkValidOption() {
+        var x = document.getElementById("myList").selectedIndex;
+
+        switch(x){
+          case 0:
+            break;
+          case 1:
+            //img_src = "image/image001.png"; 
+            handlerFunction1();
+            break;
+          case 2:
+            //img_src = "image/image002.png"; 
+            handlerFunction2();
+            break;
+          case 3:
+            //img_src = "image/image003.png"; 
+            handlerFunction3();
+            break;
+          default:
+            alert("catch default");
+            break;
+        }
+      }
+
+      function handlerFunction1(){
+        var imageObj = new Image();
+        imageObj.onload = function() {
+          drawImage(this);
+        };
+        imageObj.src = 'image/image001.png'; 
+      }
+
+      function handlerFunction2(){
+        var imageObj = new Image();
+        imageObj.onload = function() {
+          drawImage(this);
+        };
+        imageObj.src = 'image/image002.png'; 
+      }
+
+      function handlerFunction3(){
+        var imageObj = new Image();
+        imageObj.onload = function() {
+          drawImage(this);
+        };
+        imageObj.src = 'image/image003.png'; 
+      }
+
+    </script>
+  </head>
+  <body onload="initial();">    
+    <div> 
+      <select id = "myList" name="myList" onchange="checkValidOption();">
+        <option value = "0">Category...</option>
+        <option value = "1">Component 1</option>
+        <option value = "2">Component 2</option>
+        <option value = "3">Component 3</option>
+      </select>
+    </div>
+    <div id="container"></div>
+    <canvas id="canvas" ></canvas>
+  </body>
+</html>
