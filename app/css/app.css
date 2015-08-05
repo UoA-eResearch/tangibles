@@ -1,0 +1,44 @@
+.toolbardemoBasicUsage md-toolbar md-icon.md-default-theme {
+    color: white; }
+
+.sliderdemoBasicUsage input[type="number"] {
+    text-align: center; }
+
+.listdemoListControls md-divider {
+    margin-top: 10px;
+    margin-bottom: 10px; }
+
+div.horizontal {
+    display: flex;
+    justify-content: center;
+}
+
+div.vertical {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tangible-icon-container
+{
+    width: 70px;
+    height: 70px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 20px;
+}
+
+.tangible-icon
+{
+    display: block;
+    max-height: 70px;
+    max-width: 70px;
+}
+
+md-sidenav,
+md-sidenav.md-locked-open,
+md-sidenav.md-closed.md-locked-open-add-active {
+    min-width: 200px !important;
+    width: 85vw !important;
+    max-width: 70% !important;
+}

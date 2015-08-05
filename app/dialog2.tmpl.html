@@ -1,0 +1,67 @@
+<md-dialog aria-label="Register Tangible"  style="width: 80%; height: 70%">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h1>Tangible Library</h1>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="answer('not applicable')">
+                    <md-icon md-svg-src="img/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-list>
+                <md-subheader class="md-no-sticky">Tangibles</md-subheader>
+                <md-list-item ng-repeat="tangible in tangibles" ng-click="editTangible(tangible, $event)">
+                    <div class="horizontal tangible-icon-container">
+                        <div class="vertical">
+                            <img class="tangible-icon" ng-src="libraries/oroo/{{tangible.image}}"  alt="{{tangible.name}}" />
+                        </div>
+                    </div>
+                    <p>{{ tangible.name }}</p>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button ng-click="answer('not useful')" class="md-primary">
+                Cancel
+            </md-button>
+            <md-button ng-click="answer('useful')" class="md-primary">
+                Save
+            </md-button>
+        </div>
+        <md-sidenav id="sidenav" class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+            <md-toolbar class="md-theme-light">
+                <h1 class="md-toolbar-tools">Edit Tangible</h1>
+            </md-toolbar>
+            <md-content layout-padding>
+                <form>
+                    <md-input-container>
+                        <label for="name">Name</label>
+                        <input type="text" id="name" ng-model="selectedTangible.name"  md-sidenav-focus >
+                    </md-input-container>
+                    <md-input-container>
+                        <md-button style="max-width: 200px; height: 200px; background-color: #e0e0e0" aria-label="More">
+                            <!--<md-tooltip>-->
+                                <!--Upload image-->
+                            <!--</md-tooltip>-->
+                            <md-icon id="image" md-svg-icon="img/ic_camera_alt_black_24px.svg"></md-icon>
+                        </md-button>
+                    </md-input-container>
+                    <label for="touch-points">Touch points</label>
+                    <md-input-container>
+                        <div id="touch-points" elem-ready="initTouchWindow()" style="max-width: 100%; height: 300px; margin: 10px; background-color: antiquewhite"></div>
+                    </md-input-container>
+                </form>
+                <md-button ng-click="close()" class="md-primary">
+                    Cancel
+                </md-button>
+                <md-button ng-click="saveTangible(selectedTangible)" class="md-primary">
+                    Save
+                </md-button>
+            </md-content>
+        </md-sidenav>
+    </form>
+</md-dialog>

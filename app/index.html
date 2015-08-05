@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" ng-app="capacitiveTangibles" >
+<head>
+    <meta charset="utf-8">
+    <title>Capacitive Tangibles</title>
+
+    <!-- CSS styles -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="css/app.css">
+
+    <!-- Javascript framework imports -->
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="bower_components/angular-material/angular-material.min.js"></script>
+    <script src="bower_components/kineticjs/kinetic.min.js"></script>
+    <script src="bower_components/hammerjs/hammer.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- Javascript application imports -->
+    <script src="bower_components/any-resize-event/js/any-resize-event.js"></script>
+    <script src="js/controllers.js"></script>
+
+    <script src="https://cdn.rawgit.com/konvajs/konva/0.9.5/konva.min.js"></script>
+
+</head>
+<body>
+
+    <div ng-controller="AppCtrl">
+        <md-content>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <md-menu>
+                        <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="$mdOpenMenu()">
+                            <md-icon md-svg-icon="img/menu.svg"></md-icon>
+                        </md-button>
+
+                        <md-menu-content width="4">
+                            <md-menu-item>
+                                <md-button>
+                                    <md-icon md-svg-icon="img/menu.svg" md-menu-align-target></md-icon>
+                                    <h4>
+                                        <span>Tangibles</span>
+                                    </h4>
+                                </md-button>
+                            </md-menu-item>
+
+                            <md-menu-divider></md-menu-divider>
+
+                            <md-menu-item ng-repeat="menuItem in menuItems">
+                                <md-button ng-click="menuAction($event, menuItem)"> <span md-menu-align-target>{{menuItem.name}}</span></md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+
+                    <h2>
+                        <span>Tangibles</span>
+                    </h2>
+                    <span flex></span>
+                    <md-button class="md-icon-button" aria-label="More">
+                        <md-icon md-svg-icon="img/more_vert.svg"></md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+        </md-content>
+
+        <div id="container" style="border: 1px solid #000000;bottom: 0; left: 0; overflow: hidden; position: absolute; right: 0; top: 0;"></div>
+
+        <!--<script src="js/Tangibles.js"></script>-->
+        <!--<script src="js/util.js"></script>-->
+        <!--<script src="js/touch-controller.js"></script>-->
+    </div>
+</body>
+</html>

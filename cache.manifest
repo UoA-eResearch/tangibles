@@ -19,7 +19,7 @@ img/014_bit_of_path.png
 img/015_leaves.png
 
 js/all.js
-js/Tangibles.js
+js/tangible.js
 js/kinetic-v5.0.2.min.js
 js/hammer.js
  
