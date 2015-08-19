@@ -1,4 +1,37 @@
 
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+
+    /**
+     * Distance between two points
+     *
+     * @param other
+     */
+    this.distanceTo = function(other)
+    {
+        return Math.sqrt(this.x * other.x + this.y * other.y);
+    };
+}
+
+function Size(width, height) {
+    this.width = width;
+    this.height = height;
+}
+
+function toPoints(rawArray)
+{
+    var items;
+
+    for(var i = 0; i < rawArray.length; i++)
+    {
+        var item = rawArray[i];
+        items[i] = new Point(item[0], item[1]);
+    }
+
+    return items;
+}
+
 // Load JSON text from server hosted file and return JSON parsed object
 function loadJSON(filePath) {
     // Load json file;
