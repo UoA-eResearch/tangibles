@@ -14,15 +14,19 @@
     <script src="bower_components/angular-animate/angular-animate.min.js"></script>
     <script src="bower_components/angular-aria/angular-aria.min.js"></script>
     <script src="bower_components/angular-material/angular-material.min.js"></script>
-    <script src="bower_components/kineticjs/kinetic.min.js"></script>
+    <script src="bower_components/konva/konva.min.js"></script>
     <script src="bower_components/hammerjs/hammer.min.js"></script>
+    <script src="bower_components/FileSaver/FileSaver.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
     <!-- Javascript application imports -->
     <script src="bower_components/any-resize-event/js/any-resize-event.js"></script>
-    <script src="js/AppCtrl.js"></script>
 
-    <script src="https://cdn.rawgit.com/konvajs/konva/0.9.5/konva.min.js"></script>
+    <script src="js/Util.js"></script>
+    <script src="js/Tangible.js"></script>
+    <script src="js/TangibleStage.js"></script>
+    <script src="js/TangibleController.js"></script>
+    <script src="js/AppCtrl.js"></script>
 
 </head>
 <body>
@@ -58,6 +62,7 @@
                         <span>Tangibles</span>
                     </h2>
                     <span flex></span>
+
                     <md-button class="md-icon-button" aria-label="More">
                         <md-icon md-svg-icon="img/more_vert.svg"></md-icon>
                     </md-button>

@@ -33,12 +33,13 @@
 
 
 
-function Tangible(id, name, size, imageSrc, registrationPoints) {
+function Tangible(id, name, size, startAngle, imageSrc, registrationPoints) {
 	this.id = id;
 	this.name = name;
 	this.size = size;
 	this.imageSrc = imageSrc;
 	this.registrationPoints = registrationPoints;
+	this.startAngle = startAngle;
 
 	//Create visual to represent tangible
 	var image = new Image();
@@ -46,13 +47,17 @@ function Tangible(id, name, size, imageSrc, registrationPoints) {
 
 	this.visual = new Konva.Image({
 		image: image,
-		x: this.position.x,
-		y: this.position.y,
+		x: 0,
+		y: 0,
 		width: this.size.width,
 		height: this.size.height,
 		offsetX: this.size.width/2,
 		offsetY: this.size.height/2,
-		draggable: true
+		draggable: true,
+		shadowColor: 'black',
+		shadowBlur: 30,
+		shadowOffset: {x : 10, y : 10},
+		shadowOpacity: 0.4
 	});
 
     // Enables transparency intersection
@@ -74,8 +79,8 @@ function Tangible(id, name, size, imageSrc, registrationPoints) {
 	 */
 
 	this.setPosition = function (point){
-		this.visual.x = point.x;
-		this.visual.y = point.y;
+		this.visual.setX(point.x);
+		this.visual.setY(point.y);
 	};
 
 	/**
@@ -84,7 +89,56 @@ function Tangible(id, name, size, imageSrc, registrationPoints) {
 	 */
 
 	this.setOrientation = function (angle) {
-		this.visual.rotation(angle);
+		this.visual.rotation(angle + this.startAngle) ;
 	};
 }
 
+/**
+ * Returns centroid of a list of points
+ * @param points
+ * @returns {number}
+ */
+
+Tangible.getCentroid = function(points)
+{
+	var centre = new Point(0, 0);
+
+	for(var i = 0; i < points.length; i++)
+	{
+		centre.x = centre.x + points[i].x;
+		centre.y = centre.y + points[i].y;
+	}
+
+	centre.x = centre.x / points.length;
+	centre.y = centre.y / points.length;
+
+	return centre;
+};
+
+
+/**
+ *
+ * @param points
+ * @returns {number}
+ */
+
+Tangible.getOrientation = function(points)
+{
+	var centre = Tangible.getCentroid(points);
+	var max = 0;
+	var max_i = -1;
+
+	//Find point with greatest distance, we use this as a reference point for determining the angle of the tangible
+	for(var i = 0; i < points.length; i++)
+	{
+		var dist = centre.distanceTo(points[i]);
+
+		if(dist > max)
+		{
+			max = dist;
+			max_i = i;
+		}
+	}
+
+	return centre.angleTo(points[max_i]);
+};

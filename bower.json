@@ -9,8 +9,9 @@
     "jquery": "~2.1.1",
     "bootstrap": "~3.1.1",
     "angular-material": "0.10.0",
-    "kineticjs": "5.1.0",
-    "hammerjs": "2.0.4",
-    "any-resize-event": "1.0.0"
+    "konva": null,
+    "hammerjs": "1.0.7",
+    "any-resize-event": "1.0.0",
+    "FileSaver": null
   }
 }

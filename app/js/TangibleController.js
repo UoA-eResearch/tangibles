@@ -6,196 +6,172 @@
 
 function TangibleController(surface, error) {
 
-    this.error = typeof error !== 'undefined' ? a : 10; //set error to default
+    this.error = typeof error !== 'undefined' ? a : 50; //set error to default
+    this.libraryName;
     this.tangibleLibrary = [];
     this.tangibles = [];
     this.surface = surface;
 
     /**
-     * //Tangible detection loop TODO: customise for registration and active use
-     *
-     * @param points
-     * @returns {number}
+     *  Event handlers
      */
 
-    this.surface.stage.getContent().addEventListener('touchstart', function(event) {
-        var touchPoints = this.surface.getTouchPoints(event);
+    this.surface.stage.getContent().addEventListener('touchstart', this.onTouch.bind(this)); //Gotta bind this, so that 'this' in onTouch is actually the controller
+}
 
-        this.surface.drawTouchPoints(touchPoints); //Visualise touch points
+/**
+ * Loads a tangible library into memory
+ * @param name: the name of the tangible library. TODO: document how to create a tangible library
+ * 'http://130.216.148.185:8000/capacitive-tangibles/app/libraries/oroo/tangibles.json'
+ */
 
-        //Get recognised tangible and add to surface
-        var tangible = this.getRecognizedTangible(touchPoints);
-        if(tangible != null)
+TangibleController.prototype.loadTangibleLibrary = function(url)
+{
+    var json_data = loadJSON(url);
+    console.log(json_data);
+    this.tangibleLibrary = [];
+    this.libraryName = json_data.name;
+
+    for(var i = 0; i < json_data.tangibleLibrary.length; i++) {
+        var tangible = json_data.tangibleLibrary[i];
+        var points = toPoints(tangible.registrationPoints);
+        this.tangibleLibrary[i] = new Tangible(tangible.id, tangible.name, new Size(tangible.size[0], tangible.size[1]), tangible.startAngle, 'libraries/' + json_data.name + '/' + tangible.image, points);
+    }
+};
+
+TangibleController.prototype.saveDiagram = function()
+{
+    var parsedTangibles = [];
+
+    for(var i = 0; i < this.tangibles.length; i++)
+    {
+        var tangible = this.tangibles[i];
+        parsedTangibles[i] = {"id":tangible.id, "position": [tangible.visual.getX(),  tangible.visual.getY()], "orientation": tangible.visual.rotation()};
+    }
+
+    var json_data = {"libraryName": this.libraryName, "tangibles": parsedTangibles};
+
+    var blob = new Blob([JSON.stringify(json_data)], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, "diagram.json");
+};
+
+/**
+ *
+ * @param tangibles
+ * @param touchPoints
+ */
+
+TangibleController.prototype.getRecognizedTangible = function(points) {
+    var recognised = false;
+
+    // We need to have minimum of three touch points to identify the Tangible and it's orientation.
+    if (points.length > 2)
+    {
+        var touchPointsDists = this.getDistances(points);
+
+        for(var i = 0; i < this.tangibleLibrary.length; i++)
         {
+            var regTangibleDists = this.getDistances(this.tangibleLibrary[i].registrationPoints);
+            var numSidesEqual = 0;
+
+            //Counts how many sides of tangible triangle match touch point triangle sides
+            for (var j = 0; j < touchPointsDists.length; j++)
+            {
+                var touchPointsDist = touchPointsDists[j];
+
+                for (var k = 0; k < regTangibleDists.length; k++){
+
+                    var tangibleDist = regTangibleDists[k];
+
+                    if ( touchPointsDist >= tangibleDist - this.error && touchPointsDist <= tangibleDist + this.error) //add degree of error here
+                    {
+                        numSidesEqual++;
+                        break;
+                    }
+                }
+            }
+
+            //Return recognised tangible
+            if ((numSidesEqual == touchPointsDists.length) && (regTangibleDists.length == touchPointsDists.length))
+            {
+                var temp = this.tangibleLibrary[i];
+                return new Tangible(temp.id, temp.name, temp.size, temp.startAngle, temp.imageSrc, temp.registrationPoints);
+            }
+        }
+    }
+
+    return null; //No tangible was recognised
+};
+
+
+/**
+ *
+ * @param points
+ * @returns {number}
+ */
+
+TangibleController.prototype.getDistances = function(points)
+{
+    var distances = new Array();
+
+    // Calculate distances between points and update distances array
+    for(var i=0; i < points.length; i++){
+        for (var j = (i + 1); j < points.length; j++)
+        {
+            var distance = points[i].distanceTo(points[j])
+            distances.push(distance);
+        }
+    }
+
+    return distances;
+};
+
+/** Tangible detection loop TODO: customise for registration and active use
+*
+* @param points
+* @returns {number}
+*/
+
+TangibleController.prototype.onTouch = function(event) {
+    var hello = this;
+
+    var touchPoints = this.surface.getTouchPoints(event);
+
+    this.surface.drawTouchPoints(touchPoints); //Visualise touch points
+
+    //Get recognised tangible and add to surface
+    if (touchPoints.length > 2)
+    {
+
+        var tangible = this.getRecognizedTangible(touchPoints);
+        if (tangible != null) {
             //Set starting orientation and position
-            tangible.setPosition(this.getCentre(touchPoints));
-            tangible.setOrientation(this.getOrientation(touchPoints));
+            tangible.setPosition(Tangible.getCentroid(touchPoints));
+            tangible.setOrientation(Tangible.getOrientation(touchPoints));
 
             // Enable two finger rotation
-            var hammer = Hammer(this.visual);
-            hammer.on("transformstart", function(e) {
-                var startAngle = this.visual.rotation();
-            }).on("transform", function(e) {
-                tangible.setOrientation(startAngle + e.gesture.rotation);
-                this.surface.draw();
-            });
+            var x = tangible.visual;
 
             this.tangibles.push(tangible);
             this.surface.addTangible(tangible);
+
+            var hammer = Hammer(tangible.visual);
+            hammer.on("transformstart", this.onStartRotate.bind(this, tangible));
+            hammer.on("transform", this.onEndRotate.bind(this, tangible));
         }
+    }
 
-        this.surface.draw();
-    });
+    this.surface.draw();
+};
 
+var startAngle = 0;
+TangibleController.prototype.onStartRotate = function(tangible, event)
+{
+    startAngle = tangible.visual.rotation();
+};
 
-    /**
-     * Returns centroid of a list of points
-     * @param points
-     * @returns {number}
-     */
-
-    this.getCentre = function(points)
-    {
-        var centre = new Point(0, 0);
-
-        for(var i = 0; i < touchPoints.length; i++)
-        {
-            centre.x = centre.x + touchPoints[i].x;
-            centre.y = centre.y + touchPoints[i].y;
-        }
-
-        centre.x = centre.x / touchPoints.length;
-        centre.x = centre.x / touchPoints.length;
-
-        return centre;
-    };
-
-
-    /**
-     *
-     * @param points
-     * @returns {number}
-     */
-
-    this.getOrientation = function(points)
-    {
-        var centre = this.getCentre(points);
-        var distances = [];
-
-        for(var i = 0; i < points.length; i++)
-        {
-            distances[i] = centre.distanceTo(points[i]);
-        }
-
-        var maxI = distances.indexOf(Math.max(distances));
-
-        var dx = points[maxI].x - centre.x;
-        var dy = points[maxI].y - centre.y;
-        var angle = Math.atan2(dy, dx); // range (-PI, PI]
-        angle *= 180 / Math.PI;
-
-        return angle;
-    };
-
-
-    /**
-     * Loads a tangible library into memory
-     * @param name: the name of the tangible library. TODO: document how to create a tangible library
-     * 'http://localhost:63342/capacitive-tangibles/app/libraries/oroo/tangibles.json'
-     */
-
-    this.loadTangibleLibrary = function(url)
-    {
-        var datum = loadJSON(url).tangibleLibrary;
-        console.log(data);
-        this.tangibleLibrary = [];
-
-        for(var i = 0; i < datum.length; i++) {
-            var data = datum[i];
-            var points = toPoints(data.registrationPoints);
-            this.tangibleLibrary[i] = new Tangible(data.id, data.name, new Size(data.size[0], data.size[1]), data.image, points);
-        }
-    };
-
-
-    /**
-     *
-     * @param tangibles
-     * @param touchPoints
-     */
-
-    this.getRecognizedTangible = function(points) {
-        var recognised = false;
-
-        // We need to have minimum of three touch points to identify the Tangible and it's orientation.
-        if (points.length > 2)
-        {
-            var touchPointsDMap = this.getDistanceMap(points);
-
-            for(var i = 0; i < this.tangibleLibrary.length; i++)
-            {
-                var tangibleDMap = this.getDistanceMap(this.tangibleLibrary[i].registrationPoints);
-                var numSidesEqual = 0;
-
-                //Counts how many sides of tangible triangle match touch point triangle sides
-                for (var j = 0; j < touchPointsDMap.length; j++)
-                {
-                    var touchPointsDist = touchPointsDMap[j];
-
-                    for (var k = 0; k < tangibleDMap.length; k++){
-
-                        var tangibleDist = tangibleDMap[k];
-
-                        if ( touchPointsDist >= tangibleDist - this.error && touchPointsDist <= tangibleDist + this.error) //add degree of error here
-                        {
-                            numSidesEqual++;
-                            break;
-                        }
-                    }
-                }
-
-                //Return recognised tangible
-                if ((numSidesEqual == touchPointsDMap.length) && (tangibleDMap.length == touchPointsDMap.length))
-                {
-                    return tangibles[i];
-                }
-            }
-        }
-
-        return null; //No tangible was recognised
-    };
-
-
-    /**
-     *
-     * @param points
-     * @returns {number}
-     */
-
-    this.getDistanceMap = function(points)
-    {
-        var distanceMap = new Array();
-
-        // Calculate distances between points and update distances array
-        for(var i=0; i < points.length; i++){
-            var ax = points[i][0];
-            var ay = points[i][1];
-
-            for (var j = (i + 1); j < points.length; j++)
-            {
-                // Calculate the distance between two points
-                var bx = points[j][0];
-                var by = points[j][1];
-
-                var dx = ax - bx;
-                var dy = ay - by;
-                var distance = Math.sqrt(dx * dx + dy * dy);
-
-                distanceMap.push(distance);
-            }
-        }
-
-        return distanceMap;
-    };
-}
-
+TangibleController.prototype.onEndRotate = function(tangible, event)
+{
+    tangible.setOrientation(startAngle + event.gesture.rotation);
+    this.surface.draw();
+};

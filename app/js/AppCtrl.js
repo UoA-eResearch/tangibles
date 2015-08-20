@@ -1,12 +1,15 @@
 
 var resizeFunc;
 
-var stage = new TangibleStage('tangibleContainer');
-var tangibleController = new TangibleController(stage);
+
 
 angular.module('capacitiveTangibles', ['ngMaterial'])
 
 .controller('AppCtrl', function($scope, $mdDialog, $http) {
+    $scope.stage = new TangibleStage('tangibleContainer');
+    $scope.tangibleController = new TangibleController($scope.stage);
+    $scope.tangibleController.loadTangibleLibrary('http://localhost:8000/app/libraries/oroo/tangibles.json');
+
     $scope.menuItems = [
         {'name': 'New', 'index': 1},
         {'name': 'Open', 'index': 2},
@@ -17,16 +20,16 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
     $scope.menuAction = function(event, item) {
         switch(item.index) {
             case 1:
-                newDiagram();
+                $scope.newDiagram();
                 break;
             case 2:
-                openDiagram();
+                $scope.openDiagram();
                 break;
             case 3:
-                saveDiagram();
+                $scope.saveDiagram();
                 break;
             case 4: //Register tangible
-                this.openRegisterDialog(event);
+                $scope.openRegisterDialog(event);
                 break;
         }
     };
@@ -50,10 +53,10 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
     };
 
     $scope.saveDiagram = function() {
-
+        $scope.tangibleController.saveDiagram();
     };
 
-    this.tangibleController.loadTangibleLibrary('http://localhost:63342/capacitive-tangibles/app/libraries/oroo/tangibles.json');
+
 });
 
 

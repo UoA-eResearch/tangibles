@@ -1,16 +1,17 @@
 {
+  "name":"oroo",
   "tangibleLibrary":[
-  {"id":1, "name":"Signpost", "size":[56,600], "image":"004_signpost.png", "registrationPoints":[[337.18798828125,419.82000732421875],[290.625,284.8590087890625],[613.75,251.46099853515625]]},
-  {"id":2, "name":"Dart", "size":[400,34], "image":"005_dart.png", "registrationPoints":[]},
-  {"id":3, "name":"Don't", "size":[254,225], "image":"006_dont.png", "registrationPoints":[]},
-  {"id":4, "name":"Boar", "size":[360,196], "image":"007_boar.png", "registrationPoints":[]},
-  {"id":5, "name":"One Person", "size":[161,400], "image":"008_one_person.png", "registrationPoints":[]},
-  {"id":6, "name":"One Day", "size":[400,134], "image":"009_one_day.png", "registrationPoints":[]},
-  {"id":7, "name":"Friends", "size":[61,350], "image":"010_friends.png", "registrationPoints":[]},
-  {"id":8, "name":"Hungry", "size":[100,159], "image":"011_hungry.png", "registrationPoints":[]},
-  {"id":9, "name":"River", "size":[43,500], "image":"012_river.png", "registrationPoints":[]},
-  {"id":10, "name":"Direction", "size":[450,337], "image":"013_direction.png", "registrationPoints":[]},
-  {"id":11, "name":"Bit of Path", "size":[400,165], "image":"014_bit_of_path.png", "registrationPoints":[]},
-  {"id":12, "name":"Leaves", "size":[400,449], "image":"015_leaves.png", "registrationPoints":[]}
+  {"id":1, "name":"Signpost", "size":[56,600], "startAngle":90, "image":"004_signpost.png", "registrationPoints":[[337.18798828125,419.82000732421875],[290.625,284.8590087890625],[613.75,251.46099853515625]]},
+  {"id":2, "name":"Dart", "size":[400,34], "startAngle":90, "image":"005_dart.png", "registrationPoints":[]},
+  {"id":3, "name":"Don't", "size":[254,225], "startAngle":90, "image":"006_dont.png", "registrationPoints":[]},
+  {"id":4, "name":"Boar", "size":[360,196], "startAngle":90, "image":"007_boar.png", "registrationPoints":[]},
+  {"id":5, "name":"One Person", "size":[161,400], "startAngle":90, "image":"008_one_person.png", "registrationPoints":[]},
+  {"id":6, "name":"One Day", "size":[400,134], "startAngle":90, "image":"009_one_day.png", "registrationPoints":[]},
+  {"id":7, "name":"Friends", "size":[61,350], "startAngle":90, "image":"010_friends.png", "registrationPoints":[]},
+  {"id":8, "name":"Hungry", "size":[100,159], "startAngle":90, "image":"011_hungry.png", "registrationPoints":[]},
+  {"id":9, "name":"River", "size":[43,500], "startAngle":90, "image":"012_river.png", "registrationPoints":[]},
+  {"id":10, "name":"Direction", "size":[450,337], "startAngle":90, "image":"013_direction.png", "registrationPoints":[]},
+  {"id":11, "name":"Bit of Path", "size":[400,165], "startAngle":90, "image":"014_bit_of_path.png", "registrationPoints":[]},
+  {"id":12, "name":"Leaves", "size":[400,449], "startAngle":90, "image":"015_leaves.png", "registrationPoints":[]}
 ]}
 

@@ -10,8 +10,20 @@ function Point(x, y) {
      */
     this.distanceTo = function(other)
     {
-        return Math.sqrt(this.x * other.x + this.y * other.y);
+        var ax = this.x - other.x;
+        var ay = this.y - other.y;
+
+        return Math.sqrt(ax * ax + ay * ay);
     };
+
+    this.angleTo = function(other)
+    {
+        var dx = other.x - this.x;
+        var dy = other.y - this.y;
+        var angle = Math.atan2(dy, dx); // range (-PI, PI]
+        angle *= 180 / Math.PI;
+        return angle;
+    }
 }
 
 function Size(width, height) {
@@ -21,7 +33,7 @@ function Size(width, height) {
 
 function toPoints(rawArray)
 {
-    var items;
+    var items = [];
 
     for(var i = 0; i < rawArray.length; i++)
     {
