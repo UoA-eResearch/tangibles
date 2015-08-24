@@ -8,16 +8,26 @@ function TangibleController(surface, error) {
 
     this.error = typeof error !== 'undefined' ? a : 50; //set error to default
     this.libraryName;
-    this.tangibleLibrary = [];
+    this.tangibleLibrary = {};
     this.tangibles = [];
     this.surface = surface;
+    this.selectedTangible = null;
 
     /**
      *  Event handlers
      */
 
     this.surface.stage.getContent().addEventListener('touchstart', this.onTouch.bind(this)); //Gotta bind this, so that 'this' in onTouch is actually the controller
+    this.surface.onDeselectedCallback = this.onDeselected.bind(this);
 }
+
+TangibleController.prototype.onDeselected = function (event) {
+    if(this.selectedTangible != null)
+    {
+        this.selectedTangible.deselect();
+        this.selectedTangible = null;
+    }
+};
 
 /**
  * Loads a tangible library into memory
@@ -25,18 +35,94 @@ function TangibleController(surface, error) {
  * 'http://130.216.148.185:8000/capacitive-tangibles/app/libraries/oroo/tangibles.json'
  */
 
+TangibleController.prototype.onTap = function (tangible) {
+
+    console.log(arguments);
+    if(this.selectedTangible != null)
+    {
+        this.selectedTangible.deselect();
+    }
+
+    this.selectedTangible = tangible;
+    this.selectedTangible.select();
+    this.surface.tangibleLayer.draw();
+
+};
+
+TangibleController.prototype.onDragStart = function (tangible) {
+    if(this.selectedTangible != null)
+    {
+        this.selectedTangible.deselect();
+        this.selectedTangible = null;
+    }
+    this.selectedTangible = tangible;
+    this.selectedTangible.select();
+    //tangible.visual.moveTo(this.surface.stage.dragLayer);  TODO: fix, goes crazy if I use this
+    this.surface.stage.draw();
+};
+
+TangibleController.prototype.onDragEnd = function (tangible) {
+    //tangible.visual.moveTo(this.surface.stage.tangibleLayer);
+
+};
+
 TangibleController.prototype.loadTangibleLibrary = function(url)
 {
     var json_data = loadJSON(url);
     console.log(json_data);
-    this.tangibleLibrary = [];
+    this.tangibleLibrary.length = 0;
     this.libraryName = json_data.name;
 
     for(var i = 0; i < json_data.tangibleLibrary.length; i++) {
         var tangible = json_data.tangibleLibrary[i];
         var points = toPoints(tangible.registrationPoints);
-        this.tangibleLibrary[i] = new Tangible(tangible.id, tangible.name, new Size(tangible.size[0], tangible.size[1]), tangible.startAngle, 'libraries/' + json_data.name + '/' + tangible.image, points);
+        this.tangibleLibrary[tangible.id] = new Tangible(tangible.id, tangible.name, new Size(tangible.size[0], tangible.size[1]), tangible.startAngle, 'libraries/' + json_data.name + '/' + tangible.image, points);
     }
+};
+
+TangibleController.prototype.clear = function()
+{
+    this.surface.clear();
+    this.tangibles.length = 0; //clears array
+    //this.tangibleLibrary.length = 0;
+};
+
+TangibleController.prototype.openDiagram = function(scope, openDiagramEvent, readEvent) {
+    try
+    {
+        console.log(event.target.result);
+        var data = JSON.parse(event.target.result);
+        console.log(data);
+
+        for(var i = 0; i < data.tangibles.length; i++)
+        {
+            var tangible = data.tangibles[i];
+            this.addTangible(tangible.id, new Point(tangible.position[0], tangible.position[1]), tangible.orientation);
+        }
+
+        this.surface.draw();
+    }
+    catch(error)
+    {
+        scope.showAlert(openDiagramEvent, "Error Reading File", error.message);
+    }
+};
+
+TangibleController.prototype.addTangible = function(id, position, orientation)
+{
+    var temp = this.tangibleLibrary[id]; //Get template
+    var tangible = new Tangible(temp.id, temp.name, temp.size, temp.startAngle, temp.imageSrc, temp.registrationPoints);
+
+    tangible.onTapCallback = this.onTap.bind(this);
+    tangible.onDragStartCallback = this.onDragStart.bind(this);
+    tangible.onDragEndCallback = this.onDragEnd.bind(this);
+
+    //Set starting orientation and position
+    tangible.setPosition(position);
+    tangible.setOrientation(orientation);
+
+    this.tangibles.push(tangible);
+    this.surface.addTangible(tangible);
 };
 
 TangibleController.prototype.saveDiagram = function()
@@ -46,13 +132,13 @@ TangibleController.prototype.saveDiagram = function()
     for(var i = 0; i < this.tangibles.length; i++)
     {
         var tangible = this.tangibles[i];
-        parsedTangibles[i] = {"id":tangible.id, "position": [tangible.visual.getX(),  tangible.visual.getY()], "orientation": tangible.visual.rotation()};
+        parsedTangibles[i] = {"id":tangible.id, "position": [tangible.visual.getX(), tangible.visual.getY()], "orientation": tangible.visual.rotation() - tangible.startAngle};
     }
-
+    //TODO: save
     var json_data = {"libraryName": this.libraryName, "tangibles": parsedTangibles};
 
     var blob = new Blob([JSON.stringify(json_data)], {type: "text/plain;charset=utf-8"});
-    saveAs(blob, "diagram.json");
+    saveAs(blob, "diagram.tg");
 };
 
 /**
@@ -61,7 +147,7 @@ TangibleController.prototype.saveDiagram = function()
  * @param touchPoints
  */
 
-TangibleController.prototype.getRecognizedTangible = function(points) {
+TangibleController.prototype.getRecognizedTangibleId = function(points) {
     var recognised = false;
 
     // We need to have minimum of three touch points to identify the Tangible and it's orientation.
@@ -69,9 +155,9 @@ TangibleController.prototype.getRecognizedTangible = function(points) {
     {
         var touchPointsDists = this.getDistances(points);
 
-        for(var i = 0; i < this.tangibleLibrary.length; i++)
+        for(var key in this.tangibleLibrary)
         {
-            var regTangibleDists = this.getDistances(this.tangibleLibrary[i].registrationPoints);
+            var regTangibleDists = this.getDistances(this.tangibleLibrary[key].registrationPoints);
             var numSidesEqual = 0;
 
             //Counts how many sides of tangible triangle match touch point triangle sides
@@ -94,8 +180,7 @@ TangibleController.prototype.getRecognizedTangible = function(points) {
             //Return recognised tangible
             if ((numSidesEqual == touchPointsDists.length) && (regTangibleDists.length == touchPointsDists.length))
             {
-                var temp = this.tangibleLibrary[i];
-                return new Tangible(temp.id, temp.name, temp.size, temp.startAngle, temp.imageSrc, temp.registrationPoints);
+                return key;
             }
         }
     }
@@ -135,6 +220,7 @@ TangibleController.prototype.getDistances = function(points)
 TangibleController.prototype.onTouch = function(event) {
     var hello = this;
 
+
     var touchPoints = this.surface.getTouchPoints(event);
 
     this.surface.drawTouchPoints(touchPoints); //Visualise touch points
@@ -142,36 +228,11 @@ TangibleController.prototype.onTouch = function(event) {
     //Get recognised tangible and add to surface
     if (touchPoints.length > 2)
     {
-
-        var tangible = this.getRecognizedTangible(touchPoints);
-        if (tangible != null) {
-            //Set starting orientation and position
-            tangible.setPosition(Tangible.getCentroid(touchPoints));
-            tangible.setOrientation(Tangible.getOrientation(touchPoints));
-
-            // Enable two finger rotation
-            var x = tangible.visual;
-
-            this.tangibles.push(tangible);
-            this.surface.addTangible(tangible);
-
-            var hammer = Hammer(tangible.visual);
-            hammer.on("transformstart", this.onStartRotate.bind(this, tangible));
-            hammer.on("transform", this.onEndRotate.bind(this, tangible));
+        var id = this.getRecognizedTangibleId(touchPoints);
+        if (id != null) {
+            this.addTangible(id, Tangible.getCentroid(touchPoints), Tangible.getOrientation(touchPoints));
         }
     }
 
-    this.surface.draw();
-};
-
-var startAngle = 0;
-TangibleController.prototype.onStartRotate = function(tangible, event)
-{
-    startAngle = tangible.visual.rotation();
-};
-
-TangibleController.prototype.onEndRotate = function(tangible, event)
-{
-    tangible.setOrientation(startAngle + event.gesture.rotation);
     this.surface.draw();
 };

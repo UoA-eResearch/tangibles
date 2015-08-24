@@ -9,22 +9,50 @@ function TangibleStage(containerID)
     this.containerID = containerID;
 
     var rect = document.getElementById(containerID).getBoundingClientRect();
+
+    this.width = rect.right - rect.left;
+    this.height = rect.bottom - rect.top;
+
     this.stage = new Konva.Stage({
         container: this.containerID,
         width: rect.right - rect.left,
         height: rect.bottom - rect.top
     });
 
+    this.deselectLayer = new Konva.Layer();
+
+    this.deselected_rect = new Konva.Rect({
+        x: 0,
+        y: 0,
+        width: this.width,
+        height: this.height
+    });
+
+    this.deselected_rect.on('touchstart', this.onDeselected.bind(this));
+    this.deselectLayer.add(this.deselected_rect);
+    this.onDeselectedCallback = null;
+
     this.touchPointsLayer = new Konva.Layer();
     this.dragLayer = new Konva.Layer();
     this.tangibleLayer = new Konva.Layer();
-    this.stage.add(this.tangibleLayer, this.dragLayer, this.touchPointsLayer); //Left param on bottom, right on top
+    this.stage.add(this.deselectLayer, this.tangibleLayer, this.dragLayer, this.touchPointsLayer); //Left param on bottom, right on top
 
-    //Register events
-    this.stage.on('dragstart', this.onDragStart.bind(this));
-    this.stage.on('dragend', this.onDragEnd.bind(this));
     $(window).resize(this.onResize.bind(this));
 }
+
+TangibleStage.prototype.onDeselected = function () {
+    if(this.onDeselectedCallback != null)
+    {
+        this.onDeselectedCallback(this);
+    }
+};
+
+TangibleStage.prototype.clear = function()
+{
+    this.dragLayer.destroyChildren();
+    this.tangibleLayer.destroyChildren();
+    this.draw();
+};
 
 /**
  *
@@ -102,28 +130,6 @@ TangibleStage.prototype.drawTouchPoints = function(touchPoints)
     }
 
     this.touchPointsLayer.draw();
-};
-
-TangibleStage.prototype.onDragStart = function(event)
-{
-    var shape = event.target;
-    shape.moveTo(this.dragLayer); // Improves dragging performance
-    this.stage.draw();
-    shape.setAttrs({
-        opacity: 0.5
-    });
-};
-
-TangibleStage.prototype.onDragEnd = function(event)
-{
-    var shape = event.target;
-    shape.moveTo(this.tangibleLayer);
-    this.stage.draw();
-    shape.to({
-        duration: 0.5,
-        easing: Konva.Easings.ElasticEaseOut,
-        opacity: 1.0
-    });
 };
 
 TangibleStage.prototype.onResize = function () {

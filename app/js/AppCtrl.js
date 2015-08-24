@@ -1,5 +1,6 @@
 
 var resizeFunc;
+var openDiagramEvent;
 
 
 
@@ -8,7 +9,11 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
 .controller('AppCtrl', function($scope, $mdDialog, $http) {
     $scope.stage = new TangibleStage('tangibleContainer');
     $scope.tangibleController = new TangibleController($scope.stage);
-    $scope.tangibleController.loadTangibleLibrary('http://localhost:8000/app/libraries/oroo/tangibles.json');
+    $scope.tangibleController.loadTangibleLibrary('http://130.216.148.185:8000/app/libraries/oroo/tangibles.json');
+
+    //$("#diagram-file").change(function() {
+    //    alert('changed!');
+    //});
 
     $scope.menuItems = [
         {'name': 'New', 'index': 1},
@@ -23,7 +28,8 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
                 $scope.newDiagram();
                 break;
             case 2:
-                $scope.openDiagram();
+                openDiagramEvent = event;
+                $('#diagram-file').trigger('click');
                 break;
             case 3:
                 $scope.saveDiagram();
@@ -40,22 +46,48 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
             controller: LibraryController,
             templateUrl: 'dialog2.tmpl.html',
             parent: angular.element(document.body),
-            targetEvent: event,
+            targetEvent: event
         });
     };
 
-    $scope.openDiagram = function() {
-
+    $scope.openDiagram = function(event) {
+        var file = document.getElementById('diagram-file').files[0];
+        var reader = new FileReader();
+        reader.onloadend = $scope.tangibleController.openDiagram.bind($scope.tangibleController, $scope, openDiagramEvent);
+        reader.readAsText(file/*, "UTF-8"*/);
+        $("#diagram-file").replaceWith($("#diagram-file").clone(true)); //Clears file input field so file will be read again.
     };
 
     $scope.newDiagram = function() {
-
+        $scope.tangibleController.clear();
     };
 
     $scope.saveDiagram = function() {
         $scope.tangibleController.saveDiagram();
     };
 
+    /**
+     *
+     * @param event:
+     * @param title:
+     * @param content:
+     */
+
+    $scope.showAlert = function(event, title, content) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        // Modal dialogs should fully cover application
+        // to prevent interaction outside of dialog
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title(title)
+                .content(content)
+                .ariaLabel(title)
+                .ok('OK')
+                .targetEvent(event)
+        );
+    };
 
 });
 

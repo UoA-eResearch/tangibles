@@ -31,7 +31,8 @@
 </head>
 <body>
 
-    <div ng-controller="AppCtrl">
+    <div ng-controller="AppCtrl" id="popupContainer">
+
         <md-content>
             <md-toolbar>
                 <div class="md-toolbar-tools">
@@ -54,6 +55,7 @@
 
                             <md-menu-item ng-repeat="menuItem in menuItems">
                                 <md-button ng-click="menuAction($event, menuItem)"> <span md-menu-align-target>{{menuItem.name}}</span></md-button>
+
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
@@ -68,7 +70,10 @@
                     </md-button>
                 </div>
             </md-toolbar>
+
+            <input input id="diagram-file" type="file" name="diagram-file" onchange="angular.element(this).scope().openDiagram()" accept=".tg" style="display: none;" />
         </md-content>
+
 
         <div id="tangibleContainer" style="border: 1px solid #000000;bottom: 0; left: 0; overflow: hidden; position: absolute; right: 0; top: 0;"></div>
 
