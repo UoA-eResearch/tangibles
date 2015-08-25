@@ -8,7 +8,7 @@ function TangibleController(surface, error) {
 
     this.error = typeof error !== 'undefined' ? a : 50; //set error to default
     this.libraryName;
-    this.tangibleLibrary = {};
+    this.tangibleLibrary = [];// = {};
     this.tangibles = [];
     this.surface = surface;
     this.selectedTangible = null;
@@ -72,12 +72,16 @@ TangibleController.prototype.loadTangibleLibrary = function(url)
     console.log(json_data);
     this.tangibleLibrary.length = 0;
     this.libraryName = json_data.name;
+    //this.tangibleLibrary = [];
 
     for(var i = 0; i < json_data.tangibleLibrary.length; i++) {
         var tangible = json_data.tangibleLibrary[i];
-        var points = toPoints(tangible.registrationPoints);
-        this.tangibleLibrary[tangible.id] = new Tangible(tangible.id, tangible.name, new Size(tangible.size[0], tangible.size[1]), tangible.startAngle, 'libraries/' + json_data.name + '/' + tangible.image, points);
+        tangible.registrationPoints = toPoints(tangible.registrationPoints);
+        tangible.image = 'libraries/' + json_data.name + '/' + tangible.image;
+        json_data.tangibleLibrary[i] = tangible;
     }
+
+    this.tangibleLibrary = json_data.tangibleLibrary;
 };
 
 TangibleController.prototype.clear = function()
@@ -108,10 +112,10 @@ TangibleController.prototype.openDiagram = function(scope, openDiagramEvent, rea
     }
 };
 
-TangibleController.prototype.addTangible = function(id, position, orientation)
+TangibleController.prototype.addTangible = function(template, position, orientation)
 {
-    var temp = this.tangibleLibrary[id]; //Get template
-    var tangible = new Tangible(temp.id, temp.name, temp.size, temp.startAngle, temp.imageSrc, temp.registrationPoints);
+    //var temp = this.tangibleLibrary[id]; //Get template
+    var tangible = new Tangible(template.id, template.name, template.scale, template.startAngle, template.image, template.registrationPoints);
 
     tangible.onTapCallback = this.onTap.bind(this);
     tangible.onDragStartCallback = this.onDragStart.bind(this);
@@ -147,7 +151,7 @@ TangibleController.prototype.saveDiagram = function()
  * @param touchPoints
  */
 
-TangibleController.prototype.getRecognizedTangibleId = function(points) {
+TangibleController.prototype.getRecognizedTangibleTemplate = function(points) {
     var recognised = false;
 
     // We need to have minimum of three touch points to identify the Tangible and it's orientation.
@@ -155,9 +159,10 @@ TangibleController.prototype.getRecognizedTangibleId = function(points) {
     {
         var touchPointsDists = this.getDistances(points);
 
-        for(var key in this.tangibleLibrary)
+        for(var i = 0; i < this.tangibleLibrary.length; i++)
         {
-            var regTangibleDists = this.getDistances(this.tangibleLibrary[key].registrationPoints);
+            var template = this.tangibleLibrary[i];
+            var regTangibleDists = this.getDistances(template.registrationPoints);
             var numSidesEqual = 0;
 
             //Counts how many sides of tangible triangle match touch point triangle sides
@@ -180,7 +185,7 @@ TangibleController.prototype.getRecognizedTangibleId = function(points) {
             //Return recognised tangible
             if ((numSidesEqual == touchPointsDists.length) && (regTangibleDists.length == touchPointsDists.length))
             {
-                return key;
+                return template;
             }
         }
     }
@@ -218,9 +223,6 @@ TangibleController.prototype.getDistances = function(points)
 */
 
 TangibleController.prototype.onTouch = function(event) {
-    var hello = this;
-
-
     var touchPoints = this.surface.getTouchPoints(event);
 
     this.surface.drawTouchPoints(touchPoints); //Visualise touch points
@@ -228,9 +230,9 @@ TangibleController.prototype.onTouch = function(event) {
     //Get recognised tangible and add to surface
     if (touchPoints.length > 2)
     {
-        var id = this.getRecognizedTangibleId(touchPoints);
-        if (id != null) {
-            this.addTangible(id, Tangible.getCentroid(touchPoints), Tangible.getOrientation(touchPoints));
+        var template = this.getRecognizedTangibleTemplate(touchPoints);
+        if (template != null) {
+            this.addTangible(template, Tangible.getCentroid(touchPoints), Tangible.getOrientation(touchPoints));
         }
     }
 

@@ -6,7 +6,7 @@ var openDiagramEvent;
 
 angular.module('capacitiveTangibles', ['ngMaterial'])
 
-.controller('AppCtrl', function($scope, $mdDialog, $http) {
+.controller('AppCtrl', function($scope, $mdDialog, $http, $mdSidenav, $mdUtil) {
     $scope.stage = new TangibleStage('tangibleContainer');
     $scope.tangibleController = new TangibleController($scope.stage);
     $scope.tangibleController.loadTangibleLibrary('http://130.216.148.185:8000/app/libraries/oroo/tangibles.json');
@@ -35,16 +35,16 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
                 $scope.saveDiagram();
                 break;
             case 4: //Register tangible
-                $scope.openRegisterDialog(event);
+                $scope.editLibrary(event);
                 break;
         }
     };
 
-    $scope.openRegisterDialog = function(event)
+    $scope.editLibrary = function(event)
     {
         $mdDialog.show({
-            controller: LibraryController,
-            templateUrl: 'dialog2.tmpl.html',
+            scope: $scope.$new(),
+            templateUrl: 'library.tmpl.html',
             parent: angular.element(document.body),
             targetEvent: event
         });
@@ -89,57 +89,64 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
         );
     };
 
+    $scope.hide = function() {
+        $mdDialog.hide();
+    };
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
+    $scope.answer = function(answer) {
+        $mdDialog.hide(answer);
+    };
+
+    $scope.initTouchWindow = function() {
+        var container = 'touch-points';
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        //initTouchWindow(container, width, height);
+    };
+
+    $scope.editTangible = function (tangible, $event) {
+        $scope.selectedTangible = tangible;
+        $mdSidenav('right').open();
+
+        var containerID = 'touch-points';
+        var container = document.getElementById(containerID);
+        //container.addEventListener('onresize', function(){initTouchWindow(containerID);});
+    };
+
+    $scope.close = function () {
+        $mdSidenav('right').close()
+            .then(function () {
+                $log.debug("close RIGHT is done");
+            });
+
+        //destroyTouchWindow();
+    };
+
+    $scope.toggleRight = buildToggler('right');
+
+    function buildToggler(navID) {
+        var debounceFn =  $mdUtil.debounce(function(){
+            $mdSidenav(navID)
+                .toggle()
+                .then(function () {
+                    $log.debug("toggle " + navID + " is done");
+                });
+        },300);
+        return debounceFn;
+    }
+
 });
 
-
-
-//function initMainStage()
-//{
-//    var rect = document.getElementById(containerID).getBoundingClientRect();
-//    console.log('Rect', rect);
 //
-//    stage = new Kinetic.Stage({
-//        container: containerID,
-//        width: rect.right - rect.left,
-//        height: rect.bottom - rect.top
-//    });
-//}
+//function LibraryController($scope, $mdDialog, $http, $mdSidenav, $mdUtil) {
 //
-//function initTouchWindow(containerID)
-//{
-//    var rect = document.getElementById(containerID).getBoundingClientRect();
-//    console.log('Rect', rect);
-//
-//    stage = new Kinetic.Stage({
-//        container: containerID,
-//        width: rect.right - rect.left,
-//        height: rect.bottom - rect.top
+//    $http.get('libraries/oroo/tangibles.json').success(function(data) {
+//        $scope.tangibles = data.tangibleLibrary;
+//        console.log('1 tangible: ', $scope.tangibleController.tangibleLibrary);
+//        console.log('Tangibles: ', data.tangibleLibrary)
 //    });
 //
-//    touchPointsLayer = new Kinetic.Layer();
-//    stage.add(touchPointsLayer);
 //
-//    stage.getContent().addEventListener('touchstart', function(event) {
-//        touchPoints = getTouchPoints(event);
-//        drawTouchPoints(touchPoints);
-//    });
-//}
-//
-//function destroyTouchWindow()
-//{
-//    if(state != null)
-//    {
-//        stage.destroy();
-//    }
-//
-//    if(touchPointsLayer != null)
-//    {
-//        touchPointsLayer.destroy();
-//    }
-//
-//    var container = document.getElementById('touch-points');
-//    removeResizeListener(container, resizeFunc);
-//}
-
-
-
+//};

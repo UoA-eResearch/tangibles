@@ -33,11 +33,11 @@
 
 
 
-function Tangible(id, name, size, startAngle, imageSrc, registrationPoints) {
+function Tangible(id, name, scale, startAngle, image, registrationPoints) {
 	this.id = id;
 	this.name = name;
-	this.size = size;
-	this.imageSrc = imageSrc;
+	this.scale = scale;
+	this.image = image;
 	this.selected = false;
 	this.registrationPoints = registrationPoints;
 	this.startAngle = startAngle;
@@ -47,20 +47,22 @@ function Tangible(id, name, size, startAngle, imageSrc, registrationPoints) {
 
 	//Create visual to represent tangible
 	var image = new Image();
-	image.src = this.imageSrc;
+	image.src = this.image;
+    this.width = image.naturalWidth * this.scale;
+    this.height = image.naturalHeight * this.scale;
 
 	this.visual = new Konva.Image({
 		image: image,
 		x: 0,
 		y: 0,
-		width: this.size.width,
-		height: this.size.height,
-		offsetX: this.size.width/2,
-		offsetY: this.size.height/2,
+		width: this.width,
+		height: this.height,
+		offsetX: this.width/2,
+		offsetY: this.height/2,
 		draggable: true,
 		shadowColor: 'black',
 		shadowBlur: 30,
-		shadowOffset: {x : 10, y : 10},
+		shadowOffset: {x : 0, y : 0},
 		shadowOpacity: 0.4
 	});
 
@@ -68,15 +70,12 @@ function Tangible(id, name, size, startAngle, imageSrc, registrationPoints) {
 	this.visual.on('dragstart', this.onDragStart.bind(this));
 	this.visual.on('dragend', this.onDragEnd.bind(this));
 
-	// Enables transparency intersection
-
-
-	//this.visual.rotate(this.startAngle);
 	// Enable two finger rotation
-	this.twoFingerStartAngle = 0;
+	this.hammerStartAngle = 0;
 	this.hammer = Hammer(this.visual);
 	this.hammer.on("transformstart", this.onStartRotate.bind(this)).on("transform", this.onEndRotate.bind(this));
 
+	// Enables transparency intersection
 	this.visual.cache();
 	this.visual.drawHitFromCache();
 
@@ -85,16 +84,12 @@ function Tangible(id, name, size, startAngle, imageSrc, registrationPoints) {
 Tangible.prototype.onStartRotate = function(event)
 {
 	console.log(event);
-	//event.gesture.angle = event.gesture.angle - this.startAngle;
-	this.twoFingerStartAngle = this.visual.rotation() - this.startAngle;
+	this.hammerStartAngle = this.visual.rotation() - this.startAngle;
 };
 
 Tangible.prototype.onEndRotate = function(event)
 {
-	//console.log(event.gesture);
-	//this.visual.rotation(angle + this.startAngle) ;
-	this.setOrientation(this.twoFingerStartAngle + event.gesture.rotation);
-	//this.surface.draw();
+	this.setOrientation(this.hammerStartAngle + event.gesture.rotation);
 };
 
 Tangible.prototype.onDragStart = function(event)
@@ -138,7 +133,7 @@ Tangible.prototype.deselect = function()
 	this.visual.setAttrs({
 		shadowColor: 'black',
 		shadowOpacity: 0.4,
-		shadowOffset: {x : 10, y : 10}
+		shadowOffset: {x : 0, y : 0}
 	});
 	this.visual.cache();
 };

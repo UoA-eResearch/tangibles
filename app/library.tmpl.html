@@ -1,8 +1,8 @@
-<md-dialog aria-label="Register Tangible"  style="width: 80%; height: 70%">
+<md-dialog aria-label="Edit Tangible Library" style="width: 80%; height: 70%">
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h1>Tangible Library</h1>
+                <h1>Edit Tangible Library: {{tangibleController.libraryName}}</h1>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="answer('not applicable')">
                     <md-icon md-svg-src="img/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
@@ -12,10 +12,10 @@
         <md-dialog-content>
             <md-list>
                 <md-subheader class="md-no-sticky">Tangibles</md-subheader>
-                <md-list-item ng-repeat="tangible in tangibles" ng-click="editTangible(tangible, $event)">
+                <md-list-item ng-repeat="tangible in tangibleController.tangibleLibrary" ng-click="editTangible(tangible, $event)">
                     <div class="horizontal tangible-icon-container">
                         <div class="vertical">
-                            <img class="tangible-icon" ng-src="libraries/oroo/{{tangible.image}}"  alt="{{tangible.name}}" />
+                            <img class="tangible-icon" ng-src="{{tangible.image}}"  alt="{{tangible.name}}" />
                         </div>
                     </div>
                     <p>{{ tangible.name }}</p>
