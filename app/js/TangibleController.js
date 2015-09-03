@@ -4,9 +4,9 @@
  * @constructor
  */
 
-function TangibleController(surface, error) {
+function TangibleController(surface, threshold) {
 
-    this.error = typeof error !== 'undefined' ? a : 12; //set error to default
+    this.threshold = typeof threshold !== 'undefined' ? a : 50; //set error to default
     this.libraryName;
     this.tangibleLibrary = [];// = {};
     this.tangibles = [];
@@ -157,15 +157,15 @@ TangibleController.prototype.getRecognizedTangibleTemplate = function(points) {
     //console.log('Sorted', Tangible.sortCCW(points).toString());
 
     var recognised = false;
-
-    //var matches = [];
+    var matches = [];
 
     // We need to have minimum of three touch points to identify the Tangible and it's orientation.
-    if (points.length > 2)
+    if (points.length == 3)
     {
-        var sortedPoints = Tangible.sortClockwise(points);
-
-        var touchPointsDists = this.getDistances(sortedPoints);
+        var touchSorted = Tangible.sortClockwise(points);
+        var touchDistA = touchSorted[0].distanceTo(touchSorted[1]);
+        var touchDistB = touchSorted[0].distanceTo(touchSorted[2]);
+        var touchDistC = touchSorted[1].distanceTo(touchSorted[2]);
 
         for(var i = 0; i < this.tangibleLibrary.length; i++)
         {
@@ -173,33 +173,38 @@ TangibleController.prototype.getRecognizedTangibleTemplate = function(points) {
 
             if(template.registrationPoints.length == 3)
             {
-                var regPointsDists = this.getDistances(Tangible.sortClockwise(template.registrationPoints));
-                var numSidesEqual = 0;
-
-                //Counts how many sides of tangible triangle match touch point triangle sides
-                for (var j = 0; j < touchPointsDists.length; j++)
-                {
-                    var touchPointsDist = touchPointsDists[j];
-
-                    for (var k = 0; k < regPointsDists.length; k++){
-
-                        var tangibleDist = regPointsDists[k];
-
-                        if ( touchPointsDist >= tangibleDist - this.error && touchPointsDist <= tangibleDist + this.error) //add degree of error here
-                        {
-                            numSidesEqual++;
-                            break;
-                        }
-                    }
-                }
-
-                //Return recognised tangible
-                if ((numSidesEqual == touchPointsDists.length) && (regPointsDists.length == touchPointsDists.length))
-                {
-                    return template;
-                }
+                var regPointsDists = Tangible.sortClockwise(template.registrationPoints);
+                var regDistA = regPointsDists[0].distanceTo(regPointsDists[1]);
+                var regDistB = regPointsDists[0].distanceTo(regPointsDists[2]);
+                var regDistC = regPointsDists[1].distanceTo(regPointsDists[2]);
+                var similarity = Math.abs(touchDistA-regDistA) + Math.abs(touchDistB-regDistB) + Math.abs(touchDistC - regDistC);
+                //console.log('sim: ', similarity, ' ', template.name);
+                matches.push([similarity, template]);
             }
         }
+
+        matches.sort(function(a, b){
+            if(a[0] < b[0])
+                return -1;
+            if(a[0] > b[0])
+                return 1;
+            return 0;
+        });
+
+        //debug
+        //for(var i = 0; i < matches.length; i++)
+        //{
+        //    console.log(matches[i][0] + ": ", matches[i][1].name)
+        //}
+
+        //console.log("")
+
+        //console.log('sorted: ', matches.toString());
+        var sim = matches[0][0];
+        if(sim < this.threshold)
+            return matches[0][1];
+
+        return null;
     }
 
     return null; //No tangible was recognised
