@@ -26,6 +26,11 @@ function Point(x, y) {
     }
 }
 
+Point.prototype.toString = function()
+{
+    return "[" + this.x + ", " + this.y + "]";
+}
+
 function Size(width, height) {
     this.width = width;
     this.height = height;

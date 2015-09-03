@@ -180,6 +180,52 @@ Tangible.getCentroid = function(points)
 };
 
 
+Tangible.sortClockwise = function(points)
+{
+    var centre = Tangible.getCentroid(points);
+    var max_i = Tangible.getAnchorIndex(centre, points); // Point with furthest distance
+    var indices = [0, 1, 2]; // indices of triangle
+    indices.splice(indices.indexOf(max_i), 1); // remove index of anchor
+
+    // Two possible orders
+    var sort_a = [points[max_i], points[indices[0]], points[indices[1]]];
+    var sort_b = [points[max_i], points[indices[1]], points[indices[0]]];
+
+    // If determinant > 0 then sort_a CCW
+    if(Tangible.determinant(sort_a) > 0)
+    {
+        return sort_a;
+    }
+
+    // Else sort_b CCW
+    return sort_b;
+};
+
+Tangible.determinant = function(points)
+{
+    return points[0].x*points[1].y + points[1].x*points[2].y + points[2].x*points[0].y - points[1].y*points[2].x - points[2].y*points[0].x - points[0].y*points[1].x;
+};
+
+Tangible.getAnchorIndex = function(centre, points)
+{
+    var max = 0;
+    var max_i = -1;
+
+    //Find point with greatest distance, we use this as a reference point for determining the angle of the tangible
+    for(var i = 0; i < points.length; i++)
+    {
+        var dist = centre.distanceTo(points[i]);
+
+        if(dist > max)
+        {
+            max = dist;
+            max_i = i;
+        }
+    }
+
+    return max_i;
+};
+
 /**
  *
  * @param points
@@ -189,20 +235,7 @@ Tangible.getCentroid = function(points)
 Tangible.getOrientation = function(points)
 {
 	var centre = Tangible.getCentroid(points);
-	var max = 0;
-	var max_i = -1;
-
-	//Find point with greatest distance, we use this as a reference point for determining the angle of the tangible
-	for(var i = 0; i < points.length; i++)
-	{
-		var dist = centre.distanceTo(points[i]);
-
-		if(dist > max)
-		{
-			max = dist;
-			max_i = i;
-		}
-	}
+	var max_i = Tangible.getAnchorIndex(centre, points);
 
 	return centre.angleTo(points[max_i]);
 };

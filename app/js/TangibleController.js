@@ -6,7 +6,7 @@
 
 function TangibleController(surface, error) {
 
-    this.error = typeof error !== 'undefined' ? a : 50; //set error to default
+    this.error = typeof error !== 'undefined' ? a : 12; //set error to default
     this.libraryName;
     this.tangibleLibrary = [];// = {};
     this.tangibles = [];
@@ -152,40 +152,52 @@ TangibleController.prototype.saveDiagram = function()
  */
 
 TangibleController.prototype.getRecognizedTangibleTemplate = function(points) {
+
+    //console.log('Points', points.toString());
+    //console.log('Sorted', Tangible.sortCCW(points).toString());
+
     var recognised = false;
+
+    //var matches = [];
 
     // We need to have minimum of three touch points to identify the Tangible and it's orientation.
     if (points.length > 2)
     {
-        var touchPointsDists = this.getDistances(points);
+        var sortedPoints = Tangible.sortClockwise(points);
+
+        var touchPointsDists = this.getDistances(sortedPoints);
 
         for(var i = 0; i < this.tangibleLibrary.length; i++)
         {
             var template = this.tangibleLibrary[i];
-            var regTangibleDists = this.getDistances(template.registrationPoints);
-            var numSidesEqual = 0;
 
-            //Counts how many sides of tangible triangle match touch point triangle sides
-            for (var j = 0; j < touchPointsDists.length; j++)
+            if(template.registrationPoints.length == 3)
             {
-                var touchPointsDist = touchPointsDists[j];
+                var regPointsDists = this.getDistances(Tangible.sortClockwise(template.registrationPoints));
+                var numSidesEqual = 0;
 
-                for (var k = 0; k < regTangibleDists.length; k++){
+                //Counts how many sides of tangible triangle match touch point triangle sides
+                for (var j = 0; j < touchPointsDists.length; j++)
+                {
+                    var touchPointsDist = touchPointsDists[j];
 
-                    var tangibleDist = regTangibleDists[k];
+                    for (var k = 0; k < regPointsDists.length; k++){
 
-                    if ( touchPointsDist >= tangibleDist - this.error && touchPointsDist <= tangibleDist + this.error) //add degree of error here
-                    {
-                        numSidesEqual++;
-                        break;
+                        var tangibleDist = regPointsDists[k];
+
+                        if ( touchPointsDist >= tangibleDist - this.error && touchPointsDist <= tangibleDist + this.error) //add degree of error here
+                        {
+                            numSidesEqual++;
+                            break;
+                        }
                     }
                 }
-            }
 
-            //Return recognised tangible
-            if ((numSidesEqual == touchPointsDists.length) && (regTangibleDists.length == touchPointsDists.length))
-            {
-                return template;
+                //Return recognised tangible
+                if ((numSidesEqual == touchPointsDists.length) && (regPointsDists.length == touchPointsDists.length))
+                {
+                    return template;
+                }
             }
         }
     }
