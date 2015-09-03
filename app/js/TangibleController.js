@@ -6,7 +6,7 @@
 
 function TangibleController(surface, threshold) {
 
-    this.threshold = typeof threshold !== 'undefined' ? a : 50; //set error to default
+    this.threshold = typeof threshold !== 'undefined' ? a : 100; //set error to default
     this.libraryName;
     this.tangibleLibrary = [];// = {};
     this.tangibles = [];
@@ -101,7 +101,8 @@ TangibleController.prototype.openDiagram = function(scope, openDiagramEvent, rea
         for(var i = 0; i < data.tangibles.length; i++)
         {
             var tangible = data.tangibles[i];
-            this.addTangible(tangible.id, new Point(tangible.position[0], tangible.position[1]), tangible.orientation);
+            var template = this.tangibleLibrary[tangible.id-1];
+            this.addTangible(template, new Point(tangible.position[0], tangible.position[1]), tangible.orientation);
         }
 
         this.surface.draw();
@@ -191,12 +192,12 @@ TangibleController.prototype.getRecognizedTangibleTemplate = function(points) {
             return 0;
         });
 
-        //debug
+        ////debug
         //for(var i = 0; i < matches.length; i++)
         //{
         //    console.log(matches[i][0] + ": ", matches[i][1].name)
         //}
-
+        //
         //console.log("")
 
         //console.log('sorted: ', matches.toString());
