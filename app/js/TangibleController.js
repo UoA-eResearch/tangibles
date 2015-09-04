@@ -4,14 +4,19 @@
  * @constructor
  */
 
-function TangibleController(surface, threshold) {
+function TangibleController(surface, db_uri, threshold) {
 
     this.threshold = typeof threshold !== 'undefined' ? a : 100; //set error to default
     this.libraryName;
     this.tangibleLibrary = [];// = {};
     this.tangibles = [];
+    this.diagrams = [];
     this.surface = surface;
     this.selectedTangible = null;
+    this.libraryId = null;
+    this.diagramId = null;
+    this.diagramName = "Untitled diagram";
+    this.db_uri = db_uri;
 
     /**
      *  Event handlers
@@ -66,51 +71,60 @@ TangibleController.prototype.onDragEnd = function (tangible) {
 
 };
 
-TangibleController.prototype.loadTangibleLibrary = function(url)
+TangibleController.prototype.loadTangibleLibrary = function(data)
 {
-    var json_data = loadJSON(url);
-    console.log(json_data);
+    console.log(arguments);
+
     this.tangibleLibrary.length = 0;
-    this.libraryName = json_data.name;
-    //this.tangibleLibrary = [];
+    this.libraryName = data.name;
+    this.libraryId = data._id;
 
-    for(var i = 0; i < json_data.tangibleLibrary.length; i++) {
-        var tangible = json_data.tangibleLibrary[i];
+    for(var i = 0; i < data.tangibles.length; i++) {
+        var tangible = data.tangibles[i];
         tangible.registrationPoints = toPoints(tangible.registrationPoints);
-        tangible.image = 'libraries/' + json_data.name + '/' + tangible.image;
-        json_data.tangibleLibrary[i] = tangible;
+        tangible.image = this.db_uri + '/' + this.libraryId + '/' + tangible.image;
+        this.tangibleLibrary[i] = tangible;
     }
-
-    this.tangibleLibrary = json_data.tangibleLibrary;
 };
 
 TangibleController.prototype.clear = function()
 {
     this.surface.clear();
+    this.diagramId = null;
+    this.diagramName = "Untitled diagram";
     this.tangibles.length = 0; //clears array
     //this.tangibleLibrary.length = 0;
 };
 
-TangibleController.prototype.openDiagram = function(scope, openDiagramEvent, readEvent) {
-    try
-    {
-        console.log(event.target.result);
-        var data = JSON.parse(event.target.result);
-        console.log(data);
+TangibleController.prototype.loadDiagrams = function(data)
+{
+    console.log(data);
+    this.diagrams.length = 0;
 
-        for(var i = 0; i < data.tangibles.length; i++)
-        {
-            var tangible = data.tangibles[i];
-            var template = this.tangibleLibrary[tangible.id-1];
-            this.addTangible(template, new Point(tangible.position[0], tangible.position[1]), tangible.orientation);
-        }
-
-        this.surface.draw();
-    }
-    catch(error)
+    for(var i=0; i < data.rows.length; i++)
     {
-        scope.showAlert(openDiagramEvent, "Error Reading File", error.message);
+        var item = data.rows[i].key;
+        item.thumb = this.db_uri + '/' + item.id + '/' + item.thumb;
+        this.diagrams.push(item);
     }
+};
+
+TangibleController.prototype.openDiagram = function(diagram) {
+
+    this.clear();
+    console.log(diagram);
+
+    this.diagramId = diagram._id;
+    this.diagramName = diagram.name;
+
+    for(var i = 0; i < diagram.tangibles.length; i++)
+    {
+        var tangible = diagram.tangibles[i];
+        var template = this.tangibleLibrary[tangible.id-1];
+        this.addTangible(template, new Point(tangible.position[0], tangible.position[1]), tangible.orientation);
+    }
+
+    this.surface.tangibleLayer.draw();
 };
 
 TangibleController.prototype.addTangible = function(template, position, orientation)

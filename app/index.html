@@ -22,6 +22,8 @@
     <!-- Javascript application imports -->
     <script src="bower_components/any-resize-event/js/any-resize-event.js"></script>
 
+    <script src="js/jquery.couch.js"></script>
+
     <script src="js/Util.js"></script>
     <script src="js/Tangible.js"></script>
     <script src="js/TangibleStage.js"></script>
@@ -47,7 +49,7 @@
                                 <md-button>
                                     <md-icon md-svg-icon="img/menu.svg" md-menu-align-target></md-icon>
                                     <h4>
-                                        <span>Tangibles</span>
+                                        <span>Tangibles:</span>
                                     </h4>
                                 </md-button>
                             </md-menu-item>
@@ -62,8 +64,16 @@
                     </md-menu>
 
                     <h2>
-                        <span>Tangibles</span>
+                        <div>Tangibles: </div>
+
                     </h2>
+
+                    <h2>
+                        <md-input-container >
+                            <input style="color: white; padding-top: 25px; padding-left: 10px;" ng-model="tangibleController.diagramName">
+                        </md-input-container>
+                    </h2>
+
                     <span flex></span>
 
                     <md-button class="md-icon-button" aria-label="More">

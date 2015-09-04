@@ -8,8 +8,20 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
 
 .controller('AppCtrl', function($scope, $mdDialog, $http, $mdSidenav, $mdUtil) {
     $scope.stage = new TangibleStage('tangibleContainer');
-    $scope.tangibleController = new TangibleController($scope.stage);
-    $scope.tangibleController.loadTangibleLibrary('http://130.216.148.185:8000/app/libraries/oroo/tangibles.json');
+    $.couch.urlPrefix = "http://192.168.1.13:5984";
+    $scope.db = $.couch.db("test");
+    $scope.tangibleController = new TangibleController($scope.stage, $scope.db.uri);
+
+    $scope.db.openDoc('4af774d88562315b657fbeacc8000f79', {
+        success: function(data) {
+            $scope.tangibleController.loadTangibleLibrary(data);
+        },
+        error: function(status) {
+            console.log(status);
+        }}
+    );
+
+    //$scope.tangibleController.loadTangibleLibrary();
 
     //$("#diagram-file").change(function() {
     //    alert('changed!');
@@ -19,22 +31,24 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
         {'name': 'New', 'index': 1},
         {'name': 'Open', 'index': 2},
         {'name': 'Save', 'index': 3},
-        {'name': 'Library', 'index': 4}
+        {'name': 'Save As', 'index': 4},
+        {'name': 'Library', 'index': 5}
     ];
 
     $scope.menuAction = function(event, item) {
         switch(item.index) {
             case 1:
-                $scope.newDiagram();
+                $scope.showDiagramTypes();
                 break;
             case 2:
-                openDiagramEvent = event;
-                $('#diagram-file').trigger('click');
+                $scope.showDiagrams();
                 break;
             case 3:
                 $scope.saveDiagram();
                 break;
-            case 4: //Register tangible
+            case 4:
+                break;
+            case 5: //Register tangible
                 $scope.editLibrary(event);
                 break;
         }
@@ -50,16 +64,77 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
         });
     };
 
-    $scope.openDiagram = function(event) {
-        var file = document.getElementById('diagram-file').files[0];
-        var reader = new FileReader();
-        reader.onloadend = $scope.tangibleController.openDiagram.bind($scope.tangibleController, $scope, openDiagramEvent);
-        reader.readAsText(file/*, "UTF-8"*/);
-        $("#diagram-file").replaceWith($("#diagram-file").clone(true)); //Clears file input field so file will be read again.
+    $scope.showDiagrams = function(event) {
+
+        this.db.view("tangibles/get_diagrams", {
+            success: function(data) {
+                $scope.tangibleController.loadDiagrams(data);
+                $mdDialog.show({
+                    scope: $scope.$new(),
+                    templateUrl: 'open.tmpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: event
+                });
+            },
+            error: function(status) {
+                console.log(status);
+            },
+            reduce: false
+        });
     };
 
-    $scope.newDiagram = function() {
-        $scope.tangibleController.clear();
+    $scope.openDiagram = function(diagram, event)
+    {
+        $scope.db.openDoc(diagram.library_id, {
+            success: function(data) {
+                $scope.tangibleController.loadTangibleLibrary(data);
+
+                $scope.db.openDoc(diagram.id, {
+                    success: function(data) {
+                        $scope.tangibleController.openDiagram(data);
+                    },
+                    error: function(status) {
+                        console.log(status);
+                    }});
+
+                $mdDialog.cancel();
+            },
+            error: function(status) {
+                console.log(status);
+            }}
+        );
+    };
+
+    $scope.showDiagramTypes = function() {
+        this.db.view("tangibles/get_libraries", {
+            success: function(data) {
+                $scope.tangibleController.loadLibraries(data);
+
+                $mdDialog.show({
+                    scope: $scope.$new(),
+                    templateUrl: 'new.tmpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: event
+                });
+            },
+            error: function(status) {
+                console.log(status);
+            },
+            reduce: false
+        });
+    };
+
+    $scope.newDiagram = function(library, event) {
+        $scope.db.openDoc(library.id, {
+            success: function(data) {
+                $scope.tangibleController.clear();
+                $scope.tangibleController.loadTangibleLibrary(data);
+                $mdDialog.cancel();
+            },
+            error: function(status) {
+                console.log(status);
+            }}
+        );
     };
 
     $scope.saveDiagram = function() {

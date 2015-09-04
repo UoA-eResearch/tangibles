@@ -47,7 +47,9 @@ function Tangible(id, name, scale, startAngle, image, registrationPoints) {
 
 	//Create visual to represent tangible
 	var image = new Image();
+    image.crossOrigin="anonymous";
 	image.src = this.image;
+
     this.width = image.naturalWidth * this.scale;
     this.height = image.naturalHeight * this.scale;
 
