@@ -20,15 +20,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
     <!-- Javascript application imports -->
-    <script src="bower_components/any-resize-event/js/any-resize-event.js"></script>
+    <!--<script src="bower_components/any-resize-event/js/any-resize-event.js"></script>-->
 
-    <script src="js/jquery.couch.js"></script>
+    <script src="bower_components/couchdb-jquery-couch/jquery.couch.js"></script>
+    <script src="bower_components/javascript-detect-element-resize/jquery.resize.js"></script>
 
     <script src="js/Util.js"></script>
     <script src="js/Tangible.js"></script>
     <script src="js/TangibleStage.js"></script>
     <script src="js/TangibleController.js"></script>
-    <script src="js/LibraryController.js"></script>
     <script src="js/AppCtrl.js"></script>
 
 </head>
@@ -57,7 +57,7 @@
                             <md-menu-divider></md-menu-divider>
 
                             <md-menu-item ng-repeat="menuItem in menuItems">
-                                <md-button ng-click="menuAction($event, menuItem)"> <span md-menu-align-target>{{menuItem.name}}</span></md-button>
+                                <md-button ng-click="menuAction($event, menuItem)"> <span md-menualign-target>{{menuItem.name}}</span></md-button>
 
                             </md-menu-item>
                         </md-menu-content>

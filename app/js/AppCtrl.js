@@ -1,16 +1,33 @@
 
 var resizeFunc;
 var openDiagramEvent;
+var LIBRARY_TP_WINDOW = "touchPoints";
 
 
 
 angular.module('capacitiveTangibles', ['ngMaterial'])
 
+.directive( 'elemReady', function( $parse ) {
+    return {
+        restrict: 'A',
+        link: function( $scope, elem, attrs ) {
+            elem.ready(function(){
+                $scope.$apply(function(){
+                    var func = $parse(attrs.elemReady);
+                    func($scope);
+                })
+            })
+        }
+    }
+})
+
 .controller('AppCtrl', function($scope, $mdDialog, $http, $mdSidenav, $mdUtil) {
     $scope.stage = new TangibleStage('tangibleContainer');
-    $.couch.urlPrefix = "http://192.168.1.13:5984";
-    $scope.db = $.couch.db("test");
+    $.couch.urlPrefix = "http://130.216.148.185:5984";
+    $scope.db = $.couch.db("tangibles");
+    $scope.loginUrl = "https://www.facebook.com/dialog/oauth?client_id=123111638040234&redirect_uri=http:%2F%2F130.216.148.185:5984%2F_fb";
     $scope.tangibleController = new TangibleController($scope.stage, $scope.db.uri);
+    $scope.currentUser = null;
 
     $scope.db.openDoc('4af774d88562315b657fbeacc8000f79', {
         success: function(data) {
@@ -20,6 +37,26 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
             console.log(status);
         }}
     );
+
+    $scope.login = function() {
+        $.couch.session({
+                success: function (data) {
+                    if(data.userCtx.name == null)
+                    {
+                        var popupWidth = 1000;
+                        var popupHeight = 560;
+                        var x = screen.width/2 - popupWidth/2;
+                        var y = screen.height/2 - popupHeight/2;
+
+                        var popup = window.open($scope.loginUrl, 'Tangibles Login','height=' + popupHeight + ', width=' + popupWidth + ', left=' + x + ', top=' + y);
+
+                        if(popup != null) {
+                            popup.focus();
+                        }
+                    }
+                }
+            })
+    };
 
     //$scope.tangibleController.loadTangibleLibrary();
 
@@ -66,7 +103,7 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
 
     $scope.showDiagrams = function(event) {
 
-        this.db.view("tangibles/get_diagrams", {
+        this.db.view("views/get_diagrams", {
             success: function(data) {
                 $scope.tangibleController.loadDiagrams(data);
                 $mdDialog.show({
@@ -106,7 +143,7 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
     };
 
     $scope.showDiagramTypes = function() {
-        this.db.view("tangibles/get_libraries", {
+        this.db.view("views/get_libraries", {
             success: function(data) {
                 $scope.tangibleController.loadLibraries(data);
 
@@ -139,6 +176,19 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
 
     $scope.saveDiagram = function() {
         $scope.tangibleController.saveDiagram();
+
+        $scope.db.saveDoc()
+    };
+
+    $scope.initTouchWindow = function() {
+        $scope.touchPointsStage = new TangibleStage(LIBRARY_TP_WINDOW);
+
+        //var resizeCallback = function() {
+        //    console.log('Resized!')
+        //};
+        //
+        //$(LIBRARY_TP_WINDOW).resize(resizeCallback);
+
     };
 
     /**
@@ -170,48 +220,35 @@ angular.module('capacitiveTangibles', ['ngMaterial'])
     $scope.cancel = function() {
         $mdDialog.cancel();
     };
-    $scope.answer = function(answer) {
-        $mdDialog.hide(answer);
-    };
-
-    $scope.initTouchWindow = function() {
-        var container = 'touch-points';
-        var width = window.innerWidth;
-        var height = window.innerHeight;
-        //initTouchWindow(container, width, height);
+    $scope.closeDialog = function() {
+        $mdDialog.hide('');
     };
 
     $scope.editTangible = function (tangible, $event) {
         $scope.selectedTangible = tangible;
-        $mdSidenav('right').open();
 
-        var containerID = 'touch-points';
-        var container = document.getElementById(containerID);
-        //container.addEventListener('onresize', function(){initTouchWindow(containerID);});
+        var debounce = $mdUtil.debounce(function(){
+            $mdSidenav('right')
+                .toggle()
+                .then(function () {
+                    $scope.touchPointsStage.onResize();
+                    console.log("Resizing touchPointsStage");
+                });
+        }, 200);
+
+        debounce();
     };
 
-    $scope.close = function () {
+    $scope.closeSideNav = function () {
         $mdSidenav('right').close()
             .then(function () {
-                $log.debug("close RIGHT is done");
+                console.log("close RIGHT is done");
             });
 
         //destroyTouchWindow();
     };
 
-    $scope.toggleRight = buildToggler('right');
-
-    function buildToggler(navID) {
-        var debounceFn =  $mdUtil.debounce(function(){
-            $mdSidenav(navID)
-                .toggle()
-                .then(function () {
-                    $log.debug("toggle " + navID + " is done");
-                });
-        },300);
-        return debounceFn;
-    }
-
+    $scope.login();
 });
 
 //

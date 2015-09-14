@@ -12,6 +12,9 @@
     "konva": null,
     "hammerjs": "1.0.7",
     "any-resize-event": "1.0.0",
-    "FileSaver": null
+    "FileSaver": null,
+    "couchdb-jquery-couch": "https://github.com/apache/couchdb-jquery-couch.git",
+    "javascript-detect-element-resize": "0.5.3",
+    "ng-file-upload": "7.0.17"
   }
 }

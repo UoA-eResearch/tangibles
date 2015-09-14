@@ -22,8 +22,11 @@ function TangibleController(surface, db_uri, threshold) {
      *  Event handlers
      */
 
-    this.surface.stage.getContent().addEventListener('touchstart', this.onTouch.bind(this)); //Gotta bind this, so that 'this' in onTouch is actually the controller
+    this.surface.onTouchCallback = this.onTouch.bind(this);
     this.surface.onDeselectedCallback = this.onDeselected.bind(this);
+
+    //this.surface.stage.getContent().addEventListener('touchstart', this.onTouch.bind(this)); //Gotta bind this, so that 'this' in onTouch is actually the controller
+
 }
 
 TangibleController.prototype.onDeselected = function (event) {
@@ -144,20 +147,24 @@ TangibleController.prototype.addTangible = function(template, position, orientat
     this.surface.addTangible(tangible);
 };
 
-TangibleController.prototype.saveDiagram = function()
+TangibleController.prototype.saveDiagram = function(userName)
 {
-    var parsedTangibles = [];
+    var document;
+    document.tangibles = [];
 
     for(var i = 0; i < this.tangibles.length; i++)
     {
         var tangible = this.tangibles[i];
-        parsedTangibles[i] = {"id":tangible.id, "position": [tangible.visual.getX(), tangible.visual.getY()], "orientation": tangible.visual.rotation() - tangible.startAngle};
+        diagram.tangibles[i] = {"id":tangible.id, "position": [tangible.visual.getX(), tangible.visual.getY()], "orientation": tangible.visual.rotation() - tangible.startAngle};
     }
+
+    document.type = 'diagram'
+
     //TODO: save
     var json_data = {"libraryName": this.libraryName, "tangibles": parsedTangibles};
 
-    var blob = new Blob([JSON.stringify(json_data)], {type: "text/plain;charset=utf-8"});
-    saveAs(blob, "diagram.tg");
+    //var blob = new Blob([JSON.stringify(json_data)], {type: "text/plain;charset=utf-8"});
+    //saveAs(blob, "diagram.tg");
 };
 
 /**
@@ -254,10 +261,8 @@ TangibleController.prototype.getDistances = function(points)
 * @returns {number}
 */
 
-TangibleController.prototype.onTouch = function(event) {
+TangibleController.prototype.onTouch = function(touchPoints) {
     var touchPoints = this.surface.getTouchPoints(event);
-
-    this.surface.drawTouchPoints(touchPoints); //Visualise touch points
 
     //Get recognised tangible and add to surface
     if (touchPoints.length > 2)

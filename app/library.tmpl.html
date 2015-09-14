@@ -4,7 +4,7 @@
             <div class="md-toolbar-tools">
                 <h1>Edit Tangible Library: {{tangibleController.libraryName}}</h1>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="answer('not applicable')">
+                <md-button class="md-icon-button" ng-click="closeDialog()">
                     <md-icon md-svg-src="img/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
                 </md-button>
             </div>
@@ -23,15 +23,15 @@
                 <md-divider></md-divider>
             </md-list>
         </md-dialog-content>
-        <div class="md-actions" layout="row">
-            <span flex></span>
-            <md-button ng-click="answer('not useful')" class="md-primary">
-                Cancel
-            </md-button>
-            <md-button ng-click="answer('useful')" class="md-primary">
-                Save
-            </md-button>
-        </div>
+        <!--<div class="md-actions" layout="row">-->
+            <!--<span flex></span>-->
+            <!--<md-button ng-click="answer('not useful')" class="md-primary">-->
+                <!--Cancel-->
+            <!--</md-button>-->
+            <!--<md-button ng-click="answer('useful')" class="md-primary">-->
+                <!--Save-->
+            <!--</md-button>-->
+        <!--</div>-->
         <md-sidenav id="sidenav" class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
             <md-toolbar class="md-theme-light">
                 <h1 class="md-toolbar-tools">Edit Tangible</h1>
@@ -43,19 +43,20 @@
                         <input type="text" id="name" ng-model="selectedTangible.name"  md-sidenav-focus >
                     </md-input-container>
                     <md-input-container>
-                        <md-button style="max-width: 200px; height: 200px; background-color: #e0e0e0" aria-label="More">
+                        <md-button style="max-width: 200px; height: 200px; background-color: #e0e0e0" ngf-select ng-model="file" ngf-multiple="false" aria-label="More">
+                            <input type="file" name="tangibleImage" />
                             <!--<md-tooltip>-->
                                 <!--Upload image-->
                             <!--</md-tooltip>-->
                             <md-icon id="image" md-svg-icon="img/ic_camera_alt_black_24px.svg"></md-icon>
                         </md-button>
                     </md-input-container>
-                    <label for="touch-points">Touch points</label>
+                    <label for="touchPoints">Touch points</label>
                     <md-input-container>
-                        <div id="touch-points" elem-ready="initTouchWindow()" style="max-width: 100%; height: 300px; margin: 10px; background-color: antiquewhite"></div>
+                        <div id="touchPoints" elem-ready="initTouchWindow()" style="max-width: 100%; height: 300px; margin: 10px; background-color: antiquewhite"></div>
                     </md-input-container>
                 </form>
-                <md-button ng-click="close()" class="md-primary">
+                <md-button ng-click="closeSideNav()" class="md-primary">
                     Cancel
                 </md-button>
                 <md-button ng-click="saveTangible(selectedTangible)" class="md-primary">

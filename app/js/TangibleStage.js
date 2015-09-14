@@ -7,6 +7,7 @@
 function TangibleStage(containerID)
 {
     this.containerID = containerID;
+    this.onTouchCallback = null;
 
     var rect = document.getElementById(containerID).getBoundingClientRect();
 
@@ -38,6 +39,8 @@ function TangibleStage(containerID)
     this.stage.add(this.deselectLayer, this.tangibleLayer, this.dragLayer, this.touchPointsLayer); //Left param on bottom, right on top
 
     $(window).resize(this.onResize.bind(this));
+
+    this.stage.getContent().addEventListener('touchstart', this.onTouch.bind(this));
 }
 
 TangibleStage.prototype.onDeselected = function () {
@@ -89,6 +92,17 @@ TangibleStage.prototype.draw = function () {
     this.stage.batchDraw();
 };
 
+TangibleStage.prototype.onTouch = function(event)
+{
+    var touchPoints = this.getTouchPoints(event);
+    this.drawTouchPoints(touchPoints); //Visualise touch points
+
+    if(this.onTouchCallback != null)
+    {
+        this.onTouchCallback(touchPoints)
+    }
+};
+
 /**
  *
  * @param touchPoints
@@ -136,8 +150,9 @@ TangibleStage.prototype.onResize = function () {
     if(this.stage != null)
     {
         var rect = document.getElementById(this.containerID).getBoundingClientRect();
+        console.log("Resizing. " + this.containerID + ": w" + rect.width + ", h" + rect.height);
         this.stage.setWidth(rect.right - rect.left);
         this.stage.setHeight(rect.bottom - rect.top);
-        console.log('Resizing surface', rect);
+        //console.log('Resizing surface', rect);
     }
 };
