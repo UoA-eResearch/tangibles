@@ -15,6 +15,7 @@
     "FileSaver": null,
     "couchdb-jquery-couch": "https://github.com/apache/couchdb-jquery-couch.git",
     "javascript-detect-element-resize": "0.5.3",
-    "ng-file-upload": "7.0.17"
+    "ng-file-upload": "7.0.17",
+    "angular-facebook-utils": "https://github.com/jdddog/angular-facebook-utils/archive/test.zip"
   }
 }

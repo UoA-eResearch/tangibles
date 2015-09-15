@@ -18,6 +18,8 @@
     <script src="bower_components/hammerjs/hammer.min.js"></script>
     <script src="bower_components/FileSaver/FileSaver.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-facebook-utils/src/facebookUtils.js"></script>
 
     <!-- Javascript application imports -->
     <!--<script src="bower_components/any-resize-event/js/any-resize-event.js"></script>-->
@@ -33,7 +35,6 @@
 
 </head>
 <body>
-
     <div ng-controller="AppCtrl" id="popupContainer">
 
         <md-content>
@@ -76,9 +77,16 @@
 
                     <span flex></span>
 
-                    <md-button class="md-icon-button" aria-label="More">
-                        <md-icon md-svg-icon="img/more_vert.svg"></md-icon>
-                    </md-button>
+                    <!--<button class="btn btn-primary" ng-click="login()" ng-disabled="loginStatus.status == 'connected'">Connect with Facebook</button>-->
+
+                    <!--<fb:login-button scope="public_profile,email" onlogin="login();">-->
+                    <!--</fb:login-button>-->
+
+                    <facebook-login-button></facebook-login-button>
+
+                    <!--<md-button class="md-icon-button" aria-label="More">-->
+                        <!--<md-icon md-svg-icon="img/more_vert.svg"></md-icon>-->
+                    <!--</md-button>-->
                 </div>
             </md-toolbar>
 
