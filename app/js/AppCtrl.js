@@ -7,18 +7,6 @@ var LIBRARY_TP_WINDOW = "touchPoints";
 
 angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial'])
 
-.constant('facebookConfigSettings', {
-    'appID' : '123111638040234',
-    'oauth' : true
-})
-
-//.config(function (ezfbProvider) {
-//    ezfbProvider.setInitParams({
-//        appId: '123111638040234',
-//        version: 'v2.3'
-//    });
-//})
-
 .directive( 'elemReady', function( $parse ) {
     return {
         restrict: 'A',
@@ -33,47 +21,23 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
     }
 })
 
+
+
 .controller('AppCtrl', function($scope, $mdDialog, $http, $mdSidenav, $mdUtil, $rootScope, facebookUser) {
-    $scope.loggedInUser = {};
-
-    //ezfb.api('/me', function (res) {
-    //    $scope.loggedInUser = res;
-    //});
-
-    $rootScope.$on('fbLoginSuccess', function(name, response) {
-        var uid = response.authResponse.userID;
-        var accessToken = response.authResponse.accessToken;
-        console.log('uid: ', uid);
-        console.log('accessToken: ', accessToken);
-        console.log('resp: ', response.authResponse);
-        console.log('code: ', response.authResponse.signedRequest.code);
-
-        facebookUser.then(function(user) {
-            console.log(user);
-
-            user.api('/me').then(function(response) {
-                var request = new XMLHttpRequest();
-                request.open("GET", "http://192.168.1.11:5984/_fb?code=" + response.authResponse.signedRequest, true);
-
-                http://192.168.1.11:5984/_fb?code="Db2ROr6alkwWtVpWyfHYI7vUVcfSrlZbgK6_-a6J3jQ.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImNvZGUiOiJBUUFUV1hjYkFJU0lFTUFUQWxtRnl1cUF4bmVOeGotUnh6amplU0tNY21pSldJM28zSTUtUkRpSzQtWWR5b0gwUk55RUtwR2xhcGFPcDgwQnJuVzlEWDZpUkJVRFRZeVlaTVZBZjVCMUJIcmtFenlGd3ZrMV9tdVhXTzUxX25NNWYwZkttV3p5RGJrWFU2bjJFWHpPTUUtZUtSYVFCZ2paemtlWnRNLWRPaXZZa1Q5LUpDR2VvOFI2QVpNUlNlN1RZcVZoYk9QSXlJM1Z4cy1aWDlRY2dmVXg4Q3p2QWFEeFhvWHVKdlpDNld1XzRncHRqWkVTN1ZuaEY4d0gxc3VQUDAycW96b1A3REc2UTRYWUc3ZkRCM1pDQll5WUxkd1c0eVJPMTEwbjZPZGdJOXBsQktLTS1CdFJBQ1cxWTU1MEpTeUcyTkxGOUhtSkxkcDgtUTZERFNyLSIsImlzc3VlZF9hdCI6MTQ0MjI5MTEwNCwidXNlcl9pZCI6IjEwMTUzMTYyNTgwMzgyMDU4In0
-                request.send(null);
-                $rootScope.loggedInUser = response;
-            });
-        });
-    });
-
-    $rootScope.$on('fbLogoutSuccess', function() {
-        $scope.$apply(function() {
-            $rootScope.loggedInUser = {};
-        });
-    });
-
     $scope.stage = new TangibleStage('tangibleContainer');
-    $.couch.urlPrefix = "http://192.168.1.11:5984";
-    $scope.db = $.couch.db("test");
-    $scope.loginUrl = "https://www.facebook.com/dialog/oauth?client_id=123111638040234&redirect_uri=http:%2F%2F192.168.1.11:5984%2F_fb";
+    $.couch.urlPrefix = "http://130.216.148.185:5984";
+    $scope.db = $.couch.db("tangibles");
+    $scope.logoutUrl = "https://www.facebook.com/logout.php?next=http:%2F%2F130.216.148.185:8000%2Fapp%2Findex.html&access_token=";// "https://www.facebook.com/dialog/oauth?client_id=123111638040234&display=popup&redirect_uri=http:%2F%2F130.216.148.185:5984%2F_fb";
+    //$scope.loginUrl = "https://www.facebook.com/dialog/oauth?client_id=123111638040234&display=popup&redirect_uri=http:%2F%2F130.216.148.185:5984%2F_fb";
     $scope.tangibleController = new TangibleController($scope.stage, $scope.db.uri);
     $scope.currentUser = null;
+    $scope.currentUser = {firstName: "Jack", lastName: "Bauer"};
+
+    $.couch.session({
+        success: function(data) {
+            console.log(data);
+        }
+    });
 
     //$scope.watchLoginChange();
 
@@ -86,36 +50,6 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
         }}
     );
 
-    //$scope.login = function() {
-    //    $.couch.session({
-    //            success: function (data) {
-    //                name = data.userCtx.name;
-    //
-    //                if(name == "null")
-    //                {
-    //                    var popupWidth = 1000;
-    //                    var popupHeight = 560;
-    //                    var x = screen.width/2 - popupWidth/2;
-    //                    var y = screen.height/2 - popupHeight/2;
-    //
-    //                    var popup = window.open($scope.loginUrl, 'Tangibles Login','height=' + popupHeight + ', width=' + popupWidth + ', left=' + x + ', top=' + y);
-    //
-    //                    if(popup != null) {
-    //                        popup.focus();
-    //                    }
-    //                }
-    //                else
-    //                {
-    //                    $.couch.db(name).info({
-    //                        success: function(data) {
-    //                            console.log(data);
-    //                        }
-    //                    });
-    //                }
-    //            }
-    //        })
-    //};
-
     //$scope.tangibleController.loadTangibleLibrary();
 
     //$("#diagram-file").change(function() {
@@ -126,8 +60,8 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
         {'name': 'New', 'index': 1},
         {'name': 'Open', 'index': 2},
         {'name': 'Save', 'index': 3},
-        {'name': 'Save As', 'index': 4},
-        {'name': 'Library', 'index': 5}
+        {'name': 'Library', 'index': 4},
+        {'name': 'Logout', 'index': 5}
     ];
 
     $scope.menuAction = function(event, item) {
@@ -142,10 +76,11 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
                 $scope.saveDiagram();
                 break;
             case 4:
-                break;
-            case 5: //Register tangible
                 $scope.editLibrary(event);
                 break;
+            case 5:
+                var userToken = ""; //TODO: get user token from couchdb
+                location.href = $scope.logoutUrl + userToken;
         }
     };
 
@@ -306,108 +241,4 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
         //destroyTouchWindow();
     };
 
-
-
-    //$scope.watchLoginChange = function() {
-    //
-    //    var _self = this;
-    //
-    //    FB.Event.subscribe('auth.authResponseChange', function(res) {
-    //
-    //        if (res.status === 'connected') {
-    //
-    //            /*
-    //             The user is already logged,
-    //             is possible retrieve his personal info
-    //             */
-    //            _self.getUserInfo();
-    //
-    //            /*
-    //             This is also the point where you should create a
-    //             session for the current user.
-    //             For this purpose you can use the data inside the
-    //             res.authResponse object.
-    //             */
-    //
-    //        }
-    //        else {
-    //
-    //            /*
-    //             The user is not logged to the app, or into Facebook:
-    //             destroy the session on the server.
-    //             */
-    //
-    //        }
-    //
-    //    });
-    //
-    //};
-    //
-    //$scope.getUserInfo = function() {
-    //
-    //    var _self = this;
-    //
-    //    FB.api('/me', function (res) {
-    //
-    //        $rootScope.$apply(function () {
-    //
-    //            $rootScope.user = _self.user = res;
-    //
-    //        });
-    //
-    //    });
-    //};
-    //
-    //$scope.logout = function() {
-    //
-    //    var _self = this;
-    //
-    //    FB.logout(function (response) {
-    //
-    //        $rootScope.$apply(function () {
-    //
-    //            $rootScope.user = _self.user = {};
-    //
-    //        });
-    //
-    //    });
-    //};
-
-    //$scope.login();
-})
-
-//.run(['$rootScope', '$window', 'srvAuth',
-//    function($rootScope, $window, sAuth) {
-//
-//        $rootScope.user = {};
-//
-//        $window.fbAsyncInit = function() {
-//            FB.init({
-//                appId: '123111638040234',
-//                channelUrl: 'app/channel.html',
-//                status: true,
-//                cookie: true,
-//                xfbml: true
-//            });
-//            sAuth.watchAuthenticationStatusChange();
-//        };
-//
-//        (function(d){
-//            var js,
-//                id = 'facebook-jssdk',
-//                ref = d.getElementsByTagName('script')[0];
-//
-//            if (d.getElementById(id)) {
-//                return;
-//            }
-//
-//            js = d.createElement('script');
-//            js.id = id;
-//            js.async = true;
-//            js.src = "//connect.facebook.net/en_US/all.js";
-//
-//            ref.parentNode.insertBefore(js, ref);
-//
-//        }(document));
-//
-//    }]);
+});

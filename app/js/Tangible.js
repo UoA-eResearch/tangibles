@@ -123,7 +123,7 @@ Tangible.prototype.onTap = function(event)
 Tangible.prototype.select = function()
 {
 	this.visual.setAttrs({
-		shadowColor: 'blue',
+		shadowColor: 'black',
 		shadowOpacity: 0.7,
 		shadowOffset: {x : 0, y : 0}
 	});
@@ -133,8 +133,8 @@ Tangible.prototype.select = function()
 Tangible.prototype.deselect = function()
 {
 	this.visual.setAttrs({
-		shadowColor: 'black',
-		shadowOpacity: 0.4,
+		//shadowColor: 'black',
+		//shadowOpacity: 0.4,
 		shadowOffset: {x : 0, y : 0}
 	});
 	this.visual.cache();

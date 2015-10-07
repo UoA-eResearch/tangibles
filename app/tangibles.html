@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" ng-app="capacitiveTangibles" >
+<head>
+    <meta charset="utf-8">
+    <title>Capacitive Tangibles</title>
+
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+
+    <!-- CSS styles -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="css/app.css">
+
+    <!-- Javascript framework imports -->
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="bower_components/angular-material/angular-material.min.js"></script>
+    <script src="bower_components/konva/konva.min.js"></script>
+    <script src="bower_components/hammerjs/hammer.min.js"></script>
+    <script src="bower_components/FileSaver/FileSaver.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-facebook-utils/src/facebookUtils.js"></script>
+
+    <!-- Javascript application imports -->
+    <!--<script src="bower_components/any-resize-event/js/any-resize-event.js"></script>-->
+
+    <script src="bower_components/couchdb-jquery-couch/jquery.couch.js"></script>
+    <script src="bower_components/javascript-detect-element-resize/jquery.resize.js"></script>
+
+    <script src="js/Util.js"></script>
+    <script src="js/Tangible.js"></script>
+    <script src="js/TangibleStage.js"></script>
+    <script src="js/TangibleController.js"></script>
+    <script src="js/AppCtrl.js"></script>
+
+</head>
+<body>
+    <div ng-controller="AppCtrl" id="popupContainer">
+
+        <md-content>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <md-menu>
+                        <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu()">
+                            <md-icon md-svg-icon="img/stamp-white.svg"></md-icon>
+                        </md-button>
+
+                        <md-menu-content width="4">
+                            <md-menu-item>
+                                <md-button>
+                                    <md-icon md-svg-icon="img/stamp-grey.svg" md-menu-align-target></md-icon>
+                                    <h4>
+                                        Welcome {{currentUser.firstName}}
+                                    </h4>
+                                </md-button>
+                            </md-menu-item>
+
+                            <md-menu-divider></md-menu-divider>
+
+                            <md-menu-item ng-repeat="menuItem in menuItems">
+                                <md-button ng-click="menuAction($event, menuItem)"> <span md-menualign-target>{{menuItem.name}}</span></md-button>
+
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+
+                    <h2>
+                        <div>Tangibles: </div>
+
+                    </h2>
+
+                    <h2>
+                        <md-input-container >
+                            <input style="color: white; padding-top: 25px; padding-left: 10px;" ng-model="tangibleController.diagramName">
+                        </md-input-container>
+                    </h2>
+
+                    <span flex></span>
+
+                    <!--<h2 style="margin-right: 20px;">Welcome {{currentUser.firstName}}</h2>-->
+
+                    <!--<md-button class="md-primary" ng-href="{{googleUrl}}" target="_blank" style="text-transform: capitalize; color: white;font-family: 'Open Sans'; font-size: 20px;margin-right: 20px;"></md-button>-->
+                </div>
+            </md-toolbar>
+
+            <input input id="diagram-file" type="file" name="diagram-file" onchange="angular.element(this).scope().openDiagram()" accept=".tg" style="display: none;" />
+        </md-content>
+
+
+        <div id="tangibleContainer" style="border: 1px solid #000000;bottom: 0; left: 0; overflow: hidden; position: absolute; right: 0; top: 0;"></div>
+    </div>
+</body>
+</html>

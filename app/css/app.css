@@ -42,3 +42,27 @@ md-sidenav.md-closed.md-locked-open-add-active {
     width: 85vw !important;
     max-width: 70% !important;
 }
+
+h1 {
+    font-family: 'Open Sans';
+    color: white;
+    font-size: 50px;
+    line-height: 60px;
+    font-weight: bold;
+    text-transform: uppercase;
+    /*text-shadow: 2px 2px #051c20;*/
+}
+
+h2 {
+    font-family: 'Open Sans';
+    color: white;
+    font-weight: bold;
+}
+
+p {
+    font-family: 'Open Sans';
+    color: white;
+    font-size: 16px;
+    line-height: 25px;
+}
+
