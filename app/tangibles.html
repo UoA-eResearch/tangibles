@@ -42,25 +42,25 @@
         <md-content>
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <md-menu>
+                    <md-menu >
                         <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu()">
-                            <md-icon md-svg-icon="img/stamp-white.svg"></md-icon>
+                            <md-icon md-menu-origin md-svg-icon="img/stamp-white.svg"></md-icon>
                         </md-button>
 
                         <md-menu-content width="4">
-                            <md-menu-item>
-                                <md-button>
-                                    <md-icon md-svg-icon="img/stamp-grey.svg" md-menu-align-target></md-icon>
-                                    <h4>
+                            <md-menu-item style="margin-top: -5px">
+                                <span style="padding: 11px">
+                                    <md-icon  md-svg-icon="img/stamp-grey.svg" md-menu-align-target style="float:left;"></md-icon>
+                                    <h4 style="position: relative; top: 50%;transform: translate(7%, -30%);">
                                         Welcome {{currentUser.firstName}}
                                     </h4>
-                                </md-button>
+                                </span>
                             </md-menu-item>
 
                             <md-menu-divider></md-menu-divider>
 
                             <md-menu-item ng-repeat="menuItem in menuItems">
-                                <md-button ng-click="menuAction($event, menuItem)"> <span md-menualign-target>{{menuItem.name}}</span></md-button>
+                                <md-button ng-click="menuAction($event, menuItem)"> <span>{{menuItem.name}}</span></md-button>
 
                             </md-menu-item>
                         </md-menu-content>
