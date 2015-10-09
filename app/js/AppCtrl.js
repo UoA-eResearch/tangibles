@@ -21,25 +21,14 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
     }
 })
 
-
-
 .controller('AppCtrl', function($scope, $mdDialog, $http, $mdSidenav, $mdUtil, $rootScope, facebookUser) {
-    $scope.stage = new TangibleStage('tangibleContainer');
-    $.couch.urlPrefix = "http://130.216.148.185:5984";
+    $.couch.urlPrefix = "http://localhost:5984";
     $scope.db = $.couch.db("tangibles");
-    $scope.logoutUrl = "https://www.facebook.com/logout.php?next=http:%2F%2F130.216.148.185:8000%2Fapp%2Findex.html&access_token=";// "https://www.facebook.com/dialog/oauth?client_id=123111638040234&display=popup&redirect_uri=http:%2F%2F130.216.148.185:5984%2F_fb";
+    $scope.stage = new TangibleStage('tangibleContainer');
+    $scope.logoutUrl = "https://www.facebook.com/logout.php?next=http:%2F%2Flocalhost:63342%2Fcapacitive-tangibles%2Fapp&access_token=";// "https://www.facebook.com/dialog/oauth?client_id=123111638040234&display=popup&redirect_uri=http:%2F%2F130.216.148.185:5984%2F_fb";
     //$scope.loginUrl = "https://www.facebook.com/dialog/oauth?client_id=123111638040234&display=popup&redirect_uri=http:%2F%2F130.216.148.185:5984%2F_fb";
     $scope.tangibleController = new TangibleController($scope.stage, $scope.db.uri);
     $scope.currentUser = null;
-    $scope.currentUser = {firstName: "Jack", lastName: "Bauer"};
-
-    $.couch.session({
-        success: function(data) {
-            console.log(data);
-        }
-    });
-
-    //$scope.watchLoginChange();
 
     $scope.db.openDoc('4af774d88562315b657fbeacc8000f79', {
         success: function(data) {
@@ -79,9 +68,39 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
                 $scope.editLibrary(event);
                 break;
             case 5:
-                var userToken = ""; //TODO: get user token from couchdb
-                location.href = $scope.logoutUrl + userToken;
+                location.href = $scope.logoutUrl + $scope.currentUser.token;
         }
+    };
+
+    $scope.getSession = function(){
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.withCredentials = true;
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.status == 401) {
+                location.href = "http://localhost:63342/capacitive-tangibles/app/index.html";
+            }
+            else
+            {
+                var jsonData = JSON.parse(xmlHttp.responseText);
+                $scope.getUserData(jsonData.userCtx.name);
+            }
+        };
+        xmlHttp.open("GET", "http://localhost:5984/_session?basic=true", true); // false for synchronous request
+        xmlHttp.send();
+        console.log();
+    };
+
+    $scope.getUserData = function(userName)
+    {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.withCredentials = true;
+        xmlHttp.onreadystatechange = function()
+        {
+            var jsonData = JSON.parse(xmlHttp.responseText);
+            $scope.currentUser = {userName: userName, firstName: userName, lastName: userName, token: jsonData.facebook.access_token};
+        };
+        xmlHttp.open( "GET", "http://localhost:5984/_users/org.couchdb.user:" + userName, false ); // false for synchronous request
+        xmlHttp.send();
     };
 
     $scope.editLibrary = function(event)
@@ -240,5 +259,7 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
 
         //destroyTouchWindow();
     };
+
+    $scope.getSession();
 
 });

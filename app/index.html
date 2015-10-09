@@ -18,12 +18,14 @@
     <script src="bower_components/angular-animate/angular-animate.min.js"></script>
     <script src="bower_components/angular-aria/angular-aria.min.js"></script>
     <script src="bower_components/angular-material/angular-material.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="bower_components/parallax.js/parallax.min.js"></script>
     <script src="js/LoginCtrl.js"></script>
 
 </head>
-<body>
-    <div ng-controller="LoginCtrl" id="backgroundLayer">
-        <md-content>
+<body style="background: transparent;">
+    <div ng-controller="LoginCtrl" class="parallax-window" data-parallax="scroll" data-image-src="img/background.jpg">
+        <md-content style="background: transparent;">
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <md-icon md-svg-icon="img/stamp-white.svg" style="width: 60px;"></md-icon>
@@ -38,10 +40,21 @@
         </md-content>
 
         <div id="infoLayer">
-            <h1>Grumpy wizards make, toxic brew for the</h1>
-            <p>Grumpy wizards make toxic brew for the evil Queen and Jack. Grumpy wizards make toxic brew for the evil Queen and Jack.</p>
+            <h1>Saving at risk languages, with tangibles</h1>
+            <p> The Penan people of Malaysian Borneo were traditionally nomads of the rainforest.
+                They would leave messages in the jungle for each other using natural objects
+                as symbols. With settlement, the language is being lost and not used by the
+                next generation. Login to experience how the Penan people communicate! </p>
             <md-button id="loginBtn" class="md-raised md-primary" ng-click="login()">Log in with facebook</md-button>
         </div>
+    </div>
+
+    <div class="parallax-window" data-parallax="scroll" style="background: white;">
+        Put more detailed information here. Need to buy picture!
+    </div>
+
+    <div class="parallax-window" data-parallax="scroll" data-image-src="img/tablet-interaction.jpg">
+        Replace this image with a blurred out image of the tangibles on screen.
     </div>
 </body>
 </html>

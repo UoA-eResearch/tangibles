@@ -16,6 +16,7 @@
     "couchdb-jquery-couch": "https://github.com/apache/couchdb-jquery-couch.git",
     "javascript-detect-element-resize": "0.5.3",
     "ng-file-upload": "7.0.17",
-    "angular-facebook-utils": "https://github.com/jdddog/angular-facebook-utils/archive/test.zip"
+    "angular-facebook-utils": "https://github.com/jdddog/angular-facebook-utils/archive/test.zip",
+    "parallax.js": "1.3.2"
   }
 }
