@@ -4,7 +4,7 @@
             <div class="md-toolbar-tools">
                 <h1>Open diagram</h1>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="answer('not applicable')">
+                <md-button class="md-icon-button" ng-click="closeDialog()">
                     <md-icon md-svg-src="img/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
                 </md-button>
             </div>
@@ -19,7 +19,7 @@
         <md-dialog-content>
             <md-list>
                 <md-subheader class="md-no-sticky">Diagrams</md-subheader>
-                <md-list-item ng-repeat="diagram in tangibleController.diagrams | filter:query" ng-click="openDiagram(diagram)">
+                <md-list-item ng-repeat="diagram in tangibleController.diagrams | filter:query" ng-click="openDiagram(diagram.id, diagram.libraryId)">
                     <div class="horizontal tangible-icon-container">
                         <div class="vertical">
                             <img class="tangible-icon" ng-src="{{diagram.thumb}}"  alt="{{diagram.name}}" />

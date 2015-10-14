@@ -2,7 +2,7 @@
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h1>Edit Tangible Library: {{tangibleController.libraryName}}</h1>
+                <h1>Edit Library: {{tangibleController.libraryName}}</h1>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="closeDialog()">
                     <md-icon md-svg-src="img/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
@@ -20,7 +20,6 @@
                     </div>
                     <p>{{ tangible.name }}</p>
                 </md-list-item>
-                <md-divider></md-divider>
             </md-list>
         </md-dialog-content>
         <!--<div class="md-actions" layout="row">-->
@@ -34,7 +33,7 @@
         <!--</div>-->
         <md-sidenav id="sidenav" class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
             <md-toolbar class="md-theme-light">
-                <h1 class="md-toolbar-tools">Edit Tangible</h1>
+                <h2 class="md-toolbar-tools">Edit Tangible</h2>
             </md-toolbar>
             <md-content layout-padding>
                 <form>
@@ -59,7 +58,7 @@
                 <md-button ng-click="closeSideNav()" class="md-primary">
                     Cancel
                 </md-button>
-                <md-button ng-click="saveTangible(selectedTangible)" class="md-primary">
+                <md-button ng-click="saveToLibrary(selectedTangible)" class="md-primary">
                     Save
                 </md-button>
             </md-content>

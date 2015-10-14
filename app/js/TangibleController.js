@@ -10,11 +10,12 @@ function TangibleController(surface, db_uri, threshold) {
     this.libraryName;
     this.tangibleLibrary = [];// = {};
     this.tangibles = [];
-    this.diagrams = [];
+    this.diagrams = []; //TODO: move to AppCtrl
     this.surface = surface;
     this.selectedTangible = null;
-    this.libraryId = null;
-    this.diagramId = null;
+    this.libraryId = undefined;
+    this.diagramId = undefined; //TODO: make diagram object
+    this.diagramRev = undefined;
     this.diagramName = "Untitled diagram";
     this.db_uri = db_uri;
 
@@ -93,7 +94,8 @@ TangibleController.prototype.loadTangibleLibrary = function(data)
 TangibleController.prototype.clear = function()
 {
     this.surface.clear();
-    this.diagramId = null;
+    this.diagramId = undefined;
+    this.diagramRev = undefined;
     this.diagramName = "Untitled diagram";
     this.tangibles.length = 0; //clears array
     //this.tangibleLibrary.length = 0;
@@ -118,6 +120,7 @@ TangibleController.prototype.openDiagram = function(diagram) {
     console.log(diagram);
 
     this.diagramId = diagram._id;
+    this.diagramRev = diagram._rev;
     this.diagramName = diagram.name;
 
     for(var i = 0; i < diagram.tangibles.length; i++)
@@ -147,24 +150,17 @@ TangibleController.prototype.addTangible = function(template, position, orientat
     this.surface.addTangible(tangible);
 };
 
-TangibleController.prototype.saveDiagram = function(userName)
+TangibleController.prototype.getDiagramDoc = function()
 {
-    var document;
-    document.tangibles = [];
+    var tangibles = [];
 
     for(var i = 0; i < this.tangibles.length; i++)
     {
         var tangible = this.tangibles[i];
-        diagram.tangibles[i] = {"id":tangible.id, "position": [tangible.visual.getX(), tangible.visual.getY()], "orientation": tangible.visual.rotation() - tangible.startAngle};
+        tangibles[i] = {"id":tangible.id, "position": [tangible.visual.getX(), tangible.visual.getY()], "orientation": tangible.visual.rotation() - tangible.startAngle};
     }
 
-    document.type = 'diagram'
-
-    //TODO: save
-    var json_data = {"libraryName": this.libraryName, "tangibles": parsedTangibles};
-
-    //var blob = new Blob([JSON.stringify(json_data)], {type: "text/plain;charset=utf-8"});
-    //saveAs(blob, "diagram.tg");
+    return {"_id": this.diagramId, "_rev": this.diagramRev, "type": "diagram", "libraryId": this.libraryId, "name": this.diagramName, "tangibles": tangibles};
 };
 
 /**

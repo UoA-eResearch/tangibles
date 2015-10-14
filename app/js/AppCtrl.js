@@ -22,28 +22,21 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
 })
 
 .controller('AppCtrl', function($scope, $mdDialog, $http, $mdSidenav, $mdUtil, $rootScope, facebookUser) {
-    $.couch.urlPrefix = "http://localhost:5984";
-    $scope.db = $.couch.db("tangibles");
-    $scope.stage = new TangibleStage('tangibleContainer');
-    $scope.logoutUrl = "https://www.facebook.com/logout.php?next=http:%2F%2Flocalhost:63342%2Fcapacitive-tangibles%2Fapp&access_token=";// "https://www.facebook.com/dialog/oauth?client_id=123111638040234&display=popup&redirect_uri=http:%2F%2F130.216.148.185:5984%2F_fb";
-    //$scope.loginUrl = "https://www.facebook.com/dialog/oauth?client_id=123111638040234&display=popup&redirect_uri=http:%2F%2F130.216.148.185:5984%2F_fb";
-    $scope.tangibleController = new TangibleController($scope.stage, $scope.db.uri);
+    $scope.libraries = [];
+    $scope.userDb = null;
     $scope.currentUser = null;
+    $scope.tangibleController = null;
+    $.couch.urlPrefix = "http://localhost:5984";
+    $scope.stage = new TangibleStage('tangibleContainer');
+    $scope.logoutUrl = "https://www.facebook.com/logout.php?next=http:%2F%2Flocalhost:63342%2Fcapacitive-tangibles%2Fapp&access_token=";
 
-    $scope.db.openDoc('4af774d88562315b657fbeacc8000f79', {
-        success: function(data) {
-            $scope.tangibleController.loadTangibleLibrary(data);
+    //Enables cross domain on jquery couchdb API
+    $.ajaxSetup({
+        xhrFields: {
+            withCredentials: true
         },
-        error: function(status) {
-            console.log(status);
-        }}
-    );
-
-    //$scope.tangibleController.loadTangibleLibrary();
-
-    //$("#diagram-file").change(function() {
-    //    alert('changed!');
-    //});
+        crossDomain: true
+    });
 
     $scope.menuItems = [
         {'name': 'New', 'index': 1},
@@ -56,54 +49,48 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
     $scope.menuAction = function(event, item) {
         switch(item.index) {
             case 1:
-                $scope.showDiagramTypes();
+                $scope.showNewDiagramPopup(event);
                 break;
             case 2:
-                $scope.showDiagrams();
+                $scope.showOpenDiagramPopup(event);
                 break;
             case 3:
                 $scope.saveDiagram();
                 break;
             case 4:
-                $scope.editLibrary(event);
+                $scope.showEditLibraryPopup(event);
                 break;
             case 5:
                 location.href = $scope.logoutUrl + $scope.currentUser.token;
         }
     };
 
-    $scope.getSession = function(){
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.withCredentials = true;
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.status == 401) {
-                location.href = "http://localhost:63342/capacitive-tangibles/app/index.html";
-            }
-            else
-            {
-                var jsonData = JSON.parse(xmlHttp.responseText);
-                $scope.getUserData(jsonData.userCtx.name);
-            }
-        };
-        xmlHttp.open("GET", "http://localhost:5984/_session?basic=true", true); // false for synchronous request
-        xmlHttp.send();
-        console.log();
-    };
-
-    $scope.getUserData = function(userName)
+    $scope.initialiseUser = function(userName)
     {
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.withCredentials = true;
-        xmlHttp.onreadystatechange = function()
-        {
-            var jsonData = JSON.parse(xmlHttp.responseText);
-            $scope.currentUser = {userName: userName, firstName: userName, lastName: userName, token: jsonData.facebook.access_token};
-        };
-        xmlHttp.open( "GET", "http://localhost:5984/_users/org.couchdb.user:" + userName, false ); // false for synchronous request
-        xmlHttp.send();
+        var users = $.couch.db("_users");
+        users.openDoc("org.couchdb.user:" + userName, {
+                success: function (data) {
+                    $scope.currentUser = {userName: userName, firstName: userName, lastName: userName, token: data.facebook.access_token};
+                    $scope.userDb = $.couch.db(userName);
+                    $scope.tangibleController = new TangibleController($scope.stage, $scope.userDb.uri);
+                    $scope.userDb.openDoc('4af774d88562315b657fbeacc8000f79', {
+                            success: function (data) {
+                                $scope.tangibleController.loadTangibleLibrary(data);
+                            },
+                            error: function (status) {
+                                console.log(status);
+                            }
+                        }
+                    );
+                },
+                error: function (status) {
+                    console.log(status);
+                }
+            }
+        );
     };
 
-    $scope.editLibrary = function(event)
+    $scope.showEditLibraryPopup = function(event)
     {
         $mdDialog.show({
             scope: $scope.$new(),
@@ -113,9 +100,8 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
         });
     };
 
-    $scope.showDiagrams = function(event) {
-
-        this.db.view("views/get_diagrams", {
+    $scope.showOpenDiagramPopup = function(event) {
+        $scope.userDb.view("views/get_diagrams", {
             success: function(data) {
                 $scope.tangibleController.loadDiagrams(data);
                 $mdDialog.show({
@@ -132,32 +118,18 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
         });
     };
 
-    $scope.openDiagram = function(diagram, event)
-    {
-        $scope.db.openDoc(diagram.library_id, {
+    $scope.showNewDiagramPopup = function(event) {
+        this.userDb.view("views/get_libraries", {
             success: function(data) {
-                $scope.tangibleController.loadTangibleLibrary(data);
+                //$scope.tangibleController.libraries = data.rows;
+                $scope.libraries.length = 0;
 
-                $scope.db.openDoc(diagram.id, {
-                    success: function(data) {
-                        $scope.tangibleController.openDiagram(data);
-                    },
-                    error: function(status) {
-                        console.log(status);
-                    }});
-
-                $mdDialog.cancel();
-            },
-            error: function(status) {
-                console.log(status);
-            }}
-        );
-    };
-
-    $scope.showDiagramTypes = function() {
-        this.db.view("views/get_libraries", {
-            success: function(data) {
-                $scope.tangibleController.loadLibraries(data);
+                for(var i=0; i < data.rows.length; i++)
+                {
+                    var item = data.rows[i].key;
+                    item.thumb = $scope.userDb.db_uri + '/' + item.id + '/' + item.thumb;
+                    $scope.libraries.push(item);
+                }
 
                 $mdDialog.show({
                     scope: $scope.$new(),
@@ -173,8 +145,30 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
         });
     };
 
+    $scope.openDiagram = function(diagramId, libraryId, event)
+    {
+        $scope.userDb.openDoc(libraryId, {
+            success: function(data) {
+                $scope.tangibleController.loadTangibleLibrary(data);
+
+                $scope.userDb.openDoc(diagramId, {
+                    success: function(data) {
+                        $scope.tangibleController.openDiagram(data);
+                    },
+                    error: function(status) {
+                        console.log(status);
+                    }});
+
+                $mdDialog.cancel();
+            },
+            error: function(status) {
+                console.log(status);
+            }}
+        );
+    };
+
     $scope.newDiagram = function(library, event) {
-        $scope.db.openDoc(library.id, {
+        $scope.userDb.openDoc(library.id, {
             success: function(data) {
                 $scope.tangibleController.clear();
                 $scope.tangibleController.loadTangibleLibrary(data);
@@ -187,9 +181,19 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
     };
 
     $scope.saveDiagram = function() {
-        $scope.tangibleController.saveDiagram();
+        var diagram = $scope.tangibleController.getDiagramDoc();
 
-        $scope.db.saveDoc()
+        $scope.userDb.saveDoc(diagram, {
+            success: function(data) {
+                $scope.openDiagram(diagram._id, diagram.libraryId);
+                console.log(data);
+            },
+            error: function(status) {
+                console.log(status);
+            }
+        });
+
+
     };
 
     $scope.initTouchWindow = function() {
@@ -237,7 +241,7 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
     };
 
     $scope.editTangible = function (tangible, $event) {
-        $scope.selectedTangible = tangible;
+        $scope.selectedTangible = JSON.parse(JSON.stringify(tangible));
 
         var debounce = $mdUtil.debounce(function(){
             $mdSidenav('right')
@@ -260,6 +264,16 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
         //destroyTouchWindow();
     };
 
-    $scope.getSession();
-
+    $.couch.session({
+        success: function(data) {
+            if(data.userCtx.name != null)
+            {
+                $scope.initialiseUser(data.userCtx.name);
+            }
+            else
+            {
+                location.href = "http://localhost:63342/capacitive-tangibles/app/index.html";
+            }
+        }
+    });
 });
