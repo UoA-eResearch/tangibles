@@ -2,35 +2,35 @@
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h1>Edit Library: {{tangibleController.libraryName}}</h1>
+                <h2><div>Edit Library</div></h2>
+
+                <h2>
+                    <md-input-container >
+                        <input style="color: white; padding-top: 25px; padding-left: 10px;" ng-model="selectedLibrary.name">
+                    </md-input-container>
+                </h2>
+
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="closeDialog()">
                     <md-icon md-svg-src="img/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
                 </md-button>
             </div>
         </md-toolbar>
+
         <md-dialog-content>
             <md-list>
                 <md-subheader class="md-no-sticky">Tangibles</md-subheader>
-                <md-list-item ng-repeat="tangible in tangibleController.tangibleLibrary" ng-click="editTangible(tangible, $event)">
+                <md-list-item ng-repeat="tangible in selectedLibrary.tangibles" ng-click="editTangible(tangible, $event)">
                     <div class="horizontal tangible-icon-container">
                         <div class="vertical">
-                            <img class="tangible-icon" ng-src="{{tangible.image}}"  alt="{{tangible.name}}" />
+                            <img class="tangible-icon" ng-src="{{userDb.uri + selectedLibrary._id + '/' + tangible.image}}"  alt="{{tangible.name}}" />
                         </div>
                     </div>
                     <p>{{ tangible.name }}</p>
+                    <md-icon class="md-secondary" ng-click="removeTangible(tangible)" aria-label="Delete" md-svg-icon="img/ic_close_24px.svg"></md-icon>
                 </md-list-item>
             </md-list>
         </md-dialog-content>
-        <!--<div class="md-actions" layout="row">-->
-            <!--<span flex></span>-->
-            <!--<md-button ng-click="answer('not useful')" class="md-primary">-->
-                <!--Cancel-->
-            <!--</md-button>-->
-            <!--<md-button ng-click="answer('useful')" class="md-primary">-->
-                <!--Save-->
-            <!--</md-button>-->
-        <!--</div>-->
         <md-sidenav id="sidenav" class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
             <md-toolbar class="md-theme-light">
                 <h2 class="md-toolbar-tools">Edit Tangible</h2>
@@ -42,26 +42,69 @@
                         <input type="text" id="name" ng-model="selectedTangible.name"  md-sidenav-focus >
                     </md-input-container>
                     <md-input-container>
-                        <md-button style="max-width: 200px; height: 200px; background-color: #e0e0e0" ngf-select ng-model="file" ngf-multiple="false" aria-label="More">
-                            <input type="file" name="tangibleImage" />
-                            <!--<md-tooltip>-->
-                                <!--Upload image-->
-                            <!--</md-tooltip>-->
-                            <md-icon id="image" md-svg-icon="img/ic_camera_alt_black_24px.svg"></md-icon>
-                        </md-button>
+                        <div layout layout-sm="column">
+                            <md-input-container style="width:15%">
+                                <input type="file" id="file" ng-model="file" name="file" accept=".png" base-sixty-four-input parser="imageUploaded" style="visibility: hidden;"/>
+                                <md-button class="md-raised md-primary" ng-click="triggerImageUpload()">
+                                    Choose image
+                                </md-button>
+                            </md-input-container>
+                            <md-input-container style="width:41%">
+                                <div layout>
+                                    <div flex="20" layout layout-align="center center">
+                                        <span class="md-body-1">Scale</span>
+                                    </div>
+
+                                    <md-slider flex min="0" max="100" ng-model="selectedTangible.scale" aria-label="Scale" id="scale" class>
+                                    </md-slider>
+                                    <!--<div flex="20" layout layout-align="center center">-->
+                                        <!--<input flex type="number" ng-model="selectedTangible.scale" aria-label="Scale" aria-controls="scale" style="width:30px;">-->
+                                    <!--</div>-->
+                                </div>
+                            </md-input-container>
+                            <md-input-container style="width:41%">
+                                <div layout>
+                                    <div flex="20" layout layout-align="center center">
+                                        <span class="md-body-1">Angle</span>
+                                    </div>
+                                    <md-slider flex min="0" max="360" ng-model="selectedTangible.angle" aria-label="Angle" id="angle" class>
+                                    </md-slider>
+                                    <!--<div flex="20" layout layout-align="center center">-->
+                                        <!--<input flex type="number" ng-model="selectedTangible.angle" aria-label="red" aria-controls="angle" style="width:30px;">-->
+                                    <!--</div>-->
+                                </div>
+                            </md-input-container>
+                        </div>
+
                     </md-input-container>
-                    <label for="touchPoints">Touch points</label>
+                    <md-input-container>
+                        <label for="touchPointsSwitch">Edit touch points</label>
+                        <md-switch class="md-secondary" ng-model="$scope.touchPointsStage.enable" id="touchPointsSwitch"></md-switch>
+                    </md-input-container>
                     <md-input-container>
                         <div id="touchPoints" elem-ready="initTouchWindow()" style="max-width: 100%; height: 300px; margin: 10px; background-color: antiquewhite"></div>
                     </md-input-container>
+
+                    <div class="md-actions" layout="row">
+                        <md-button ng-click="closeSideNav()" class="md-primary">
+                            Done
+                        </md-button>
+                    </div>
                 </form>
-                <md-button ng-click="closeSideNav()" class="md-primary">
-                    Cancel
-                </md-button>
-                <md-button ng-click="saveToLibrary(selectedTangible)" class="md-primary">
-                    Save
-                </md-button>
             </md-content>
         </md-sidenav>
+        <div class="md-actions" layout="row" >
+            <md-button ng-click="addTangible()" class="md-primary">
+                Add tangible
+            </md-button>
+            <span flex></span>
+            <md-button ng-click="closeDialog()" class="md-primary">
+                Cancel
+            </md-button>
+            <md-button ng-click="saveLibrary()" class="md-primary">
+                Save
+            </md-button>
+        </div>
     </form>
+
 </md-dialog>

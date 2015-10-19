@@ -47,7 +47,7 @@ function Tangible(id, name, scale, startAngle, image, registrationPoints) {
 
 	//Create visual to represent tangible
 	var image = new Image();
-    image.crossOrigin="anonymous";
+    image.crossOrigin="use-credentials";
 	image.src = this.image;
 
     this.width = image.naturalWidth * this.scale;
@@ -65,7 +65,7 @@ function Tangible(id, name, scale, startAngle, image, registrationPoints) {
 		shadowColor: 'black',
 		shadowBlur: 30,
 		shadowOffset: {x : 0, y : 0},
-		shadowOpacity: 0.4
+		shadowOpacity: 0.0
 	});
 
 	this.visual.on('tap', this.onTap.bind(this));
@@ -133,8 +133,8 @@ Tangible.prototype.select = function()
 Tangible.prototype.deselect = function()
 {
 	this.visual.setAttrs({
-		//shadowColor: 'black',
-		//shadowOpacity: 0.4,
+		shadowColor: 'black',
+		shadowOpacity: 0.0,
 		shadowOffset: {x : 0, y : 0}
 	});
 	this.visual.cache();

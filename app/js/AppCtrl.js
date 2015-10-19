@@ -5,7 +5,7 @@ var LIBRARY_TP_WINDOW = "touchPoints";
 
 
 
-angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial'])
+angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial', 'naif.base64'])
 
 .directive( 'elemReady', function( $parse ) {
     return {
@@ -21,14 +21,19 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
     }
 })
 
-.controller('AppCtrl', function($scope, $mdDialog, $http, $mdSidenav, $mdUtil, $rootScope, facebookUser) {
+.controller('AppCtrl', function($scope, $mdDialog, $http, $mdSidenav, $mdUtil, $q) {
     $scope.libraries = [];
+    $scope.selectedLibrary = null;
+    $scope.selectedTangible = null;
+    $scope.newImages = [];
+    $scope.file = {};
+
     $scope.userDb = null;
     $scope.currentUser = null;
     $scope.tangibleController = null;
-    $.couch.urlPrefix = "http://localhost:5984";
+    $.couch.urlPrefix = "http://130.216.148.185:5984";
     $scope.stage = new TangibleStage('tangibleContainer');
-    $scope.logoutUrl = "https://www.facebook.com/logout.php?next=http:%2F%2Flocalhost:63342%2Fcapacitive-tangibles%2Fapp&access_token=";
+    $scope.logoutUrl = "https://www.facebook.com/logout.php?next=http:%2F%2F130.216.148.185:63342%2Fapp&access_token=";
 
     //Enables cross domain on jquery couchdb API
     $.ajaxSetup({
@@ -38,11 +43,26 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
         crossDomain: true
     });
 
+    $scope.triggerImageUpload = function()
+    {
+        $('#file').trigger('click');
+    };
+
+    $scope.imageUploaded = function(file, base64_object)
+    {
+        var deferred = $q.defer();
+
+        $scope.newImages.push({key: $scope.selectedTangible.id, value: base64_object.base64});
+        $("#tangibleImage").attr('src', 'data:image/png;base64,' + base64_object.base64);
+        return deferred.promise;
+       // $scope.file = {};
+    };
+
     $scope.menuItems = [
         {'name': 'New', 'index': 1},
         {'name': 'Open', 'index': 2},
         {'name': 'Save', 'index': 3},
-        {'name': 'Library', 'index': 4},
+        {'name': 'Libraries', 'index': 4},
         {'name': 'Logout', 'index': 5}
     ];
 
@@ -58,7 +78,8 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
                 $scope.saveDiagram();
                 break;
             case 4:
-                $scope.showEditLibraryPopup(event);
+                $scope.showLibrariesPopup(event);
+                //$scope.showEditLibraryPopup(event);
                 break;
             case 5:
                 location.href = $scope.logoutUrl + $scope.currentUser.token;
@@ -90,13 +111,92 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
         );
     };
 
-    $scope.showEditLibraryPopup = function(event)
+    $scope.showEditLibraryPopup = function(library, event)
     {
-        $mdDialog.show({
-            scope: $scope.$new(),
-            templateUrl: 'library.tmpl.html',
-            parent: angular.element(document.body),
-            targetEvent: event
+        if(library == null)
+        {
+            $scope.selectedLibrary = {"name": "Untitled library", "tangibles": [], "type": "library"};
+            $mdDialog.hide();
+            $mdDialog.show({
+                scope: $scope.$new(),
+                templateUrl: 'library.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: event
+            });
+        }
+        else
+        {
+            $scope.userDb.openDoc(library.id, {
+                success: function(data) {
+                    $scope.selectedLibrary = data;
+                    $mdDialog.hide();
+                    $mdDialog.show({
+                        scope: $scope.$new(),
+                        templateUrl: 'library.tmpl.html',
+                        parent: angular.element(document.body),
+                        targetEvent: event
+                    });
+
+                },
+                error: function(status) {
+                    console.log(status);
+                }}
+            );
+        }
+
+
+
+    };
+
+    $scope.addTangible = function()
+    {
+        $scope.selectedLibrary.tangibles.push({"id": $.couch.newUUID(), "name": "Untitled", "scale": 1.0, "startAngle": 90, "image": "", "registrationPoints":[]})
+    };
+
+    $scope.removeTangible = function(tangible)
+    {
+        var i = $scope.selectedLibrary.tangibles.indexOf(tangible);
+        if(i != -1) {
+            $scope.selectedLibrary.tangibles.splice(i, 1);
+        }
+    };
+
+    $scope.saveLibrary = function () {
+        $scope.userDb.saveDoc($scope.selectedLibrary, {
+            success: function(data) {
+                $scope.closeDialog();
+                console.log(data);
+            },
+            error: function(status) {
+                $scope.closeDialog();
+                console.log(status);
+            }
+        });
+    };
+
+    $scope.showLibrariesPopup = function(event)
+    {
+        $scope.userDb.view("views/get_libraries", {
+            success: function(data) {
+                $scope.libraries.length = 0;
+
+                for(var i=0; i < data.rows.length; i++)
+                {
+                    var item = data.rows[i].key;
+                    $scope.libraries.push(item);
+                }
+
+                $mdDialog.show({
+                    scope: $scope.$new(),
+                    templateUrl: 'libraries.tmpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: event
+                });
+            },
+            error: function(status) {
+                console.log(status);
+            },
+            reduce: false
         });
     };
 
@@ -197,7 +297,11 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
     };
 
     $scope.initTouchWindow = function() {
+        //if()
+
         $scope.touchPointsStage = new TangibleStage(LIBRARY_TP_WINDOW);
+        //$scope.touchPointsStage.drawTouchPoints($scope.selectedTangible.registrationPoints);
+
 
         //var resizeCallback = function() {
         //    console.log('Resized!')
@@ -241,7 +345,7 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
     };
 
     $scope.editTangible = function (tangible, $event) {
-        $scope.selectedTangible = JSON.parse(JSON.stringify(tangible));
+        $scope.selectedTangible = tangible;
 
         var debounce = $mdUtil.debounce(function(){
             $mdSidenav('right')
@@ -262,6 +366,20 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial']
             });
 
         //destroyTouchWindow();
+    };
+
+    $scope.confirmDeleteTangible = function(tangible, event) {
+        var confirm = $mdDialog.confirm()
+                .title('Delete ' + tangible.name + "?")
+                .content('Are you sure you want to delete the tangible ' + tangible.name)
+                .ariaLabel('Secondary click demo')
+                .ok('Delete')
+                .cancel('Cancel');
+        $mdDialog.show(confirm).then(function() {
+            console.log('delete');
+        }, function() {
+            console.log('cancel');
+        });
     };
 
     $.couch.session({

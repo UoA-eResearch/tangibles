@@ -1,0 +1,39 @@
+<md-dialog aria-label="Libraries" style="width: 80%; height: 70%">
+    <form style="height: 100%">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h1>Libraries</h1>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="closeDialog()">
+                    <md-icon md-svg-src="img/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-content>
+            <md-input-container style="padding-left: 40px; padding-right: 40px; padding-top: 10px; padding-bottom: 10px;">
+                <label>Search</label>
+                <input ng-model="query">
+            </md-input-container>
+        </md-content>
+
+        <md-dialog-content>
+            <md-list>
+                <md-subheader class="md-no-sticky">Diagram types</md-subheader>
+                <md-list-item ng-repeat="library in libraries | filter:query" ng-click="showEditLibraryPopup(library, $event)">
+                    <div class="horizontal tangible-icon-container">
+                        <div class="vertical">
+                            <img class="tangible-icon" ng-src="{{userDb.uri + library.id + '/' + library.thumb}}"  alt="{{library.name}}" />
+                        </div>
+                    </div>
+                    <p>{{ library.name }}</p>
+                </md-list-item>
+            </md-list>
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button ng-click="showEditLibraryPopup(null, $event)" class="md-primary">
+                New library
+            </md-button>
+        </div>
+    </form>
+</md-dialog>

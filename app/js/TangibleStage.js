@@ -8,6 +8,7 @@ function TangibleStage(containerID)
 {
     this.containerID = containerID;
     this.onTouchCallback = null;
+    this.enable = true;
 
     var rect = document.getElementById(containerID).getBoundingClientRect();
 
@@ -63,6 +64,26 @@ TangibleStage.prototype.clear = function()
  * @returns {Array}
  */
 
+TangibleStage.prototype.toPoints = function (rawPoints) { var touches = event.touches;
+    var touchPoints = new Array();
+
+    for (var i=0; i < rawPoints.length; i++) {
+        var touch = touches[i];
+        var x = touch.clientX - rect.left;
+        var y = touch.clientY - rect.top;
+
+        touchPoints.push(new Point(x, y));
+    }
+
+    return touchPoints;
+};
+
+/**
+ *
+ * @param event A Konvajs event with touch points, e.g. a touchstart event
+ * @returns {Array}
+ */
+
 TangibleStage.prototype.getTouchPoints = function (event) { var touches = event.touches;
     var touchPoints = new Array();
     var rect =  this.stage.container().getBoundingClientRect();
@@ -94,12 +115,13 @@ TangibleStage.prototype.draw = function () {
 
 TangibleStage.prototype.onTouch = function(event)
 {
-    var touchPoints = this.getTouchPoints(event);
-    this.drawTouchPoints(touchPoints); //Visualise touch points
+    if(this.enable) {
+        var touchPoints = this.getTouchPoints(event);
+        this.drawTouchPoints(touchPoints); //Visualise touch points
 
-    if(this.onTouchCallback != null)
-    {
-        this.onTouchCallback(touchPoints)
+        if (this.onTouchCallback != null) {
+            this.onTouchCallback(touchPoints)
+        }
     }
 };
 
