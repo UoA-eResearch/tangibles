@@ -1,4 +1,4 @@
-<md-dialog aria-label="Edit Tangible Library" style="width: 80%; height: 70%">
+<md-dialog aria-label="Edit Tangible Library" style="width: 80%; height: 70%" elem-ready="onLibraryPopupLoaded()">
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
@@ -49,26 +49,30 @@
                                     Choose image
                                 </md-button>
                             </md-input-container>
-                            <md-input-container style="width:41%">
+                            <md-input-container style="width:40%">
                                 <div layout>
                                     <div flex="20" layout layout-align="center center">
                                         <span class="md-body-1">Scale</span>
                                     </div>
 
-                                    <md-slider flex min="0" max="100" ng-model="selectedTangible.scale" aria-label="Scale" id="scale" class>
-                                    </md-slider>
+                                    <input required type="number" step="0.05" ng-model="selectedTangible.scale" />
+
+                                    <!--<md-slider flex min="0" max="1" step="0.01" ng-model="selectedTangible.scale" aria-label="Scale" id="scale" class>-->
+                                    <!--</md-slider>-->
                                     <!--<div flex="20" layout layout-align="center center">-->
                                         <!--<input flex type="number" ng-model="selectedTangible.scale" aria-label="Scale" aria-controls="scale" style="width:30px;">-->
                                     <!--</div>-->
                                 </div>
                             </md-input-container>
-                            <md-input-container style="width:41%">
+                            <md-input-container style="width:40%">
                                 <div layout>
                                     <div flex="20" layout layout-align="center center">
                                         <span class="md-body-1">Angle</span>
                                     </div>
-                                    <md-slider flex min="0" max="360" ng-model="selectedTangible.angle" aria-label="Angle" id="angle" class>
-                                    </md-slider>
+
+                                    <input required type="number" step="1" name="rate" ng-model="selectedTangible.startAngle" min="-360" max="360" />
+                                    <!--<md-slider flex min="0" max="360" ng-model="selectedTangible.startAngle" aria-label="Angle" id="angle" class>-->
+                                    <!--</md-slider>-->
                                     <!--<div flex="20" layout layout-align="center center">-->
                                         <!--<input flex type="number" ng-model="selectedTangible.angle" aria-label="red" aria-controls="angle" style="width:30px;">-->
                                     <!--</div>-->

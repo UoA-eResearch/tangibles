@@ -110,7 +110,7 @@ TangibleStage.prototype.deleteTangible = function(tangible)
 };
 
 TangibleStage.prototype.draw = function () {
-    this.stage.batchDraw();
+    this.stage.draw();
 };
 
 TangibleStage.prototype.onTouch = function(event)
@@ -175,6 +175,8 @@ TangibleStage.prototype.onResize = function () {
         console.log("Resizing. " + this.containerID + ": w" + rect.width + ", h" + rect.height);
         this.stage.setWidth(rect.right - rect.left);
         this.stage.setHeight(rect.bottom - rect.top);
+        this.width = rect.right - rect.left;
+        this.height = rect.bottom - rect.top;
         //console.log('Resizing surface', rect);
     }
 };

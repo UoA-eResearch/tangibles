@@ -33,7 +33,7 @@
 
 
 
-function Tangible(id, name, scale, startAngle, image, registrationPoints) {
+function Tangible(id, name, scale, startAngle, image, registrationPoints, cb) {
 	this.id = id;
 	this.name = name;
 	this.scale = scale;
@@ -44,44 +44,53 @@ function Tangible(id, name, scale, startAngle, image, registrationPoints) {
 	this.onTapCallback = null;
 	this.onDragStartCallback = null;
 	this.onDragEndCallback = null;
+    this.onloadCb = cb;
 
 	//Create visual to represent tangible
-	var image = new Image();
-    image.crossOrigin="use-credentials";
-	image.src = this.image;
+	this.imageObj = new Image();
+    this.imageObj.crossOrigin="use-credentials";
+    this.imageObj.onload = this.onLoad.bind(this);
+    this.imageObj.src = this.image;
 
-    this.width = image.naturalWidth * this.scale;
-    this.height = image.naturalHeight * this.scale;
 
-	this.visual = new Konva.Image({
-		image: image,
-		x: 0,
-		y: 0,
-		width: this.width,
-		height: this.height,
-		offsetX: this.width/2,
-		offsetY: this.height/2,
-		draggable: true,
-		shadowColor: 'black',
-		shadowBlur: 30,
-		shadowOffset: {x : 0, y : 0},
-		shadowOpacity: 0.0
-	});
-
-	this.visual.on('tap', this.onTap.bind(this));
-	this.visual.on('dragstart', this.onDragStart.bind(this));
-	this.visual.on('dragend', this.onDragEnd.bind(this));
-
-	// Enable two finger rotation
-	this.hammerStartAngle = 0;
-	this.hammer = Hammer(this.visual);
-	this.hammer.on("transformstart", this.onStartRotate.bind(this)).on("transform", this.onEndRotate.bind(this));
 
 	// Enables transparency intersection
-	this.visual.cache();
-	this.visual.drawHitFromCache();
+	//this.visual.cache();
+	//this.visual.drawHitFromCache();
 
 }
+
+Tangible.prototype.onLoad = function()
+{
+    this.width = this.imageObj.naturalWidth * this.scale;
+    this.height = this.imageObj.naturalHeight * this.scale;
+
+    this.visual = new Konva.Image({
+        image: this.imageObj,
+        x: 0,
+        y: 0,
+        width: this.width,
+        height: this.height,
+        offsetX: this.width/2,
+        offsetY: this.height/2,
+        draggable: true,
+        shadowColor: 'black',
+        shadowBlur: 30,
+        shadowOffset: {x : 0, y : 0},
+        shadowOpacity: 0.0
+    });
+
+    this.visual.on('tap', this.onTap.bind(this));
+    this.visual.on('dragstart', this.onDragStart.bind(this));
+    this.visual.on('dragend', this.onDragEnd.bind(this));
+
+    // Enable two finger rotation
+    this.hammerStartAngle = 0;
+    this.hammer = Hammer(this.visual);
+    this.hammer.on("transformstart", this.onStartRotate.bind(this)).on("transform", this.onEndRotate.bind(this));
+
+    this.onloadCb();
+};
 
 Tangible.prototype.onStartRotate = function(event)
 {
@@ -157,6 +166,20 @@ Tangible.prototype.setPosition = function (point){
 
 Tangible.prototype.setOrientation = function (angle) {
 	this.visual.rotation(angle + this.startAngle) ;
+};
+
+/**
+ *
+ * @param scale
+ */
+
+Tangible.prototype.setScale = function (scale) {
+    var width = this.imageObj.naturalWidth * scale;
+    var height = this.imageObj.naturalHeight * scale;
+    this.visual.width(width);
+    this.visual.height(height);
+    this.visual.offsetX(width/2);
+    this.visual.offsetY(height/2);
 };
 
 /**
