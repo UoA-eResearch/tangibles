@@ -2,7 +2,8 @@
 var resizeFunc;
 var openDiagramEvent;
 var LIBRARY_TP_WINDOW = "touchPoints";
-
+var fuckenWidth = 10;
+var stage;
 
 
 angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial', 'naif.base64'])
@@ -31,9 +32,11 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
     $scope.userDb = null;
     $scope.currentUser = null;
     $scope.tangibleController = null;
-    $.couch.urlPrefix = "http://130.216.148.185:5984";
+    $.couch.urlPrefix = "http://" + domain + ":" + dbPort;
     $scope.stage = new TangibleStage('tangibleContainer');
-    $scope.logoutUrl = "https://www.facebook.com/logout.php?next=http:%2F%2F130.216.148.185:63342%2Fapp&access_token=";
+    $scope.logoutUrl = "https://www.facebook.com/logout.php?next=http:%2F%2F" + domain + ":" + appPort + "%2Fapp&access_token=";
+
+
 
     //Enables cross domain on jquery couchdb API
     $.ajaxSetup({
@@ -86,6 +89,29 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
         }
     };
 
+    $scope.loadDefaultLib = function(userName)
+    {
+        $scope.userDb.openDoc('4af774d88562315b657fbeacc8000f79', {
+                success: function (data) {
+                    $scope.tangibleController.loadTangibleLibrary(data);
+                },
+                error: function (status) { //If oroo library doesn't exist then replicate
+                    console.log(status);
+
+                    $.couch.replicate(publicDb, userName, {
+                        success: function(data) {
+                            console.log(data);
+                            $scope.loadDefaultLib(userName);
+                        },
+                        error: function(status) {
+                            console.log(status);
+                        }
+                    }, {continuous: true});
+                }
+            }
+        );
+    };
+
     $scope.initialiseUser = function(userName)
     {
         var users = $.couch.db("_users");
@@ -94,15 +120,7 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
                     $scope.currentUser = {userName: userName, firstName: userName, lastName: userName, token: data.facebook.access_token};
                     $scope.userDb = $.couch.db(userName);
                     $scope.tangibleController = new TangibleController($scope.stage, $scope.userDb.uri);
-                    $scope.userDb.openDoc('4af774d88562315b657fbeacc8000f79', {
-                            success: function (data) {
-                                $scope.tangibleController.loadTangibleLibrary(data);
-                            },
-                            error: function (status) {
-                                console.log(status);
-                            }
-                        }
-                    );
+                    $scope.loadDefaultLib(userName);
                 },
                 error: function (status) {
                     console.log(status);
@@ -143,9 +161,6 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
                 }}
             );
         }
-
-
-
     };
 
     $scope.addTangible = function()
@@ -298,9 +313,20 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
 
     $scope.initTouchWindow = function() {
         //if()
-
-        $scope.touchPointsStage = new TangibleStage(LIBRARY_TP_WINDOW);
-        //$scope.touchPointsStage.drawTouchPoints($scope.selectedTangible.registrationPoints);
+        //
+        //var width = 1000;
+        //var height = 1000;
+        //
+        //$scope.editLibStage = new Konva.Stage({
+        //    container: LIBRARY_TP_WINDOW,
+        //    width: width,
+        //    height: height
+        //});
+        //
+        //$scope.layer = new Konva.Layer();
+        //$scope.editLibStage.add($scope.layer);
+        $scope.editLibStage = new TangibleStage(LIBRARY_TP_WINDOW);
+        //$scope.editLibStage.drawTouchPoints($scope.selectedTangible.registrationPoints);
 
 
         //var resizeCallback = function() {
@@ -347,21 +373,99 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
     $scope.editTangible = function (tangible, $event) {
         $scope.selectedTangible = tangible;
 
+        $scope.editLibStage.clear();
+        $scope.editLibStage.draw();
+
+        //$scope.$watch($mdSidenav('right').isClosed(), function() {
+        //    //if ($mdSidenav('right').isOpen()) {
+        //        console.log('CLOSEDDDDDDDDDDDDD');
+        //    //}
+        //}, true);
+
+        //var img = new Image();
+        //
+        //img.src = $scope.userDb.uri + $scope.selectedLibrary._id + '/' + $scope.selectedTangible.image;
+        //img.crossOrigin="use-credentials";
+        //img.onload = function() {
+        //    $scope.selectedVisual = new Konva.Image({
+        //        x: 300,
+        //        y: 300 / 2,
+        //        image: img,
+        //        width: tangible.width * tangible.scale,
+        //        height: tangible.height * tangible.scale,
+        //        offsetX: (tangible.width * tangible.scale) /2,
+        //        offsetY: (tangible.height * tangible.scale)/2
+        //    });
+        //
+        //    var hammerStartAngle = 0;
+        //    var hammer = Hammer($scope.selectedVisual);
+        //    hammer.on("transformstart",
+        //        function(event){
+        //            hammerStartAngle = $scope.selectedVisual.rotation();
+        //        }).on("transform",
+        //        function(event){
+        //            $scope.selectedVisual.rotation((hammerStartAngle || 0) + event.gesture.rotation);
+        //            $scope.layer.draw();
+        //        });
+        //
+        //    $scope.layer.add($scope.selectedVisual);
+        //    $scope.layer.draw();
+        //};
+
         var debounce = $mdUtil.debounce(function(){
             $mdSidenav('right')
                 .toggle()
                 .then(function () {
-                    $scope.touchPointsStage.onResize();
-                    console.log("Resizing touchPointsStage");
+
+
+
+
+                    //if($mdSidenav('right'))
+                    //{
+                        $scope.editLibStage.onResize();
+                        $scope.selectedTangibleVisual = new Tangible($scope.selectedTangible.id, $scope.selectedTangible.name, $scope.selectedTangible.scale, $scope.selectedTangible.startAngle, $scope.userDb.uri + $scope.selectedLibrary._id + '/' + $scope.selectedTangible.image, [], $scope.loadEditTangible)
+                        console.log("OPEN");
+                    //}
+                    //else
+                    //{
+                        //.log("CLOSE");
+                        //$scope.editLibStage.clear();
+                        //$scope.editLibStage.draw();
+                    //}
                 });
         }, 200);
 
         debounce();
     };
 
+    $scope.loadEditTangible = function(){
+        //$scope.selectedTangibleVisual.setOrientation(0);
+        $scope.selectedTangibleVisual.setPosition(new Point($scope.editLibStage.width/2, $scope.editLibStage.height/2));
+        $scope.editLibStage.addTangible($scope.selectedTangibleVisual);
+        $scope.editLibStage.draw();
+
+        $scope.$watch('selectedTangible.scale', function() {
+            console.log('selectedTangible.scale: ', $scope.selectedTangible.scale);
+
+            $scope.selectedTangibleVisual.setScale($scope.selectedTangible.scale);
+            $scope.selectedTangibleVisual.setPosition(new Point($scope.editLibStage.width/2, $scope.editLibStage.height/2));
+            $scope.editLibStage.draw();
+        }, true);
+
+        $scope.$watch('selectedTangible.startAngle', function() {
+            console.log('selectedTangible.startAngle: ', $scope.selectedTangible.startAngle);
+            $scope.selectedTangibleVisual.startAngle = $scope.selectedTangible.startAngle;
+            $scope.selectedTangibleVisual.setOrientation(0);
+            $scope.selectedTangibleVisual.setPosition(new Point($scope.editLibStage.width/2, $scope.editLibStage.height/2));
+            $scope.editLibStage.draw();
+        }, true);
+    };
+
     $scope.closeSideNav = function () {
         $mdSidenav('right').close()
             .then(function () {
+                $scope.editLibStage.clear();
+                $scope.editLibStage.draw();
                 console.log("close RIGHT is done");
             });
 
@@ -390,8 +494,12 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
             }
             else
             {
-                location.href = "http://localhost:63342/capacitive-tangibles/app/index.html";
+                location.href = "http://" + domain + ":" + appPort + "/app/index.html";
             }
         }
     });
+
+        //console.log('Side: ', $mdSidenav('right'));
+
+
 });
