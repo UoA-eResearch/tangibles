@@ -224,11 +224,11 @@ TangibleController.prototype.getRecognizedTangibleTemplate = function(points) {
         //console.log("")
 
         //console.log('sorted: ', matches.toString());
-        var sim = matches[0][0];
-        if(sim < this.threshold)
-            return matches[0][1];
+        //var sim = matches[0][0];
+        //if(sim < this.threshold)
+        return matches[0][1];
 
-        return null;
+       // return null;
     }
 
     return null; //No tangible was recognised
