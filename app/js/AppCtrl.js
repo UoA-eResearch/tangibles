@@ -26,8 +26,9 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
     $scope.libraries = [];
     $scope.selectedLibrary = null;
     $scope.selectedTangible = null;
-    $scope.newImages = [];
+    $scope.newImages = {};
     $scope.file = {};
+    $scope.touchPointsError = " ";
 
     $scope.userDb = null;
     $scope.currentUser = null;
@@ -51,15 +52,7 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
         $('#file').trigger('click');
     };
 
-    $scope.imageUploaded = function(file, base64_object)
-    {
-        var deferred = $q.defer();
 
-        $scope.newImages.push({key: $scope.selectedTangible.id, value: base64_object.base64});
-        $("#tangibleImage").attr('src', 'data:image/png;base64,' + base64_object.base64);
-        return deferred.promise;
-       // $scope.file = {};
-    };
 
     $scope.menuItems = [
         {'name': 'New', 'index': 1},
@@ -91,7 +84,7 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
 
     $scope.loadDefaultLib = function(userName)
     {
-        $scope.userDb.openDoc('4af774d88562315b657fbeacc8000f79', {
+        $scope.userDb.openDoc('4af774d88562315b657fbeacc8000f79', {attachments: true}, {
                 success: function (data) {
                     $scope.tangibleController.loadTangibleLibrary(data);
                 },
@@ -144,7 +137,7 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
         }
         else
         {
-            $scope.userDb.openDoc(library.id, {
+            $scope.userDb.openDoc(library._id, {attachments: true}, {
                 success: function(data) {
                     $scope.selectedLibrary = data;
                     $mdDialog.hide();
@@ -165,7 +158,7 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
 
     $scope.addTangible = function()
     {
-        $scope.selectedLibrary.tangibles.push({"id": $.couch.newUUID(), "name": "Untitled", "scale": 1.0, "startAngle": 90, "image": "", "registrationPoints":[]})
+        $scope.selectedLibrary.tangibles.push({"id": $.couch.newUUID(), "name": "Untitled", "scale": 1, "startAngle": 0, "image": "", "registrationPoints":[]})
     };
 
     $scope.removeTangible = function(tangible)
@@ -262,7 +255,7 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
 
     $scope.openDiagram = function(diagramId, libraryId, event)
     {
-        $scope.userDb.openDoc(libraryId, {
+        $scope.userDb.openDoc(libraryId, {attachments: true}, {
             success: function(data) {
                 $scope.tangibleController.loadTangibleLibrary(data);
 
@@ -283,7 +276,7 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
     };
 
     $scope.newDiagram = function(library, event) {
-        $scope.userDb.openDoc(library.id, {
+        $scope.userDb.openDoc(library._id,  {attachments: true}, {
             success: function(data) {
                 $scope.tangibleController.clear();
                 $scope.tangibleController.loadTangibleLibrary(data);
@@ -298,43 +291,48 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
     $scope.saveDiagram = function() {
         var diagram = $scope.tangibleController.getDiagramDoc();
 
-        $scope.userDb.saveDoc(diagram, {
-            success: function(data) {
-                $scope.openDiagram(diagram._id, diagram.libraryId);
-                console.log(data);
-            },
-            error: function(status) {
-                console.log(status);
-            }
+        html2canvas($("#tangibleContainer")).then(function(canvas) {
+            var thumbWidth = 100;
+            var scale = thumbWidth / $scope.stage.width;
+            var imageData = Canvas2Image.convertToImage(canvas, thumbWidth, $scope.stage.height * scale).currentSrc.slice(22);
+            diagram._attachments = {'thumb.png': {content_type: "image/png", data: imageData}};
+
+            $scope.userDb.saveDoc(diagram, {
+                success: function(data) {
+                    $scope.openDiagram(diagram._id, diagram.libraryId);
+                    console.log(data);
+                },
+                error: function(status) {
+                    console.log(status);
+                }
+            });
+
         });
 
 
     };
 
     $scope.initTouchWindow = function() {
-        //if()
-        //
-        //var width = 1000;
-        //var height = 1000;
-        //
-        //$scope.editLibStage = new Konva.Stage({
-        //    container: LIBRARY_TP_WINDOW,
-        //    width: width,
-        //    height: height
-        //});
-        //
-        //$scope.layer = new Konva.Layer();
-        //$scope.editLibStage.add($scope.layer);
         $scope.editLibStage = new TangibleStage(LIBRARY_TP_WINDOW);
-        //$scope.editLibStage.drawTouchPoints($scope.selectedTangible.registrationPoints);
+        $scope.editLibStage.onTouchCallback = function(touchPoints)
+        {
+            if(touchPoints.length == 3 && $scope.editLibStage.enable)
+            {
+                $scope.selectedTangible.registrationPoints = fromPoints(touchPoints);
+                $scope.editLibStage.enable = false;
+            }
 
+            if(touchPoints.length != 3)
+            {
+                $scope.touchPointsError = "Three touch points are required.";
+            }
+            else
+            {
+                $scope.touchPointsError = " ";
+            }
 
-        //var resizeCallback = function() {
-        //    console.log('Resized!')
-        //};
-        //
-        //$(LIBRARY_TP_WINDOW).resize(resizeCallback);
-
+            $scope.$apply();
+        };
     };
 
     /**
@@ -372,89 +370,91 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
 
     $scope.editTangible = function (tangible, $event) {
         $scope.selectedTangible = tangible;
-
         $scope.editLibStage.clear();
         $scope.editLibStage.draw();
-
-        //$scope.$watch($mdSidenav('right').isClosed(), function() {
-        //    //if ($mdSidenav('right').isOpen()) {
-        //        console.log('CLOSEDDDDDDDDDDDDD');
-        //    //}
-        //}, true);
-
-        //var img = new Image();
-        //
-        //img.src = $scope.userDb.uri + $scope.selectedLibrary._id + '/' + $scope.selectedTangible.image;
-        //img.crossOrigin="use-credentials";
-        //img.onload = function() {
-        //    $scope.selectedVisual = new Konva.Image({
-        //        x: 300,
-        //        y: 300 / 2,
-        //        image: img,
-        //        width: tangible.width * tangible.scale,
-        //        height: tangible.height * tangible.scale,
-        //        offsetX: (tangible.width * tangible.scale) /2,
-        //        offsetY: (tangible.height * tangible.scale)/2
-        //    });
-        //
-        //    var hammerStartAngle = 0;
-        //    var hammer = Hammer($scope.selectedVisual);
-        //    hammer.on("transformstart",
-        //        function(event){
-        //            hammerStartAngle = $scope.selectedVisual.rotation();
-        //        }).on("transform",
-        //        function(event){
-        //            $scope.selectedVisual.rotation((hammerStartAngle || 0) + event.gesture.rotation);
-        //            $scope.layer.draw();
-        //        });
-        //
-        //    $scope.layer.add($scope.selectedVisual);
-        //    $scope.layer.draw();
-        //};
 
         var debounce = $mdUtil.debounce(function(){
             $mdSidenav('right')
                 .toggle()
                 .then(function () {
+                    $scope.editLibStage.onResize();
+                    $scope.editLibStage.enable = false;
 
+                    var attachment = $scope.selectedLibrary._attachments[$scope.selectedTangible.image];
+                    var data = null;
+                    if(attachment != undefined)
+                    {
+                        data = attachment.data;
+                    }
 
+                    $scope.selectedTangibleVisual = new Tangible($scope.selectedTangible.id, $scope.selectedTangible.name, $scope.selectedTangible.scale, $scope.selectedTangible.startAngle, data, [], $scope.loadEditTangible);
 
+                    var regPoints = toPoints($scope.selectedTangible.registrationPoints);
+                    $scope.editLibStage.clear();
+                    if(regPoints.length > 0)
+                    {
+                        var curCentre = Tangible.getCentroid(regPoints);
+                        var newCentre = new Point($scope.editLibStage.width/2, $scope.editLibStage.height/2);
+                        var offset = newCentre.subtract(curCentre);
 
-                    //if($mdSidenav('right'))
-                    //{
-                        $scope.editLibStage.onResize();
-                        $scope.selectedTangibleVisual = new Tangible($scope.selectedTangible.id, $scope.selectedTangible.name, $scope.selectedTangible.scale, $scope.selectedTangible.startAngle, $scope.userDb.uri + $scope.selectedLibrary._id + '/' + $scope.selectedTangible.image, [], $scope.loadEditTangible)
-                        console.log("OPEN");
-                    //}
-                    //else
-                    //{
-                        //.log("CLOSE");
-                        //$scope.editLibStage.clear();
-                        //$scope.editLibStage.draw();
-                    //}
+                        for(var i = 0; i < regPoints.length; i++)
+                        {
+                            regPoints[i] = regPoints[i].add(offset);
+                        }
+
+                        $scope.editLibStage.drawTouchPoints(regPoints);
+                    }
                 });
         }, 200);
 
         debounce();
     };
 
+    $scope.imageUploaded = function(file, base64_object)
+    {
+        var deferred = $q.defer();
+
+        delete $scope.selectedLibrary._attachments[$scope.selectedTangible.image];
+        $scope.selectedTangible.image = base64_object.filename;
+        $scope.selectedLibrary._attachments[$scope.selectedTangible.image] = {content_type: "image/png", data: base64_object.base64};
+        $scope.selectedTangibleVisual.setImageData(base64_object.base64);
+
+        return deferred.promise;
+    };
+
     $scope.loadEditTangible = function(){
-        //$scope.selectedTangibleVisual.setOrientation(0);
+        $scope.selectedTangibleVisual.setOrientation(0);
         $scope.selectedTangibleVisual.setPosition(new Point($scope.editLibStage.width/2, $scope.editLibStage.height/2));
+        $scope.selectedTangibleVisual.setTouchEnabled(false);
         $scope.editLibStage.addTangible($scope.selectedTangibleVisual);
         $scope.editLibStage.draw();
 
         $scope.$watch('selectedTangible.scale', function() {
-            console.log('selectedTangible.scale: ', $scope.selectedTangible.scale);
 
-            $scope.selectedTangibleVisual.setScale($scope.selectedTangible.scale);
+            var scale = 1;
+            if($scope.selectedTangible.scale != undefined)
+            {
+                scale = $scope.selectedTangible.scale;
+            }
+
+            console.log('selectedTangible.scale: ', scale);
+
+            $scope.selectedTangibleVisual.setScale(scale);
             $scope.selectedTangibleVisual.setPosition(new Point($scope.editLibStage.width/2, $scope.editLibStage.height/2));
             $scope.editLibStage.draw();
         }, true);
 
         $scope.$watch('selectedTangible.startAngle', function() {
-            console.log('selectedTangible.startAngle: ', $scope.selectedTangible.startAngle);
-            $scope.selectedTangibleVisual.startAngle = $scope.selectedTangible.startAngle;
+
+            var startAngle = 0;
+            if($scope.selectedTangible.startAngle != undefined)
+            {
+                startAngle = $scope.selectedTangible.startAngle;
+            }
+
+            console.log('selectedTangible.startAngle: ', startAngle);
+
+            $scope.selectedTangibleVisual.startAngle = startAngle;
             $scope.selectedTangibleVisual.setOrientation(0);
             $scope.selectedTangibleVisual.setPosition(new Point($scope.editLibStage.width/2, $scope.editLibStage.height/2));
             $scope.editLibStage.draw();
@@ -472,20 +472,6 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
         //destroyTouchWindow();
     };
 
-    $scope.confirmDeleteTangible = function(tangible, event) {
-        var confirm = $mdDialog.confirm()
-                .title('Delete ' + tangible.name + "?")
-                .content('Are you sure you want to delete the tangible ' + tangible.name)
-                .ariaLabel('Secondary click demo')
-                .ok('Delete')
-                .cancel('Cancel');
-        $mdDialog.show(confirm).then(function() {
-            console.log('delete');
-        }, function() {
-            console.log('cancel');
-        });
-    };
-
     $.couch.session({
         success: function(data) {
             if(data.userCtx.name != null)
@@ -498,8 +484,4 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
             }
         }
     });
-
-        //console.log('Side: ', $mdSidenav('right'));
-
-
 });

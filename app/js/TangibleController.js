@@ -86,7 +86,8 @@ TangibleController.prototype.loadTangibleLibrary = function(data)
     for(var i = 0; i < data.tangibles.length; i++) {
         var tangible = data.tangibles[i];
         tangible.registrationPoints = toPoints(tangible.registrationPoints);
-        tangible.image = this.db_uri + '/' + this.libraryId + '/' + tangible.image;
+        tangible.imageData = data._attachments[tangible.image].data;
+        //tangible.image; = this.db_uri + '/' + this.libraryId + '/' + tangible.image;
         this.tangibleLibrary[i] = tangible;
     }
 };
@@ -136,18 +137,23 @@ TangibleController.prototype.openDiagram = function(diagram) {
 TangibleController.prototype.addTangible = function(template, position, orientation)
 {
     //var temp = this.tangibleLibrary[id]; //Get template
-    var tangible = new Tangible(template.id, template.name, template.scale, template.startAngle, template.image, template.registrationPoints);
+    var tangible = new Tangible(template.id, template.name, template.scale, template.startAngle, template.imageData, template.registrationPoints, this.initTangible.bind(this, position, orientation));
 
     tangible.onTapCallback = this.onTap.bind(this);
     tangible.onDragStartCallback = this.onDragStart.bind(this);
     tangible.onDragEndCallback = this.onDragEnd.bind(this);
 
+
+};
+
+TangibleController.prototype.initTangible = function(position, orientation, tangible)
+{
     //Set starting orientation and position
     tangible.setPosition(position);
     tangible.setOrientation(orientation);
-
     this.tangibles.push(tangible);
     this.surface.addTangible(tangible);
+    this.surface.draw();
 };
 
 TangibleController.prototype.getDiagramDoc = function()
@@ -265,7 +271,10 @@ TangibleController.prototype.onTouch = function(touchPoints) {
     {
         var template = this.getRecognizedTangibleTemplate(touchPoints);
         if (template != null) {
-            this.addTangible(template, Tangible.getCentroid(touchPoints), Tangible.getOrientation(touchPoints));
+            var originalOrientation = Tangible.getOrientation(template.registrationPoints);
+            var curOrientation = Tangible.getOrientation(touchPoints);
+
+            this.addTangible(template, Tangible.getCentroid(touchPoints), curOrientation-originalOrientation);
         }
     }
 

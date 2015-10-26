@@ -19,10 +19,10 @@
         <md-dialog-content>
             <md-list>
                 <md-subheader class="md-no-sticky">Diagrams</md-subheader>
-                <md-list-item ng-repeat="diagram in tangibleController.diagrams | filter:query" ng-click="openDiagram(diagram.id, diagram.libraryId)">
+                <md-list-item ng-repeat="diagram in tangibleController.diagrams | filter:query" ng-click="openDiagram(diagram._id, diagram.libraryId)">
                     <div class="horizontal tangible-icon-container">
                         <div class="vertical">
-                            <img class="tangible-icon" ng-src="{{diagram.thumb}}"  alt="{{diagram.name}}" />
+                            <img class="tangible-icon" ng-src="{{userDb.uri + diagram._id + '/thumb.png'}}"  alt="{{diagram.name}}" />
                         </div>
                     </div>
                     <p>{{ diagram.name }}</p>

@@ -23,7 +23,7 @@
                 <md-list-item ng-repeat="tangible in selectedLibrary.tangibles" ng-click="editTangible(tangible, $event)">
                     <div class="horizontal tangible-icon-container">
                         <div class="vertical">
-                            <img class="tangible-icon" ng-src="{{userDb.uri + selectedLibrary._id + '/' + tangible.image}}"  alt="{{tangible.name}}" />
+                            <img class="tangible-icon" ng-src="{{'data:image/png;base64,' + selectedLibrary._attachments[tangible.image].data}}" />
                         </div>
                     </div>
                     <p>{{ tangible.name }}</p>
@@ -35,21 +35,21 @@
             <md-toolbar class="md-theme-light">
                 <h2 class="md-toolbar-tools">Edit Tangible</h2>
             </md-toolbar>
-            <md-content layout-padding>
+            <md-content >
                 <form>
-                    <md-input-container>
+                    <md-input-container style="margin: 10px;">
                         <label for="name">Name</label>
                         <input type="text" id="name" ng-model="selectedTangible.name"  md-sidenav-focus >
                     </md-input-container>
-                    <md-input-container>
+                    <!--<md-input-container>-->
                         <div layout layout-sm="column">
-                            <md-input-container style="width:15%">
-                                <input type="file" id="file" ng-model="file" name="file" accept=".png" base-sixty-four-input parser="imageUploaded" style="visibility: hidden;"/>
+                            <md-input-container style="width:33%;height: 50px;">
+                                <input type="file" id="file" ng-model="file" name="file" accept=".png" base-sixty-four-input parser="imageUploaded" style="visibility: hidden;margin: 0;"/>
                                 <md-button class="md-raised md-primary" ng-click="triggerImageUpload()">
                                     Choose image
                                 </md-button>
                             </md-input-container>
-                            <md-input-container style="width:40%">
+                            <md-input-container style="width:33%;">
                                 <div layout>
                                     <div flex="20" layout layout-align="center center">
                                         <span class="md-body-1">Scale</span>
@@ -64,7 +64,7 @@
                                     <!--</div>-->
                                 </div>
                             </md-input-container>
-                            <md-input-container style="width:40%">
+                            <md-input-container style="width:33%">
                                 <div layout>
                                     <div flex="20" layout layout-align="center center">
                                         <span class="md-body-1">Angle</span>
@@ -80,13 +80,19 @@
                             </md-input-container>
                         </div>
 
-                    </md-input-container>
+                    <!--<input type="text" ng-model="touchPointsError"/>-->
+
                     <md-input-container>
-                        <label for="touchPointsSwitch">Edit touch points</label>
-                        <md-switch class="md-secondary" ng-model="$scope.touchPointsStage.enable" id="touchPointsSwitch"></md-switch>
-                    </md-input-container>
-                    <md-input-container>
-                        <div id="touchPoints" elem-ready="initTouchWindow()" style="max-width: 100%; height: 300px; margin: 10px; background-color: antiquewhite"></div>
+                        <div layout layout-sm="column">
+                                <md-checkbox id="shit" ng-model="editLibStage.enable" aria-label="Edit touch points">
+                                    Edit touch points
+                                </md-checkbox>
+
+                                 <span style="color:red; font-style: italic;white-space:nowrap;"> {{touchPointsError}}</span>
+
+                        </div>
+
+                        <div id="touchPoints" elem-ready="initTouchWindow()" style="max-width: 100%; height: 700px; margin: 10px; background-color: antiquewhite"></div>
                     </md-input-container>
 
                     <div class="md-actions" layout="row">

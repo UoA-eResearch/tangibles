@@ -33,11 +33,11 @@
 
 
 
-function Tangible(id, name, scale, startAngle, image, registrationPoints, cb) {
+function Tangible(id, name, scale, startAngle, imageData, registrationPoints, cb) {
 	this.id = id;
 	this.name = name;
 	this.scale = scale;
-	this.image = image;
+    //this.imageData = imageData;
 	this.selected = false;
 	this.registrationPoints = registrationPoints;
 	this.startAngle = startAngle;
@@ -45,67 +45,86 @@ function Tangible(id, name, scale, startAngle, image, registrationPoints, cb) {
 	this.onDragStartCallback = null;
 	this.onDragEndCallback = null;
     this.onloadCb = cb;
+    this.isTouchEnabled = true;
 
-	//Create visual to represent tangible
-	this.imageObj = new Image();
-    this.imageObj.crossOrigin="use-credentials";
+    //Create visual to represent tangible
+    this.imageObj = new Image();
     this.imageObj.onload = this.onLoad.bind(this);
-    this.imageObj.src = this.image;
 
-
-
-	// Enables transparency intersection
-	//this.visual.cache();
-	//this.visual.drawHitFromCache();
-
+    if(imageData != null) {
+        this.imageObj.src = 'data:image/png;base64,' + imageData;
+    }
 }
+
+Tangible.prototype.setTouchEnabled = function(isEnabled)
+{
+    this.isTouchEnabled = isEnabled;
+    this.visual.draggable(isEnabled);
+};
 
 Tangible.prototype.onLoad = function()
 {
     this.width = this.imageObj.naturalWidth * this.scale;
     this.height = this.imageObj.naturalHeight * this.scale;
 
-    this.visual = new Konva.Image({
-        image: this.imageObj,
-        x: 0,
-        y: 0,
-        width: this.width,
-        height: this.height,
-        offsetX: this.width/2,
-        offsetY: this.height/2,
-        draggable: true,
-        shadowColor: 'black',
-        shadowBlur: 30,
-        shadowOffset: {x : 0, y : 0},
-        shadowOpacity: 0.0
-    });
+    if(this.visual == undefined)
+    {
+        this.visual = new Konva.Image({
+            image: this.imageObj,
+            x: 0,
+            y: 0,
+            width: this.width,
+            height: this.height,
+            offsetX: this.width/2,
+            offsetY: this.height/2,
+            draggable: true,
+            shadowColor: 'black',
+            shadowBlur: 30,
+            shadowOffset: {x : 0, y : 0},
+            shadowOpacity: 0.0
+        });
 
-    this.visual.on('tap', this.onTap.bind(this));
-    this.visual.on('dragstart', this.onDragStart.bind(this));
-    this.visual.on('dragend', this.onDragEnd.bind(this));
+        this.visual.on('tap', this.onTap.bind(this));
+        this.visual.on('dragstart', this.onDragStart.bind(this));
+        this.visual.on('dragend', this.onDragEnd.bind(this));
 
-    // Enable two finger rotation
-    this.hammerStartAngle = 0;
-    this.hammer = Hammer(this.visual);
-    this.hammer.on("transformstart", this.onStartRotate.bind(this)).on("transform", this.onEndRotate.bind(this));
+        // Enable two finger rotation
+        this.hammerStartAngle = 0;
+        this.hammer = Hammer(this.visual);
+        this.hammer.on("transformstart", this.onStartRotate.bind(this)).on("transform", this.onEndRotate.bind(this));
+    }
+    else
+    {
+        this.visual.image(this.imageObj);
+        this.visual.width(this.width);
+        this.visual.height(this.height);
+        this.visual.offsetX(this.width/2);
+        this.visual.offsetY(this.height/2);
+    }
 
-    this.onloadCb();
+    this.onloadCb(this);
+
 };
 
 Tangible.prototype.onStartRotate = function(event)
 {
-	console.log(event);
-	this.hammerStartAngle = this.visual.rotation() - this.startAngle;
+    if(this.isTouchEnabled)
+    {
+        console.log(event);
+        this.hammerStartAngle = this.visual.rotation() - this.startAngle;
+    }
 };
 
 Tangible.prototype.onEndRotate = function(event)
 {
-	this.setOrientation(this.hammerStartAngle + event.gesture.rotation);
+    if(this.isTouchEnabled) {
+        this.setOrientation(this.hammerStartAngle + event.gesture.rotation);
+    }
 };
 
 Tangible.prototype.onDragStart = function(event)
 {
-	if(this.onDragStartCallback != null)
+	if(this.onDragStartCallback != null && this.isTouchEnabled)
 	{
 		this.onDragStartCallback(this);
 	}
@@ -113,7 +132,7 @@ Tangible.prototype.onDragStart = function(event)
 
 Tangible.prototype.onDragEnd = function(event)
 {
-	if(this.onDragEndCallback != null)
+	if(this.onDragEndCallback != null && this.isTouchEnabled)
 	{
 		this.onDragEndCallback(this);
 	}
@@ -121,12 +140,13 @@ Tangible.prototype.onDragEnd = function(event)
 
 Tangible.prototype.onTap = function(event)
 {
-	event.cancelBubble = true;
+    if(this.isTouchEnabled) {
+        event.cancelBubble = true;
 
-	if(this.onTapCallback != null)
-	{
-		this.onTapCallback(this);
-	}
+        if (this.onTapCallback != null) {
+            this.onTapCallback(this);
+        }
+    }
 };
 
 Tangible.prototype.select = function()
@@ -166,6 +186,12 @@ Tangible.prototype.setPosition = function (point){
 
 Tangible.prototype.setOrientation = function (angle) {
 	this.visual.rotation(angle + this.startAngle) ;
+};
+
+Tangible.prototype.setImageData = function (imageData)
+{
+    var src = 'data:image/png;base64,' + imageData;
+    this.imageObj.src = src;
 };
 
 /**

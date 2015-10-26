@@ -54,6 +54,7 @@ TangibleStage.prototype.onDeselected = function () {
 TangibleStage.prototype.clear = function()
 {
     this.dragLayer.destroyChildren();
+    this.touchPointsLayer.destroyChildren();
     this.tangibleLayer.destroyChildren();
     this.draw();
 };

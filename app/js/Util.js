@@ -23,7 +23,17 @@ function Point(x, y) {
         var angle = Math.atan2(dy, dx); // range (-PI, PI]
         angle *= 180 / Math.PI;
         return angle;
-    }
+    };
+
+    this.subtract = function(other)
+    {
+        return new Point(this.x-other.x, this.y-other.y);
+    };
+
+    this.add = function(other)
+    {
+        return new Point(this.x+other.x, this.y+other.y);
+    };
 }
 
 Point.prototype.toString = function()
@@ -44,6 +54,19 @@ function toPoints(rawArray)
     {
         var item = rawArray[i];
         items[i] = new Point(item[0], item[1]);
+    }
+
+    return items;
+}
+
+function fromPoints(points)
+{
+    var items = [];
+
+    for(var i = 0; i < points.length; i++)
+    {
+        var point = points[i];
+        items[i] = [point.x, point.y];
     }
 
     return items;
