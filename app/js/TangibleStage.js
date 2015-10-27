@@ -107,7 +107,7 @@ TangibleStage.prototype.addTangible = function (tangible) {
 
 TangibleStage.prototype.deleteTangible = function(tangible)
 {
-    this.tangibleLayer.destroy(tangible.visual);
+    this.tangibleLayer.remove(tangible.visual);
 };
 
 TangibleStage.prototype.draw = function () {

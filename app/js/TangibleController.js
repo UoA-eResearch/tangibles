@@ -71,8 +71,19 @@ TangibleController.prototype.onDragStart = function (tangible) {
 };
 
 TangibleController.prototype.onDragEnd = function (tangible) {
-    //tangible.visual.moveTo(this.surface.stage.tangibleLayer);
+    var x = tangible.visual.getX();
+    var y = tangible.visual.getY();
 
+    if(x > this.surface.width || x < 0 || y > this.surface.height || y < 0)
+    {
+        var index = this.tangibles.indexOf(tangible);
+        if (index > -1) {
+            this.tangibles.splice(index, 1);
+            tangible.visual.destroy();
+            //this.surface.deleteTangible(tangible);
+        }
+        this.surface.draw();
+    }
 };
 
 TangibleController.prototype.loadTangibleLibrary = function(data)
@@ -127,11 +138,27 @@ TangibleController.prototype.openDiagram = function(diagram) {
     for(var i = 0; i < diagram.tangibles.length; i++)
     {
         var tangible = diagram.tangibles[i];
-        var template = this.tangibleLibrary[tangible.id-1];
-        this.addTangible(template, new Point(tangible.position[0], tangible.position[1]), tangible.orientation);
+        var template = this.getTemplate(tangible.id);
+
+        if(template != undefined)
+        {
+            this.addTangible(template, new Point(tangible.position[0], tangible.position[1]), tangible.orientation);
+        }
     }
 
     this.surface.tangibleLayer.draw();
+};
+
+TangibleController.prototype.getTemplate = function(id)
+{
+    for(var i = 0; i < this.tangibleLibrary.length; i++) {
+        var template = this.tangibleLibrary[i];
+
+        if(template.id == id)
+        {
+            return template;
+        }
+    }
 };
 
 TangibleController.prototype.addTangible = function(template, position, orientation)
@@ -176,11 +203,6 @@ TangibleController.prototype.getDiagramDoc = function()
  */
 
 TangibleController.prototype.getRecognizedTangibleTemplate = function(points) {
-
-    //console.log('Points', points.toString());
-    //console.log('Sorted', Tangible.sortCCW(points).toString());
-
-    var recognised = false;
     var matches = [];
 
     // We need to have minimum of three touch points to identify the Tangible and it's orientation.
@@ -202,7 +224,6 @@ TangibleController.prototype.getRecognizedTangibleTemplate = function(points) {
                 var regDistB = regPointsDists[0].distanceTo(regPointsDists[2]);
                 var regDistC = regPointsDists[1].distanceTo(regPointsDists[2]);
                 var similarity = Math.abs(touchDistA-regDistA) + Math.abs(touchDistB-regDistB) + Math.abs(touchDistC - regDistC);
-                //console.log('sim: ', similarity, ' ', template.name);
                 matches.push([similarity, template]);
             }
         }
@@ -215,20 +236,7 @@ TangibleController.prototype.getRecognizedTangibleTemplate = function(points) {
             return 0;
         });
 
-        ////debug
-        //for(var i = 0; i < matches.length; i++)
-        //{
-        //    console.log(matches[i][0] + ": ", matches[i][1].name)
-        //}
-        //
-        //console.log("")
-
-        //console.log('sorted: ', matches.toString());
-        //var sim = matches[0][0];
-        //if(sim < this.threshold)
         return matches[0][1];
-
-       // return null;
     }
 
     return null; //No tangible was recognised

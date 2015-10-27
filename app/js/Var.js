@@ -1,4 +1,4 @@
-var domain = "192.168.1.10";
+var domain = "130.216.148.185";
 var dbPort = "5984";
 var appPort = "8000";
 var publicDb = "tangibles";

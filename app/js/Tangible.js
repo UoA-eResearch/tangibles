@@ -111,6 +111,7 @@ Tangible.prototype.onStartRotate = function(event)
     if(this.isTouchEnabled)
     {
         console.log(event);
+        //this.visual.setDraggable(false);
         this.hammerStartAngle = this.visual.rotation() - this.startAngle;
     }
 };
@@ -119,6 +120,7 @@ Tangible.prototype.onEndRotate = function(event)
 {
     if(this.isTouchEnabled) {
         this.setOrientation(this.hammerStartAngle + event.gesture.rotation);
+        //this.visual.setDraggable(true);
     }
 };
 

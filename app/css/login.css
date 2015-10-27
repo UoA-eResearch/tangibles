@@ -44,6 +44,11 @@
     background: transparent;
 }
 
+.parallax-window-middle {
+    min-height: 600px;
+    background: transparent;
+}
+
 h1 {
     font-family: 'Open Sans';
     color: white;

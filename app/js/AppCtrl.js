@@ -5,8 +5,7 @@ var LIBRARY_TP_WINDOW = "touchPoints";
 var fuckenWidth = 10;
 var stage;
 
-
-angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial', 'naif.base64'])
+angular.module('capacitiveTangibles', ['ngMaterial', 'naif.base64'])
 
 .directive( 'elemReady', function( $parse ) {
     return {
@@ -35,9 +34,7 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
     $scope.tangibleController = null;
     $.couch.urlPrefix = "http://" + domain + ":" + dbPort;
     $scope.stage = new TangibleStage('tangibleContainer');
-    $scope.logoutUrl = "https://www.facebook.com/logout.php?next=http:%2F%2F" + domain + ":" + appPort + "%2Fapp&access_token=";
-
-
+    $scope.logoutUrl = "https://www.facebook.com/logout.php?next=http:%2F%2F" + domain + ":" + appPort + "%2Fapp%2Findex.html&access_token=";
 
     //Enables cross domain on jquery couchdb API
     $.ajaxSetup({
@@ -51,8 +48,6 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
     {
         $('#file').trigger('click');
     };
-
-
 
     $scope.menuItems = [
         {'name': 'New', 'index': 1},
@@ -114,6 +109,7 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
                     $scope.userDb = $.couch.db(userName);
                     $scope.tangibleController = new TangibleController($scope.stage, $scope.userDb.uri);
                     $scope.loadDefaultLib(userName);
+                    $scope.$apply();
                 },
                 error: function (status) {
                     console.log(status);
@@ -170,16 +166,20 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
     };
 
     $scope.saveLibrary = function () {
+
+        $scope.selectedLibrary["thumb"] = "015_leaves.png";
+
         $scope.userDb.saveDoc($scope.selectedLibrary, {
-            success: function(data) {
+            success: function (data) {
                 $scope.closeDialog();
                 console.log(data);
             },
-            error: function(status) {
+            error: function (status) {
                 $scope.closeDialog();
                 console.log(status);
             }
         });
+
     };
 
     $scope.showLibrariesPopup = function(event)
@@ -308,8 +308,6 @@ angular.module('capacitiveTangibles', ['ngRoute', 'facebookUtils', 'ngMaterial',
             });
 
         });
-
-
     };
 
     $scope.initTouchWindow = function() {

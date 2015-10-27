@@ -22,7 +22,7 @@
                 <md-list-item ng-repeat="library in libraries | filter:query" ng-click="newDiagram(library)">
                     <div class="horizontal tangible-icon-container">
                         <div class="vertical">
-                            <img class="tangible-icon" ng-src="{{library.thumb}}"  alt="{{library.name}}" />
+                            <img class="tangible-icon" ng-src="{{userDb.uri + library._id + '/' + library.thumb}}"  alt="{{library.name}}" />
                         </div>
                     </div>
                     <p>{{ library.name }}</p>
