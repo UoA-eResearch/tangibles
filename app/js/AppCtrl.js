@@ -32,9 +32,9 @@ angular.module('capacitiveTangibles', ['ngMaterial', 'naif.base64'])
     $scope.userDb = null;
     $scope.currentUser = null;
     $scope.tangibleController = null;
-    $.couch.urlPrefix = "http://" + domain + ":" + dbPort;
+    $.couch.urlPrefix = "https://" + domain + ":" + dbPort;
     $scope.stage = new TangibleStage('tangibleContainer');
-    $scope.logoutUrl = "https://www.facebook.com/logout.php?next=http:%2F%2F" + domain + ":" + appPort + "%2Fapp%2Findex.html&access_token=";
+    $scope.logoutUrl = "https://www.facebook.com/logout.php?next=https:%2F%2F" + domain + "&access_token=";
 
     //Enables cross domain on jquery couchdb API
     $.ajaxSetup({
@@ -478,7 +478,7 @@ angular.module('capacitiveTangibles', ['ngMaterial', 'naif.base64'])
             }
             else
             {
-                location.href = "http://" + domain + ":" + appPort + "/app/index.html";
+                location.href = "https://" + domain;
             }
         }
     });
