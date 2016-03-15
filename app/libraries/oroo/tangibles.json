@@ -1,0 +1,16 @@
+{
+  "name":"oroo",
+  "tangibleLibrary":[
+  {"id":1, "name":"Signpost", "scale":0.4274809160305344, "startAngle":90, "image":"004_signpost.png", "registrationPoints":[[1064.06298828125,448.9219970703125],[949.375,270.21099853515625],[1056.25,538.1799926757812]]},
+  {"id":2, "name":"Dart", "scale":1.0, "startAngle":-175, "image":"005_dart.png", "registrationPoints":[[467.5,176.8520050048828],[659.06298828125,218.843994140625],[710.31298828125,326.46099853515625]]},
+  {"id":3, "name":"Don't", "scale":1.0, "startAngle":90, "image":"006_dont.png", "registrationPoints":[[657.81298828125,313.17999267578125],[440.93798828125,354.781005859375],[685.93798828125,470.60198974609375]]},
+  {"id":4, "name":"Boar", "scale":1.0, "startAngle":200, "image":"007_boar.png", "registrationPoints":[[693.43798828125,350.875],[767.5,241.89100646972656],[821.56298828125,413.7659912109375]]},
+  {"id":5, "name":"One Person", "scale":1.0, "startAngle":-90, "image":"008_one_person.png", "registrationPoints":[[500.625,377.8280029296875],[572.18798828125,201.26600646972656],[685.625,228.0229949951172]]},
+  {"id":6, "name":"One Day", "scale":1.0, "startAngle":90, "image":"009_one_day.png", "registrationPoints":[]},
+  {"id":7, "name":"Friends", "scale":1.0, "startAngle":90, "image":"010_friends.png", "registrationPoints":[[361.875,421.18798828125],[432.5,237.00799560546875],[443.75,394.82000732421875]]},
+  {"id":8, "name":"Hungry", "scale":1.0, "startAngle":270, "image":"011_hungry.png", "registrationPoints":[[1086.875,512.2030029296875],[1106.875,402.63299560546875],[1038.125,380.1719970703125]]},
+  {"id":9, "name":"River", "scale":1.0, "startAngle":75, "image":"012_river.png", "registrationPoints":[[875.93798828125,462.593994140625],[816.875,239.74200439453125],[777.18798828125,428.41400146484375]]},
+  {"id":10, "name":"Direction", "scale":1.0, "startAngle":90, "image":"013_direction.png", "registrationPoints":[]},
+  {"id":11, "name":"Bit of Path", "scale":1.0, "startAngle":0, "image":"014_bit_of_path.png", "registrationPoints":[[950,361],[799.68798828125,167.281005859375],[930.31298828125,461.031005859375]]},
+  {"id":12, "name":"Leaves", "scale":1.0, "startAngle":90, "image":"015_leaves.png", "registrationPoints":[[890.93798828125,297.55499267578125],[859.06298828125,474.89801025390625],[991.875,329.97698974609375]]}
+]}

@@ -1,0 +1,73 @@
+
+#html
+{
+    height: 100%;
+}
+
+#body
+{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#backgroundLayer
+{
+    background: url(../img/background.jpg);
+    background-size: cover;
+    height: 100%;
+}
+
+#infoLayer
+{
+    width: 800px;
+    margin: auto;
+    transform: translate(30%, 30%);
+    border-radius: 25px;
+    background-color: rgba(0,0,0,0.3);
+    padding: 30px;"
+}
+#loginBtn
+{
+    font-family: 'Open Sans';
+    font-weight: bold;
+    margin-top: 15px;
+    font-size: 16px;
+    margin-left: 0px;
+    height: 50px;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.parallax-window {
+    min-height: 800px;
+    background: transparent;
+}
+
+.parallax-window-middle {
+    min-height: 600px;
+    background: transparent;
+}
+
+h1 {
+    font-family: 'Open Sans';
+    color: white;
+    font-size: 50px;
+    line-height: 60px;
+    font-weight: bold;
+    text-transform: uppercase;
+    /*text-shadow: 2px 2px #051c20;*/
+}
+
+h2 {
+    font-family: 'Open Sans';
+    color: white;
+    font-weight: bold;
+}
+
+p {
+    font-family: 'Open Sans';
+    color: white;
+    font-size: 16px;
+    line-height: 25px;
+}
