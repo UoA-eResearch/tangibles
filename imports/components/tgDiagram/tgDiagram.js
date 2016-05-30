@@ -5,6 +5,7 @@ import {TangibleController} from '../../api/tangibles/controller';
 import {Diagrams} from '../../api/collections/diagrams.js';
 import {Libraries} from '../../api/collections/libraries.js';
 import {Images} from '../../api/collections/images.js';
+import {Points} from '../../api/tangibles/points.js';
 import 'pubsub-js/src/pubsub';
 
 
@@ -162,6 +163,7 @@ class DiagramCtrl {
 
             this.localDiagram.scale = this.tangibleController.stage.scaleX();
             this.localDiagram.position = {x: this.tangibleController.stage.x(), y:  this.tangibleController.stage.y()};
+            console.log(this.localDiagram.position);
 
             if (Diagrams.find({_id: this.diagramId}).count() == 0) {
                 Diagrams.insert(this.localDiagram);

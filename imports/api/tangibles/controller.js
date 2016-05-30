@@ -216,11 +216,6 @@ export class TangibleController {
         this.diagram = diagram;
         this.library = library;
 
-        // if(this.diagram.position == undefined)
-        // {
-        //     this.diagram.position = {x: this.stage.x(), y: this.stage.y()};
-        // }
-
         //Setup recogniser
         var features = [];
         var targets = [];
@@ -231,6 +226,20 @@ export class TangibleController {
         }
 
         this.recogniser.fit(features, targets);
+
+        //Centre diagram
+        var points = [];
+        for (let [id, instance] of Object.entries(this.diagram.tangibles)) {
+            points.push(instance.position);
+        }
+
+        var curCentre = Points.getCentroid(points);
+        var newCentre = {x: this.stage.getWidth()/2, y: this.stage.getHeight()/2};
+        var offset = Point.subtract(newCentre, curCentre);
+
+        for (let [id, instance] of Object.entries(this.diagram.tangibles)) {
+            instance.position = Point.add(instance.position, offset);
+        }
 
         //Setup visuals
         for (let [id, instance] of Object.entries(this.diagram.tangibles)) {
@@ -258,12 +267,9 @@ export class TangibleController {
         this.scale = this.diagram.scale;
         this.stage.scaleX(this.scale);
         this.stage.scaleY(this.scale);
-        // this.stage.x(this.diagram.position.x);
-        // this.stage.y(this.diagram.position.y);
         this.tangibleLayer.batchDraw();
     }
-
-
+    
     initVisual(model, visual) {
         //Set starting orientation and position
         visual.setPosition(model.position);
