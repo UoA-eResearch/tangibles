@@ -1,0 +1,134 @@
+[
+  {
+    "_id": "Nu3qbu2FR6nuBqWCN",
+    "name": "I killed a boar",
+    "library": {
+      "_id": "M5q3SwPNcgCCKDWQL"
+    },
+    "scale": 1.0,
+    "position": {
+      "x": 495,
+      "y": 534.66796875
+    },
+    "tangibles": {
+      "2fNtFTc2b8Hrd5c2m": {
+        "type": "NaEFePtk4RP3AWi8r",
+        "position": {
+          "x": 906.333984375,
+          "y": 273
+        },
+        "orientation": -2.053332576236457,
+        "zIndex": 0
+      },
+      "HHs3tobbAbkZ3PtWM": {
+        "type": "GFuoa9HWSPuGje845",
+        "position": {
+          "x": 916.9990234375,
+          "y": 574.666015625
+        },
+        "orientation": -12.123859561765613,
+        "zIndex": 3
+      },
+      "mWD36KJi2WYk9RLwH": {
+        "type": "dpN9dJkPdBRJnu2op",
+        "position": {
+          "x": 920.3330078125001,
+          "y": 35.8330078125
+        },
+        "orientation": 308.37287061366203,
+        "zIndex": 1
+      },
+      "yyYrnat78gFYhKNua": {
+        "type": "6gAw6TxyGYXPGY6h5",
+        "position": {
+          "x": 724.333984375,
+          "y": 117.0009765625
+        },
+        "orientation": 138.71580139801551,
+        "zIndex": 2
+      }
+    }
+  },
+  {
+    "_id": "45QmCzyypXG5bmxm9",
+    "name": "Eat my boar",
+    "position": {
+      "x": 578,
+      "y": 470
+    },
+    "scale": 1,
+    "library": {
+      "_id": "M5q3SwPNcgCCKDWQL"
+    },
+    "tangibles": {
+      "7i72qciyfLYJsKSvN": {
+        "type": "NaEFePtk4RP3AWi8r",
+        "position": {
+          "x": 857.3330078125,
+          "y": 342.33300018310547
+        },
+        "orientation": -0.3878785339411479,
+        "zIndex": 0
+      },
+      "REYj4P48rWmdxbnGe": {
+        "type": "3XhayBPjY5u5A43nP",
+        "position": {
+          "x": 824.4443359375,
+          "y": 476.33299255371094
+        },
+        "orientation": 230.5438152814961,
+        "zIndex": 1
+      },
+      "nTtmn54baPqfHpGps": {
+        "type": "dpN9dJkPdBRJnu2op",
+        "position": {
+          "x": 874.9990234375,
+          "y": 120.33298492431642
+        },
+        "orientation": -383.32118740371607,
+        "zIndex": 2
+      }
+    }
+  },
+  {
+    "_id": "Qmk4eRzgiMZXDFzJo",
+    "name": "Going fishing",
+    "position": {
+      "x": 578,
+      "y": 470
+    },
+    "scale": 1,
+    "library": {
+      "_id": "M5q3SwPNcgCCKDWQL"
+    },
+    "tangibles": {
+      "8XGwz8RQjRLgF6ihL": {
+        "type": "mqG7uK3ew7ue5eYMr",
+        "position": {
+          "x": -12.499526977539062,
+          "y": 147.66749572753906
+        },
+        "orientation": -35.19158271907086,
+        "zIndex": 2
+      },
+      "CgfKR4Ymzfze6B9NM": {
+        "type": "ftsqJa6zdQxRKcfAb",
+        "position": {
+          "x": -95.99936421712239,
+          "y": 213.55600484212235
+        },
+        "orientation": 88.0248100429859,
+        "zIndex": 1
+      },
+      "TTbKhNray25f6hXDs": {
+        "type": "orTJj4kZqeqowmYE4",
+        "position": {
+          "x": 432.00144958496094,
+          "y": 31.167495727539062
+        },
+        "orientation": 363.4818357664494,
+        "zIndex": 0
+      }
+    }
+  }
+]

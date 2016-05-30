@@ -1,0 +1,56 @@
+<md-toolbar class="md-hue-4">
+    <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" aria-label="Menu" ng-click="tgToolbar.openMenu('tg-menu')">
+            <md-icon md-svg-icon="tg:tangibles" class="white"></md-icon>
+        </md-button>
+
+        <h1 ng-if="tgToolbar.sharedData.stateName == 'home.libraries'" style="margin-left: 5px;">Libraries</h1>
+
+        <md-input-container ng-if-start="tgToolbar.sharedData.stateName == 'home.diagram'" class="tg-diagram-name" >
+            <input ng-model="tgToolbar.sharedData.diagramName" aria-label="Diagram Name">
+        </md-input-container>
+        <span flex></span>
+
+        <md-button class="md-icon-button" aria-label="Zoom in" ng-click="tgToolbar.zoomIn()">
+            <md-icon md-svg-icon="action:ic_zoom_in_24px" class="white"></md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button" aria-label="Zoom out" ng-click="tgToolbar.zoomOut()">
+            <md-icon md-svg-icon="action:ic_zoom_out_24px" class="white"></md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button" aria-label="Bring forward" ng-click="tgToolbar.bringForward()">
+            <md-icon md-svg-icon="hardware:ic_keyboard_arrow_up_24px" class="white"></md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button" aria-label="Send backward" ng-click="tgToolbar.sendBackward()">
+            <md-icon md-svg-icon="hardware:ic_keyboard_arrow_down_24px" class="white"></md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button" aria-label="Bring to front" ng-click="tgToolbar.bringToFront()">
+            <md-icon md-svg-icon="tg:to_front" class="white"></md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button" aria-label="Send to back" ng-click="tgToolbar.sendToBack()">
+            <md-icon md-svg-icon="tg:to_back" class="white"></md-icon>
+        </md-button>
+
+        <md-button ng-if-end class="md-icon-button" aria-label="Delete" ng-click="tgToolbar.delete()">
+            <md-icon md-svg-icon="action:ic_delete_24px" class="white"></md-icon>
+        </md-button>
+    </div>
+</md-toolbar>
+
+<md-sidenav class="md-sidenav-left" md-component-id="tg-menu" md-whiteframe="4">
+    <md-toolbar class="md-hue-4" ng-click="tgToolbar.toggleSidenav('tg-menu')">
+        <h1 class="md-toolbar-tools">{{tgToolbar.$const.APP}}</h1>
+    </md-toolbar>
+    <md-content layout-padding>
+        <md-list ng-cloak>
+            <md-list-item ng-repeat="item in tgToolbar.menuItems" ng-click="tgToolbar.navigateTo(item, $event)">
+                <md-icon class="tg-menu-icon" md-svg-icon="{{item.icon}}"></md-icon>
+                <p>{{item.name}}</p>
+            </md-list-item>
+        </md-list>
+    </md-content>
+</md-sidenav>
