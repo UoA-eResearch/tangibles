@@ -69,6 +69,11 @@ class ToolbarCtrl {
         PubSub.publishSync('delete', 0);
     }
 
+    deleteAll()
+    {
+        PubSub.publishSync('deleteAll', 0);
+    }
+
     zoomIn()
     {
         PubSub.publishSync('zoomIn', 0);

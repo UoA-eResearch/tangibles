@@ -133,6 +133,16 @@ export class TangibleController {
         }
     }
 
+    deleteAll() {
+        for(let [id, visual] of Object.entries(this.visuals))
+        {
+            visual.remove();
+            delete this.visuals[id];
+        }
+
+        this.stage.draw();
+    }
+
     zoomIn()
     {
         if(this.tangibleLayer.children.length > 0) {
@@ -269,7 +279,7 @@ export class TangibleController {
         this.stage.scaleY(this.scale);
         this.tangibleLayer.batchDraw();
     }
-    
+
     initVisual(model, visual) {
         //Set starting orientation and position
         visual.setPosition(model.position);

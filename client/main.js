@@ -34,13 +34,14 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', home.name, 
             .icon('tg:tangibles', '/images/stamp.svg')
             .icon('tg:to_front', '/images/to_front.svg')
             .icon('tg:to_back', '/images/to_back.svg')
+            .icon('tg:delete_all', '/images/delete_all.svg')
             .iconSet("file", "/packages/planettraining_material-design-icons/bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-file.svg")
             .iconSet("action", "/packages/planettraining_material-design-icons/bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-action.svg")
             .iconSet("hardware", "/packages/planettraining_material-design-icons/bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-hardware.svg")
             .iconSet("content", "/packages/planettraining_material-design-icons/bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-content.svg")
             .iconSet("navigation", "/packages/planettraining_material-design-icons/bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-navigation.svg")
             .iconSet("av", "/packages/planettraining_material-design-icons/bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-av.svg");
-
+        
         $urlRouterProvider.otherwise("/login");
 
         $stateProvider

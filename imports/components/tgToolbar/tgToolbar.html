@@ -6,6 +6,8 @@
 
         <h1 ng-if="tgToolbar.sharedData.stateName == 'home.libraries'" style="margin-left: 5px;">Libraries</h1>
 
+
+
         <md-input-container ng-if-start="tgToolbar.sharedData.stateName == 'home.diagram'" class="tg-diagram-name" >
             <input ng-model="tgToolbar.sharedData.diagramName" aria-label="Diagram Name">
         </md-input-container>
@@ -35,8 +37,12 @@
             <md-icon md-svg-icon="tg:to_back" class="white"></md-icon>
         </md-button>
 
-        <md-button ng-if-end class="md-icon-button" aria-label="Delete" ng-click="tgToolbar.delete()">
+        <md-button class="md-icon-button" aria-label="Delete" ng-click="tgToolbar.delete()">
             <md-icon md-svg-icon="action:ic_delete_24px" class="white"></md-icon>
+        </md-button>
+
+        <md-button ng-if-end class="md-icon-button" aria-label="Delete All" ng-click="tgToolbar.deleteAll()">
+            <md-icon md-svg-icon="tg:delete_all" class="white"></md-icon>
         </md-button>
     </div>
 </md-toolbar>

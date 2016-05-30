@@ -30,6 +30,7 @@ class DiagramCtrl {
         });
 
         this.deleteSelectedSub = this.tangibleController.deleteSelected.bind(this.tangibleController);
+        this.deleteAllSub = this.tangibleController.deleteAll.bind(this.tangibleController);
         this.zoomInSub = this.tangibleController.zoomIn.bind(this.tangibleController);
         this.zoomOutSub = this.tangibleController.zoomOut.bind(this.tangibleController);
         this.bringForwardSub = this.tangibleController.bringForward.bind(this.tangibleController);
@@ -41,6 +42,7 @@ class DiagramCtrl {
 
         PubSub.subscribe('name', this.deleteSelectedSub);
         PubSub.subscribe('delete', this.deleteSelectedSub);
+        PubSub.subscribe('deleteAll', this.deleteAllSub);
         PubSub.subscribe('zoomIn', this.zoomInSub);
         PubSub.subscribe('zoomOut', this.zoomOutSub);
         PubSub.subscribe('bringForward', this.bringForwardSub);
@@ -56,8 +58,8 @@ class DiagramCtrl {
 
     destroy()
     {
-        console.log('destroy');
         PubSub.unsubscribe(this.deleteSelectedSub);
+        PubSub.unsubscribe(this.deleteAllSub);
         PubSub.unsubscribe(this.zoomInSub);
         PubSub.unsubscribe(this.zoomOutSub);
         PubSub.unsubscribe(this.bringForwardSub);
