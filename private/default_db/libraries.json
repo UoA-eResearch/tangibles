@@ -8,6 +8,7 @@
         "icon": false,
         "scale": 0.4274809160305344,
         "startAngle": 178,
+        "transparentHit": false,
         "registrationPoints": [
           {
             "x": 294,
@@ -28,6 +29,7 @@
         "icon": false,
         "scale": 1.0,
         "startAngle": 0,
+        "transparentHit": false,
         "registrationPoints": [
           {
             "x": 168,
@@ -48,6 +50,7 @@
         "icon": false,
         "scale": 1.0,
         "startAngle": 90,
+        "transparentHit": false,
         "registrationPoints": [
           {
             "x": 409.3330078125,
@@ -68,6 +71,7 @@
         "icon": true,
         "scale": 1.0,
         "startAngle": 200,
+        "transparentHit": true,
         "registrationPoints": [
           {
             "x": 376,
@@ -88,6 +92,7 @@
         "icon": false,
         "scale": 1.0,
         "startAngle": -90,
+        "transparentHit": true,
         "registrationPoints": [
           {
             "x": 204,
@@ -108,6 +113,7 @@
         "icon": false,
         "scale": 1.0,
         "startAngle": 90,
+        "transparentHit": false,
         "registrationPoints": [
           {
             "x": 194,
@@ -128,6 +134,7 @@
         "icon": false,
         "scale": 1.0,
         "startAngle": 270,
+        "transparentHit": true,
         "registrationPoints": [
           {
             "x": 213.3330078125,
@@ -148,6 +155,7 @@
         "icon": false,
         "scale": 1.0,
         "startAngle": 75,
+        "transparentHit": false,
         "registrationPoints": [
           {
             "x": 180.6669921875,
@@ -168,6 +176,7 @@
         "icon": false,
         "scale": 1.0,
         "startAngle": 0,
+        "transparentHit": true,
         "registrationPoints": [
           {
             "x": 130,
@@ -188,6 +197,7 @@
         "icon": false,
         "scale": 1.0,
         "startAngle": 90,
+        "transparentHit": true,
         "registrationPoints": [
           {
             "x": 182.6669921875,

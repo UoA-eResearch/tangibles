@@ -55,8 +55,13 @@ export class Visual {
             });
 
             this.shape.cache();
-            this.shape.drawHitFromCache();
 
+            if(this.template.transparentHit)
+            {
+                this.shape.drawHitFromCache();
+            }
+
+            this.shape.perfectDrawEnabled(false);
             this.shape.on('tap', this.onTap.bind(this));
             this.shape.on('dragstart', this.onDragStart.bind(this));
             this.shape.on('dragend', this.onDragEnd.bind(this));
@@ -137,8 +142,14 @@ export class Visual {
             shadowOpacity: 0.7,
             shadowOffset: {x: 0, y: 0}
         });
+
         this.shape.cache();
-        this.shape.drawHitFromCache();
+
+        if(this.template.transparentHit)
+        {
+            this.shape.drawHitFromCache();
+        }
+
         this.selected = true;
     }
 
@@ -148,8 +159,14 @@ export class Visual {
             shadowOpacity: 0.0,
             shadowOffset: {x: 0, y: 0}
         });
+
         this.shape.cache();
-        this.shape.drawHitFromCache();
+
+        if(this.template.transparentHit)
+        {
+            this.shape.drawHitFromCache();
+        }
+
         this.selected = false; //update model
     }
 
