@@ -2,8 +2,7 @@
   "name": "tangibles",
   "private": true,
   "scripts": {
-    "start": "meteor run",
-    "install": "napa hongru/canvas2image"
+    "start": "meteor run"
   },
   "dependencies": {
     "angular": "^1.5.3",
@@ -17,6 +16,7 @@
     "angular-ui-router": "1.0.0-alpha.4",
     "hammerjs": "^1.0.7",
     "html2canvas": "^0.5.0-beta4",
+    "canvas2image": "git://github.com/jdddog/canvas2image.git",
     "javascript-detect-element-resize": "^0.5.3",
     "konva": "^0.12.2",
     "lodash": "^4.12.0",
@@ -25,7 +25,6 @@
     "pubsub-js": "^1.5.3"
   },
   "devDependencies": {
-    "napa": "^2.3.0",
     "autoprefixer": "^6.3.6"
   },
   "postcss": {
