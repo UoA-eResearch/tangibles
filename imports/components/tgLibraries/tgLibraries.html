@@ -101,12 +101,14 @@
                         <p>Image</p>
                     </div>
 
-                    <md-button layout layout-align="left center" class="md-primary"
-                               ng-click="tgLibraries.triggerImageUpload()" style="margin-left: 0;">
+                    <md-button flex="40" style="margin: 0;" layout-align="left center" class="md-primary"
+                               ng-click="tgLibraries.triggerImageUpload()">
                         Choose image
                     </md-button>
-                    <input type="file" id="file" ng-model="file" name="file" accept=".png" base-sixty-four-input
-                           parser="imageUploaded" style="visibility: hidden;margin: 0;"/>
+
+                    <span flex="10"></span>
+
+                    <md-checkbox flex="50" style="margin-bottom: 0;" ng-model="tgLibraries.selectedTangible.tangible.icon"><p>Library icon</p></md-checkbox>
                 </div>
 
                 <div layout>
@@ -120,10 +122,12 @@
                         </md-slider>
                     </div>
 
-                    <div flex="30" layout="row" layout-align="center center">
+                    <span flex="5"></span>
+
+                    <md-input-container flex="25" style="margin-bottom: 0; margin-top: 0;" layout="row" layout-align="left center">
                         <input type="number" ng-model="tgLibraries.selectedTangible.tangible.startAngle"
-                               aria-label="Angle">
-                    </div>
+                               aria-label="Angle" style="text-align: center;">
+                    </md-input-container>
                 </div>
 
                 <div layout>
@@ -131,11 +135,15 @@
                         <p>Scale</p>
                     </div>
 
-                    <md-input-container class="md-block" layout="row" layout-align="left center">
+                    <md-input-container style="margin-bottom: 0; margin-top: 0;" flex="40" layout="row" layout-align="left center">
                         <input required type="number" step="0.1" name="scale"
                                ng-model="tgLibraries.selectedTangible.tangible.scale" min="0.0001" max="1000"
                                style="text-align: center;"/>
                     </md-input-container>
+
+                    <span flex="10"></span>
+
+                    <md-checkbox flex="50" style="margin-bottom: 0;"  ng-model="tgLibraries.selectedTangible.tangible.transparentHit"><p>Transparent hit</p></md-checkbox>
                 </div>
 
                 <div layout>
@@ -167,3 +175,6 @@
         </md-sidenav>
     </md-sidenav>
 </div>
+
+<input type="file" id="file" ng-model="file" name="file" accept=".png" base-sixty-four-input
+       parser="imageUploaded" style="visibility: hidden;margin: 0;"/>

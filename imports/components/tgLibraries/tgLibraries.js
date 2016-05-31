@@ -8,6 +8,7 @@ import {SidenavCtrl} from '../tgSidenav/tgSidenav';
 import {Visual} from '../../api/tangibles/visual';
 import {Points, Point} from '../../api/tangibles/points';
 import naifBase64 from 'angular-base64-upload';
+import {Library} from './tgLibrary';
 
 export class LibrariesCtrl {
     constructor($scope, $mdSidenav, $mdUtil, $q) {
@@ -179,8 +180,17 @@ export class LibrariesCtrl {
                 Images.insert(file);
             });
         }
-
+        
         this.selectedLibrary.tangibles[this.selectedTangible.id] = this.selectedTangible.tangible;
+
+        if(this.selectedTangible.tangible.icon)
+        {
+            for (let [id, tangible] of Object.entries(this.selectedLibrary.tangibles)) {
+                if(id != this.selectedTangible.id) {
+                    tangible.icon = false;
+                }
+            }
+        }
 
         this.saveLibrary();
 
@@ -200,21 +210,12 @@ export class LibrariesCtrl {
 
     getLibraryIcon(library)
     {
-        var iconId = '';
-        
-        for (let [id, instance] of Object.entries(library.tangibles)) {
-            if(instance.icon)
-            {
-                iconId = id;
-                break;
-            }
-        }
-        
-        return '/cfs/files/images/' + iconId + '/image.png';
+        return Library.getLibraryIcon(library);
     }
 
     addLibrary()
     {
+        console.log(Random.id());
         Libraries.insert({_id: Random.id(), name: "Untitled", tangibles: {}});
     }
 

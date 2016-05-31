@@ -4,6 +4,7 @@ import angularUiRouter from 'angular-ui-router';
 import template from './tgNew.html';
 import {DialogCtrl} from '../tgDialog/tgDialog';
 import {Libraries} from '../../api/collections/libraries.js';
+import {Library} from '../tgLibraries/tgLibrary';
 
 class NewDiagramCtrl extends DialogCtrl {
     constructor($scope, $mdDialog, $const, $state) {
@@ -22,17 +23,7 @@ class NewDiagramCtrl extends DialogCtrl {
 
     getLibraryIcon(library)
     {
-        var iconId = '';
-
-        for (let [id, instance] of Object.entries(library.tangibles)) {
-            if(instance.icon)
-            {
-                iconId = id;
-                break;
-            }
-        }
-
-        return '/cfs/files/images/' + iconId + '/image.png';
+        return Library.getLibraryIcon(library);
     }
 
     openNewDiagram(library, $event)

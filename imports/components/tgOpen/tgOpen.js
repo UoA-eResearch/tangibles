@@ -4,6 +4,7 @@ import angularUiRouter from 'angular-ui-router';
 import template from './tgOpen.html';
 import {DialogCtrl} from '../tgDialog/tgDialog'
 import {Diagrams} from '/imports/api/collections/diagrams';
+import {Visual} from '/imports/api/tangibles/visual';
 
 class OpenDiagramCtrl extends DialogCtrl {
     constructor($scope, $mdDialog, $const, $state) {
@@ -23,7 +24,7 @@ class OpenDiagramCtrl extends DialogCtrl {
 
     getImageUrl(diagramId)
     {
-        return '/cfs/files/images/' + diagramId + '/image.png';
+        return Visual.getImageUrl(diagramId);
     }
 
     openDiagram(diagram, $event)
