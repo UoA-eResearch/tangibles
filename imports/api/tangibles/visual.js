@@ -1,11 +1,9 @@
 import hammer from 'hammerjs/hammer';
-//import konvajs from 'konva/konva';
 import Konva from 'konva';
 import {Point} from './points'
 
 export class Visual {
 
-    //template.id, template.name, template.scale, template.startAngle, template.icon, template.registrationPoints,
     constructor(instanceId, typeId, template, stage, cb) {
         this.id = instanceId;
         this.template = template;
