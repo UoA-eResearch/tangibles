@@ -26,6 +26,12 @@ Meteor.startup(() => {
     console.log('starting!');
 
     var path = 'default_db/';
+    var defaultImageId = '6mpfqKyrjTNynuRJB';
+
+    if(Images.find({_id: defaultImageId}).count() == 0)
+    {
+        insertImage(path, defaultImageId);
+    }
 
     if(Libraries.find({}).count() == 0)
     {
