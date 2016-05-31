@@ -70,6 +70,19 @@ class DiagramCtrl {
         PubSub.unsubscribe(this.saveDiagramSub);
     }
 
+    static getImagesDictionary(library)
+    {
+        var imagesDict = {};
+        
+        for(let [id, tangible] of Object.entries(library.tangibles))
+        {
+            var image = Images.findOne({_id: id});
+            imagesDict[id] = image.data;
+        }
+
+        return imagesDict;
+    }
+
     openNewDiagram(newVal, oldVal)
     {
         if(newVal != undefined && this.isNewDiagram)
@@ -89,7 +102,9 @@ class DiagramCtrl {
 
             this.sharedData.diagramName = this.localDiagram.name;
             PubSub.publish('updateName', this.localDiagram.name);
-            this.tangibleController.openDiagram(this.localDiagram, angular.copy(newVal));
+            var library = Libraries.findOne({_id: this.libraryId});
+            var images = DiagramCtrl.getImagesDictionary(library);
+            this.tangibleController.openDiagram(this.localDiagram, angular.copy(newVal), images);
         }
     }
 
@@ -105,7 +120,8 @@ class DiagramCtrl {
             this.sharedData.diagramName = this.localDiagram.name;
             PubSub.publish('updateName', this.localDiagram.name);
             var library = Libraries.findOne({_id: this.libraryId});
-            this.tangibleController.openDiagram(this.localDiagram, angular.copy(library));
+            var images = DiagramCtrl.getImagesDictionary(library);
+            this.tangibleController.openDiagram(this.localDiagram, angular.copy(library), images);
         }
     }
 
@@ -125,7 +141,7 @@ class DiagramCtrl {
     saveThumb(diagramId)
     {
         this.tangibleController.diagramThumb().then(function(imageData) {
-            if(Images.find({_id: diagramId}).count != 0)
+            if(Images.find({_id: diagramId}).count() != 0)
             {
                 Images.remove(diagramId);
             }

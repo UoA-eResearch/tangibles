@@ -4,6 +4,8 @@ import angularUiRouter from 'angular-ui-router';
 import template from './tgNew.html';
 import {DialogCtrl} from '../tgDialog/tgDialog';
 import {Libraries} from '../../api/collections/libraries.js';
+import {Images} from '../../api/collections/images.js';
+import {Visual} from '../../api/tangibles/visual.js';
 import {Library} from '../tgLibraries/tgLibrary';
 
 class NewDiagramCtrl extends DialogCtrl {
@@ -13,6 +15,7 @@ class NewDiagramCtrl extends DialogCtrl {
         $scope.viewModel(this);
         this.$state = $state;
         this.subscribe('libraries');
+        this.subscribe('images');
 
         this.helpers({
             libraries() {
@@ -23,7 +26,7 @@ class NewDiagramCtrl extends DialogCtrl {
 
     getLibraryIcon(library)
     {
-        return Library.getLibraryIcon(library);
+        return Library.getIconBase64(library);
     }
 
     openNewDiagram(library, $event)

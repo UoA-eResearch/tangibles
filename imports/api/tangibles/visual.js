@@ -4,7 +4,7 @@ import {Point} from './points'
 
 export class Visual {
 
-    constructor(instanceId, typeId, template, stage, cb) {
+    constructor(instanceId, typeId, template, stage, base64data, cb) {
         this.id = instanceId;
         this.template = template;
 
@@ -19,18 +19,16 @@ export class Visual {
         //Create shape to represent tangible
         this.imageObj = new Image();
         this.imageObj.onload = this.onLoad.bind(this);
-        this.imageObj.src = Visual.getImageUrl(typeId);
+        this.imageObj.src = Visual.getImageUrl(base64data);
     }
 
     /**
-     * Need to prefix image url with __meteor_runtime_config__.ROOT_URL to enable Cordova deployed app to find images
-     * on cfs. See this error report: https://github.com/CollectionFS/Meteor-CollectionFS/issues/425
-     * @param typeId
+     * @param base64data
      * @returns {string}
      */
-    static getImageUrl(typeId)
+    static getImageUrl(base64data)
     {
-        return __meteor_runtime_config__.ROOT_URL + 'cfs/files/images/' + typeId + '/image.png';
+        return "data:image/png;base64," + base64data;
     }
 
     setTouchEnabled(isEnabled) {
@@ -62,7 +60,7 @@ export class Visual {
 
             if(this.template.transparentHit)
             {
-                //this.shape.drawHitFromCache();
+                this.shape.drawHitFromCache();
             }
 
             this.shape.perfectDrawEnabled(false);
@@ -151,7 +149,7 @@ export class Visual {
 
         if(this.template.transparentHit)
         {
-            //this.shape.drawHitFromCache();
+            this.shape.drawHitFromCache();
         }
 
         this.selected = true;
@@ -168,7 +166,7 @@ export class Visual {
 
         if(this.template.transparentHit)
         {
-            //this.shape.drawHitFromCache();
+            this.shape.drawHitFromCache();
         }
 
         this.selected = false; //update model

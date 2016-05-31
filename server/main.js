@@ -3,24 +3,18 @@ import {Libraries} from '../imports/api/collections/libraries';
 import {Diagrams} from '../imports/api/collections/diagrams';
 import {Images} from '../imports/api/collections/images';
 import entries from 'object.entries';
+import {fromByteArray} from '../node_modules/base64-js/lib/b64';
 
 if (!Object.entries) {
     entries.shim();
 }
 
-insertImage = function (path, id) {
-
+function insertImage(path, id) {
     var file_name = path + 'images/' + id + '.png';
     var data = Assets.getBinary(file_name);
-
-    var file = new FS.File();
-    file._id = id;
-    file.attachData(data, {type: 'image/png'}, function (err) {
-        if (err) throw err;
-        file.name('image.png');
-        Images.insert(file);
-    });
-};
+    var base64 = fromByteArray(data);
+    Images.insert({_id: id, data: base64});
+}
 
 Meteor.startup(() => {
     console.log('starting!');
@@ -38,8 +32,6 @@ Meteor.startup(() => {
         console.log("No libraries found, creating default.");
         var libraries = JSON.parse(Assets.getText(path + "libraries.json"));
 
-        //console.log('Images: ', Images.find().fetch());
-
         for(var i=0; i < libraries.length; i++)
         {
             var lib = libraries[i];
@@ -53,8 +45,6 @@ Meteor.startup(() => {
             // Create the library
             Libraries.insert(lib);
         }
-
-        console.log('Images: ', Images.find().fetch());
     }
 
     if(Diagrams.find({}).count() == 0)

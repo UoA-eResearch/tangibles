@@ -51,27 +51,7 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', home.name, 
                     'main-view': {
                         component: login.name
                     }
-                }
-            })
-            .state('home', {
-                url: "/home",
-                abstract: true,
-                views: {
-                    'main-view': {
-                        component: home.name
-                    }
-                }
-            })
-            .state('home.diagram', {
-                url: "/diagram/:diagramId/:isNewDiagram/:libraryId",
-                views: {
-                    'home-view': {
-                        component: diagram.name
-                    }
                 },
-                onEnter: ['$tgSharedData', function ($tgSharedData) {
-                    $tgSharedData.data.stateName = 'home.diagram';
-                }],
                 resolve: {
                     libraries: ['$rootScope', function ($rootScope) {
                         return $rootScope.subscribe('libraries');
@@ -83,6 +63,37 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', home.name, 
                         return $rootScope.subscribe('diagrams');
                     }]
                 }
+            })
+            .state('home', {
+                url: "/home",
+                abstract: true,
+                views: {
+                    'main-view': {
+                        component: home.name
+                    }
+                },
+                resolve: {
+                    libraries: ['$rootScope', function ($rootScope) {
+                        return $rootScope.subscribe('libraries');
+                    }],
+                    images: ['$rootScope', function ($rootScope) {
+                        return $rootScope.subscribe('images');
+                    }],
+                    diagrams: ['$rootScope', function ($rootScope) {
+                        return $rootScope.subscribe('diagrams');
+                    }]
+                }
+            })
+            .state('home.diagram', {
+                url: "/diagram/:diagramId/:isNewDiagram/:libraryId",
+                views: {
+                    'home-view': {
+                        component: diagram.name
+                    }
+                },
+                onEnter: ['$tgSharedData', function ($tgSharedData) {
+                    $tgSharedData.data.stateName = 'home.diagram';
+                }]
             }).state('home.libraries', {
                 url: "/libraries",
                 views: {

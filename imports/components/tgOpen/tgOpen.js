@@ -5,6 +5,7 @@ import template from './tgOpen.html';
 import {DialogCtrl} from '../tgDialog/tgDialog'
 import {Diagrams} from '/imports/api/collections/diagrams';
 import {Visual} from '/imports/api/tangibles/visual';
+import {Images} from '/imports/api/collections/images';
 
 class OpenDiagramCtrl extends DialogCtrl {
     constructor($scope, $mdDialog, $const, $state) {
@@ -14,6 +15,7 @@ class OpenDiagramCtrl extends DialogCtrl {
         this.$state = $state;
 
         this.subscribe('diagrams');
+        this.subscribe('images');
 
         this.helpers({
             diagrams() {
@@ -24,7 +26,8 @@ class OpenDiagramCtrl extends DialogCtrl {
 
     getImageUrl(diagramId)
     {
-        return Visual.getImageUrl(diagramId);
+        var image = Images.findOne({_id: diagramId});
+        return Visual.getImageUrl(image.data);
     }
 
     openDiagram(diagram, $event)

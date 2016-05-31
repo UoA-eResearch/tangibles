@@ -18,8 +18,6 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 insecure                # Allow all DB writes from clients (for prototyping)
 fourseven:scss
 juliancwirko:postcss
-cfs:standard-packages
-cfs:filesystem
 session
 check
 random

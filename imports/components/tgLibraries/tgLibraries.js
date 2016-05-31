@@ -28,8 +28,8 @@ export class LibrariesCtrl {
         this.imageObj = new Image();
         this.imageObj.onload = this.newImageLoaded.bind(this);
 
-        this.subscribe('libraries');
-        this.subscribe('images');
+        // this.subscribe('libraries');
+        // this.subscribe('images');
 
         this.helpers({
             libraries() {
@@ -48,7 +48,14 @@ export class LibrariesCtrl {
 
     getImageUrl(typeId)
     {
-        return Visual.getImageUrl(typeId);
+        var image = Images.findOne({_id: typeId});
+
+        if(image == undefined)
+        {
+            image = Images.findOne({_id: '6mpfqKyrjTNynuRJB'});
+        }
+
+        return Visual.getImageUrl(image.data);
     }
 
     newImageLoaded()
@@ -115,7 +122,8 @@ export class LibrariesCtrl {
 
     setUrlImage(typeId)
     {
-        this.imageObj.src = Visual.getImageUrl(typeId);
+        var image = Images.findOne({_id: typeId});
+        this.imageObj.src = Visual.getImageUrl(image.data);
     }
 
     editLibrary(library)
@@ -210,7 +218,7 @@ export class LibrariesCtrl {
 
     getLibraryIcon(library)
     {
-        return Library.getLibraryIcon(library);
+        return Library.getIconBase64(library);
     }
 
     addLibrary()
