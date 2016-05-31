@@ -62,7 +62,7 @@ export class Visual {
 
             if(this.template.transparentHit)
             {
-                this.shape.drawHitFromCache();
+                //this.shape.drawHitFromCache();
             }
 
             this.shape.perfectDrawEnabled(false);
@@ -151,7 +151,7 @@ export class Visual {
 
         if(this.template.transparentHit)
         {
-            this.shape.drawHitFromCache();
+            //this.shape.drawHitFromCache();
         }
 
         this.selected = true;
@@ -168,7 +168,7 @@ export class Visual {
 
         if(this.template.transparentHit)
         {
-            this.shape.drawHitFromCache();
+            //this.shape.drawHitFromCache();
         }
 
         this.selected = false; //update model
