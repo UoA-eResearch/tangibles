@@ -146,14 +146,7 @@ class DiagramCtrl {
                 Images.remove(diagramId);
             }
 
-            var file = new FS.File();
-            file._id = diagramId;
-            file.attachData('data:image/png;base64,' + imageData, {type: 'image/png'}, function (err) {
-                if (err) throw err;
-                console.log('saving');
-                file.name('image.png');
-                Images.insert(file);
-            });
+            Images.insert({_id: diagramId, data:imageData});
         }.bind(this));
     }
 
