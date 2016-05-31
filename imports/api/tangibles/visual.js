@@ -24,9 +24,15 @@ export class Visual {
         this.imageObj.src = Visual.getImageUrl(typeId);
     }
 
+    /**
+     * Need to prefix image url with __meteor_runtime_config__.ROOT_URL to enable Cordova deployed app to find images
+     * on cfs. See this error report: https://github.com/CollectionFS/Meteor-CollectionFS/issues/425
+     * @param typeId
+     * @returns {string}
+     */
     static getImageUrl(typeId)
     {
-        return '/cfs/files/images/' + typeId + '/image.png';
+        return __meteor_runtime_config__.ROOT_URL + 'cfs/files/images/' + typeId + '/image.png';
     }
 
     setTouchEnabled(isEnabled) {
