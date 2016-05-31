@@ -116,8 +116,7 @@ export class TangibleController {
             // this.tangibleLayer.scaleY(this.scale);
             // this.touchPointsLayer.scaleX(this.scale);
             // this.touchPointsLayer.scaleY(this.scale);
-            console.log('zoom out', this.scale);
-            this.stage.batchDraw();
+            this.stage.draw();
         }
 
     }
@@ -153,8 +152,7 @@ export class TangibleController {
             // this.tangibleLayer.scaleY(this.scale);
             // this.touchPointsLayer.scaleX(this.scale);
             // this.touchPointsLayer.scaleY(this.scale);
-            console.log('zoom in', this.scale);
-            this.stage.batchDraw();
+            this.stage.draw();
         }
     }
 
@@ -330,6 +328,7 @@ export class TangibleController {
             this.stage.batchDraw();
         }
     }
+
 
     /**
      *

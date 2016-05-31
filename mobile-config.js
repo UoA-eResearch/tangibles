@@ -3,8 +3,8 @@ App.info({
   description: 'An app for creating diagrams with capacitive tangibles.',
   author: 'Jamie Diprose',
   email: 'jamie.diprose@gmail.com',
-  website: '',
-  version: '0.0.1'
+  website: 'https://github.com/UoA-CompSci/tangibles',
+  version: '0.1.0'
 });
 
 App.icons({
