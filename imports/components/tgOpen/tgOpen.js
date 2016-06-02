@@ -8,11 +8,12 @@ import {Visual} from '/imports/api/tangibles/visual';
 import {Images} from '/imports/api/collections/images';
 
 class OpenDiagramCtrl extends DialogCtrl {
-    constructor($scope, $mdDialog, $const, $state) {
+    constructor($scope, $mdDialog, $const, $state, $tgImages) {
         'ngInject';
         super($scope, $mdDialog, $const);
         $scope.viewModel(this);
         this.$state = $state;
+        $scope.$tgImages = $tgImages;
 
         this.subscribe('diagrams');
         this.subscribe('images');
@@ -22,12 +23,6 @@ class OpenDiagramCtrl extends DialogCtrl {
                 return Diagrams.find({});
             }
         });
-    }
-
-    getImageUrl(diagramId)
-    {
-        var image = Images.findOne({_id: diagramId});
-        return Visual.getImageUrl(image.data);
     }
 
     openDiagram(diagram, $event)

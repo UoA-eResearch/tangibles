@@ -20,7 +20,7 @@
         <md-list-item ng-repeat="library in tgNew.libraries | filter:query" ng-click="tgNew.openNewDiagram(library, $event)">
             <div class="horizontal tg-list-item">
                 <div class="vertical">
-                    <img ng-src="{{tgNew.getLibraryIcon(library)}}" alt="{{library.name}}"/>
+                    <img ng-src="{{$tgImages.getLibraryImage(library)}}" alt="{{library.name}}"/>
                 </div>
             </div>
             <p>{{library.name}}</p>

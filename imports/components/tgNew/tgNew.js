@@ -6,13 +6,13 @@ import {DialogCtrl} from '../tgDialog/tgDialog';
 import {Libraries} from '../../api/collections/libraries.js';
 import {Images} from '../../api/collections/images.js';
 import {Visual} from '../../api/tangibles/visual.js';
-import {Library} from '../tgLibraries/tgLibrary';
 
 class NewDiagramCtrl extends DialogCtrl {
-    constructor($scope, $mdDialog, $const, $state) {
+    constructor($scope, $mdDialog, $const, $state, $tgImages) {
         'ngInject';
         super($scope, $mdDialog, $const);
         $scope.viewModel(this);
+        $scope.$tgImages = $tgImages;
         this.$state = $state;
         this.subscribe('libraries');
         this.subscribe('images');
@@ -22,11 +22,6 @@ class NewDiagramCtrl extends DialogCtrl {
                 return Libraries.find({});
             }
         });
-    }
-
-    getLibraryIcon(library)
-    {
-        return Library.getIconBase64(library);
     }
 
     openNewDiagram(library, $event)

@@ -4,7 +4,7 @@ import {Point} from './points'
 
 export class Visual {
 
-    constructor(instanceId, typeId, template, stage, base64data, cb) {
+    constructor(instanceId, typeId, template, stage, imageUrl, cb) {
         this.id = instanceId;
         this.template = template;
 
@@ -19,16 +19,7 @@ export class Visual {
         //Create shape to represent tangible
         this.imageObj = new Image();
         this.imageObj.onload = this.onLoad.bind(this);
-        this.imageObj.src = Visual.getImageUrl(base64data);
-    }
-
-    /**
-     * @param base64data
-     * @returns {string}
-     */
-    static getImageUrl(base64data)
-    {
-        return "data:image/png;base64," + base64data;
+        this.imageObj.src = imageUrl;
     }
 
     setTouchEnabled(isEnabled) {

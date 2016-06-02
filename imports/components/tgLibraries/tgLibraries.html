@@ -12,7 +12,7 @@
                       ng-click="tgLibraries.editLibrary(library)">
             <div class="horizontal tg-list-item">
                 <div class="vertical">
-                    <img ng-src="{{tgLibraries.getLibraryIcon(library)}}" alt="{{library.name}}"/>
+                    <img ng-src="{{$tgImages.getLibraryImage(library)}}" alt="{{library.name}}"/>
                 </div>
             </div>
             <p>{{library.name}}</p>
@@ -40,13 +40,10 @@
                 <h1>Edit library</h1>
 
                 <md-input-container class="tg-diagram-name">
-                    <input ng-model="tgLibraries.selectedLibrary.name" aria-label="Diagram Name" ng-change="tgLibraries.saveLibrary()">
+                    <input ng-model="tgLibraries.selectedLibrary.name" aria-label="Diagram Name" ng-change="tgLibraries.updateName()">
                 </md-input-container>
 
                 <span flex></span>
-
-
-
             </div>
         </md-toolbar>
 
@@ -59,7 +56,7 @@
                                   ng-click="tgLibraries.editTangible(id, tangible)">
                         <div class="horizontal tangible-icon-container">
                             <div class="vertical">
-                                <img class="tangible-icon" ng-src="{{tgLibraries.getImageUrl(id)}}"/>
+                                <img class="tangible-icon" ng-src="{{$tgImages.getTangibleImage(id, tgLibraries.selectedLibrary)}}"/>
                             </div>
                         </div>
                         <p>{{tangible.name}}</p>

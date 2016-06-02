@@ -3,19 +3,19 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import template from './tgLibraries.html';
 import {Libraries} from '../../api/collections/libraries.js';
-import {Images} from '../../api/collections/images.js';
 import {SidenavCtrl} from '../tgSidenav/tgSidenav';
-import {Visual} from '../../api/tangibles/visual';
 import {Points, Point} from '../../api/tangibles/points';
 import naifBase64 from 'angular-base64-upload';
-import {Library} from './tgLibrary';
 
 export class LibrariesCtrl {
-    constructor($scope, $mdSidenav, $mdUtil, $q) {
+    constructor($scope, $mdSidenav, $mdUtil, $q, $const, $tgImages) {
         'ngInject';
         $scope.viewModel(this);
         this.touchWindow = 'Uneditable';
         this.$scope = $scope;
+        this.$const = $const;
+        $scope.$tgImages = $tgImages;
+        this.$tgImages = $tgImages;
 
         this.$mdSidenav = $mdSidenav;
         this.$mdUtil = $mdUtil;
@@ -24,12 +24,8 @@ export class LibrariesCtrl {
         this.containerID = 'touchPointsContainer';
         this.image = undefined;
 
-
         this.imageObj = new Image();
         this.imageObj.onload = this.newImageLoaded.bind(this);
-
-        // this.subscribe('libraries');
-        // this.subscribe('images');
 
         this.helpers({
             libraries() {
@@ -41,21 +37,9 @@ export class LibrariesCtrl {
         {
             var deferred = $q.defer();
             $scope.tgLibraries.image = base64_object.base64;
-            $scope.tgLibraries.setBase64Image(base64_object.base64);
+            $scope.tgLibraries.imageObj.src = 'data:image/png;base64,' + base64_object.base64;
             return deferred.promise;
         };
-    }
-
-    getImageUrl(typeId)
-    {
-        var image = Images.findOne({_id: typeId});
-
-        if(image == undefined)
-        {
-            image = Images.findOne({_id: '6mpfqKyrjTNynuRJB'});
-        }
-
-        return Visual.getImageUrl(image.data);
     }
 
     newImageLoaded()
@@ -115,17 +99,6 @@ export class LibrariesCtrl {
         }.bind(this), true);
     }
 
-    setBase64Image(base64)
-    {
-        this.imageObj.src = 'data:image/png;base64,' + base64;
-    }
-
-    setUrlImage(typeId)
-    {
-        var image = Images.findOne({_id: typeId});
-        this.imageObj.src = Visual.getImageUrl(image.data);
-    }
-
     editLibrary(library)
     {
         this.selectedLibrary = angular.copy(library);
@@ -145,6 +118,7 @@ export class LibrariesCtrl {
         $('#file').trigger('click');
     }
 
+    //TODO: combine with TangibleController
     initTouchWindow()
     {
         var rect = document.getElementById(this.containerID).getBoundingClientRect();
@@ -164,33 +138,16 @@ export class LibrariesCtrl {
     deleteTangible(tangibleId)
     {
         delete this.selectedLibrary.tangibles[tangibleId];
-        Images.remove(tangibleId);
-        this.saveLibrary();
-    }
+        delete this.selectedLibrary.images[tangibleId];
 
-    saveLibrary()
-    {
-        Libraries.update(this.selectedLibrary._id, {
-            $set: {tangibles: this.selectedLibrary.tangibles, name: this.selectedLibrary.name},
-        });
+        Libraries.update(
+            { _id: this.selectedLibrary._id },
+            {$unset: { ['images.' + tangibleId]: "", ['tangibles.' + tangibleId]: ""}}
+        );
     }
 
     saveTangible()
     {
-        if(this.image != undefined)
-        {
-            Images.remove(this.selectedTangible.id);
-            var file = new FS.File();
-            file._id = this.selectedTangible.id;
-            file.attachData('data:image/png;base64,' + this.image, {type: 'image/png'}, function (err) {
-                if (err) throw err;
-                file.name('image.png');
-                Images.insert(file);
-            });
-        }
-        
-        this.selectedLibrary.tangibles[this.selectedTangible.id] = this.selectedTangible.tangible;
-
         if(this.selectedTangible.tangible.icon)
         {
             for (let [id, tangible] of Object.entries(this.selectedLibrary.tangibles)) {
@@ -200,7 +157,20 @@ export class LibrariesCtrl {
             }
         }
 
-        this.saveLibrary();
+        this.selectedLibrary.tangibles[this.selectedTangible.id] = this.selectedTangible.tangible;
+        this.selectedLibrary.images[this.selectedTangible.id] = 'data:image/png;base64,' + this.image;
+
+        if(this.image != undefined)
+        {
+            Libraries.update(
+                { _id: this.selectedLibrary._id },
+                {$set: { ['images.' + this.selectedTangible.id]: this.selectedLibrary.images[this.selectedTangible.id]}}
+            );
+        }
+
+        Libraries.update(this.selectedLibrary._id, {
+            $set: {tangibles: this.selectedLibrary.tangibles, name: this.selectedLibrary.name},
+        });
 
         SidenavCtrl.toggle('tangible-side-nav', this.$mdSidenav, this.$mdUtil)
     }
@@ -213,28 +183,28 @@ export class LibrariesCtrl {
             "startAngle": 90,
             "registrationPoints": []
         };
-        this.saveLibrary();
+
+        Libraries.update(this.selectedLibrary._id, {
+            $set: {tangibles: this.selectedLibrary.tangibles, name: this.selectedLibrary.name},
+        });
     }
 
-    getLibraryIcon(library)
+    updateName()
     {
-        return Library.getIconBase64(library);
+        Libraries.update(this.selectedLibrary._id, {
+            $set: {name: this.selectedLibrary.name},
+        });
     }
 
     addLibrary()
     {
         console.log(Random.id());
-        Libraries.insert({_id: Random.id(), name: "Untitled", tangibles: {}});
+        Libraries.insert({_id: Random.id(), name: "Untitled", images: {}, tangibles: {}});
     }
 
     deleteLibrary(library)
     {
         Libraries.remove(library._id);
-
-        //remove all library images
-        for (let [id, instance] of Object.entries(library.tangibles)) {
-            Images.remove(id);
-        }
     }
 
     onTangibleLoaded()
@@ -259,9 +229,10 @@ export class LibrariesCtrl {
             this.drawTouchPoints(points);
         }
 
-        this.setUrlImage(this.selectedTangible.id);
+        this.imageObj.src = this.$tgImages.getTangibleImage(this.selectedTangible.id, this.selectedLibrary);
     }
 
+    //TODO: combine with TangibleController
     onTouch(event) {
         console.log(this.touchWindow);
         if (this.touchWindow == 'Editable') {
@@ -280,6 +251,7 @@ export class LibrariesCtrl {
      * @returns {Array}
      */
 
+    //TODO: combine with TangibleController
     toPoints(rawPoints) {
         var touchPoints = [];
         var rect = this.stage.container().getBoundingClientRect();
@@ -300,6 +272,7 @@ export class LibrariesCtrl {
      * @param touchPoints
      */
 
+    //TODO: combine with TangibleController
     drawTouchPoints(touchPoints) {
         for (var i = 0; i < touchPoints.length; i++) {
 
@@ -330,6 +303,7 @@ export class LibrariesCtrl {
         this.touchPointsLayer.draw();
     }
 
+    //TODO: combine with TangibleController
     onResize() {
         if (this.stage != null) {
             var rect = document.getElementById(this.containerID).getBoundingClientRect();

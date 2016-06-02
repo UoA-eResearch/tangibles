@@ -9,23 +9,15 @@ if (!Object.entries) {
     entries.shim();
 }
 
-function insertImage(path, id) {
+function getImage(path, id) {
     var file_name = path + 'images/' + id + '.png';
     var data = Assets.getBinary(file_name);
-    var base64 = fromByteArray(data);
-    Images.insert({_id: id, data: base64});
+    return "data:image/png;base64," + fromByteArray(data);
 }
 
 Meteor.startup(() => {
     console.log('starting!');
-
     var path = 'default_db/';
-    var defaultImageId = '6mpfqKyrjTNynuRJB';
-
-    if(Images.find({_id: defaultImageId}).count() == 0)
-    {
-        insertImage(path, defaultImageId);
-    }
 
     if(Libraries.find({}).count() == 0)
     {
@@ -38,8 +30,7 @@ Meteor.startup(() => {
 
             // Insert images for each tangible
             for (let [id, tangible] of Object.entries(lib.tangibles)) {
-                console.log(id, tangible);
-                insertImage(path, id);
+                lib.images[id] = getImage(path, id);
             }
 
             // Create the library
@@ -53,8 +44,9 @@ Meteor.startup(() => {
         var diagrams = JSON.parse(Assets.getText(path + "diagrams.json"));
         for(i=0; i < diagrams.length; i++)
         {
-            Diagrams.insert(diagrams[i]);
-            insertImage(path, diagrams[i]._id);
+            var diagram = diagrams[i];
+            diagram.image = getImage(path, diagrams[i]._id);
+            Diagrams.insert(diagram);
         }
     }
 });

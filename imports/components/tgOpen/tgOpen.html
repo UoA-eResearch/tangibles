@@ -19,7 +19,7 @@
         <md-list-item ng-repeat="diagram in tgOpen.diagrams | filter:query" ng-click="tgOpen.openDiagram(diagram, $event)">
             <div class="horizontal tg-list-item">
                 <div class="vertical">
-                    <img ng-src="{{tgOpen.getImageUrl(diagram._id)}}" alt="{{diagram.name}}"/>
+                    <img ng-src="{{$tgImages.getDiagramImage(diagram)}}" alt="{{diagram.name}}"/>
                 </div>
             </div>
             <p>{{diagram.name}}</p>

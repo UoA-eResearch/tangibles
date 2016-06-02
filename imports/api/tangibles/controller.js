@@ -218,12 +218,12 @@ export class TangibleController {
         this.stage.batchDraw();
     }
 
-    openDiagram(diagram, library, images) {
+    openDiagram(diagram, library, $tgImages) {
 
         this.clear();
         this.diagram = diagram;
         this.library = library;
-        this.images = images;
+        this.$tgImages = $tgImages;
 
         //Setup recogniser
         var features = [];
@@ -258,7 +258,7 @@ export class TangibleController {
     }
 
     addVisual(instanceId, typeId, model, template, stage) {
-        var visual = new Visual(instanceId, typeId, template, stage, this.images[typeId], this.initVisual.bind(this, model));
+        var visual = new Visual(instanceId, typeId, template, stage, this.$tgImages.getTangibleImage(typeId, this.library), this.initVisual.bind(this, model));
         this.visuals[instanceId] = visual;
         visual.onTapCallback = this.onTap.bind(this);
         visual.onDragStartCallback = this.onDragStart.bind(this);

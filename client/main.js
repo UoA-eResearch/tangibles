@@ -7,8 +7,8 @@ import home from '../imports/components/tgHome/tgHome';
 import diagram from '../imports/components/tgDiagram/tgDiagram';
 import libraries from '../imports/components/tgLibraries/tgLibraries';
 import entries from 'object.entries';
-import {SharedData} from '../imports/components/tgSharedData/tgSharedData';
 import 'pubsub-js/src/pubsub';
+import {Images} from '../imports/components/tgImages/tgImages';
 
 if (!Object.entries) {
     entries.shim();
@@ -23,7 +23,8 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', home.name, 
         "COPY": "Copy diagram",
         "LIBRARIES": "Libraries",
         "LIBRARY": "Library",
-        "DEFAULT_LIBRARY_ID": "M5q3SwPNcgCCKDWQL"
+        "DEFAULT_LIBRARY_ID": "M5q3SwPNcgCCKDWQL",
+        "DEFAULT_IMAGE_URL": __meteor_runtime_config__.ROOT_URL + 'images/stamp.png'
     })
     .config(function ($mdThemingProvider, $mdIconProvider, $stateProvider, $urlRouterProvider) {
         $mdThemingProvider.theme('default')
@@ -113,4 +114,4 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', home.name, 
             }
         };
         return service;
-    });
+    }).service('$tgImages', Images);

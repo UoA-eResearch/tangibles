@@ -10,11 +10,12 @@ import 'pubsub-js/src/pubsub';
 
 
 class DiagramCtrl {
-    constructor($scope, $reactive, $stateParams, $tgSharedData, $state) {
+    constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData) {
         'ngInject';
         $reactive(this).attach($scope);
-        this.sharedData = $tgSharedData.data;
+        this.$tgImages = $tgImages;
         this.$state = $state;
+        this.sharedData = $tgSharedData.data;
         this.tangibleController = new TangibleController('diagramContainer');
         this.diagramId = $stateParams.diagramId;
         this.libraryId = $stateParams.libraryId;
@@ -70,19 +71,6 @@ class DiagramCtrl {
         PubSub.unsubscribe(this.saveDiagramSub);
     }
 
-    static getImagesDictionary(library)
-    {
-        var imagesDict = {};
-        
-        for(let [id, tangible] of Object.entries(library.tangibles))
-        {
-            var image = Images.findOne({_id: id});
-            imagesDict[id] = image.data;
-        }
-
-        return imagesDict;
-    }
-
     openNewDiagram(newVal, oldVal)
     {
         if(newVal != undefined && this.isNewDiagram)
@@ -94,7 +82,7 @@ class DiagramCtrl {
                 "library": {
                     "_id": this.libraryId
                 },
-                "icon": "",
+                "image": "",
                 "scale": 1.0,
                 "position": {x:0, y:0},
                 "tangibles": {}
@@ -102,9 +90,7 @@ class DiagramCtrl {
 
             this.sharedData.diagramName = this.localDiagram.name;
             PubSub.publish('updateName', this.localDiagram.name);
-            var library = Libraries.findOne({_id: this.libraryId});
-            var images = DiagramCtrl.getImagesDictionary(library);
-            this.tangibleController.openDiagram(this.localDiagram, angular.copy(newVal), images);
+            this.tangibleController.openDiagram(this.localDiagram, angular.copy(newVal), this.$tgImages);
         }
     }
 
@@ -120,8 +106,7 @@ class DiagramCtrl {
             this.sharedData.diagramName = this.localDiagram.name;
             PubSub.publish('updateName', this.localDiagram.name);
             var library = Libraries.findOne({_id: this.libraryId});
-            var images = DiagramCtrl.getImagesDictionary(library);
-            this.tangibleController.openDiagram(this.localDiagram, angular.copy(library), images);
+            this.tangibleController.openDiagram(this.localDiagram, angular.copy(library), this.$tgImages);
         }
     }
 
@@ -141,12 +126,13 @@ class DiagramCtrl {
     saveThumb(diagramId)
     {
         this.tangibleController.diagramThumb().then(function(imageData) {
-            if(Images.find({_id: diagramId}).count() != 0)
-            {
-                Images.remove(diagramId);
-            }
-
-            Images.insert({_id: diagramId, data:imageData});
+            Diagrams.update({
+                _id: diagramId
+            }, {
+                $set: {
+                    image: 'data:image/png;base64,' + imageData
+                }
+            });
         }.bind(this));
     }
 
