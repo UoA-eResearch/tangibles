@@ -1,4 +1,6 @@
 
+App.accessRule('about:blank'); //needed for html to canvas to function in cordova
+
 App.icons({
   // iOS
   'iphone': 'resources/icons/Icon-60.png',
