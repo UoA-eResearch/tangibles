@@ -35,7 +35,7 @@ export class Images
 
     getUrl(image)
     {
-        if(image != undefined && image.startsWith('data:image/png;base64,'))
+        if(image != undefined && image != 'data:image/png;base64,undefined' && image.startsWith('data:image/png;base64,'))
         {
             return image;
         }
