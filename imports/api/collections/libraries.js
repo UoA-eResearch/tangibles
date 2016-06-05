@@ -1,6 +1,7 @@
 import {Mongo} from 'meteor/mongo';
 
 export const Libraries = new Mongo.Collection('libraries');
+Ground.Collection(Libraries);
 
 if (Meteor.isServer) {
     Meteor.publish('libraries', function() {

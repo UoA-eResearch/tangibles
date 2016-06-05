@@ -1,6 +1,7 @@
 import {Mongo} from 'meteor/mongo';
 
 export const Diagrams = new Mongo.Collection('diagrams');
+Ground.Collection(Diagrams);
 
 if (Meteor.isServer) {
     Meteor.publish('diagram', function(id) {

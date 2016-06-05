@@ -1,7 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {Libraries} from '../imports/api/collections/libraries';
 import {Diagrams} from '../imports/api/collections/diagrams';
-import {Images} from '../imports/api/collections/images';
 import entries from 'object.entries';
 import {fromByteArray} from '../node_modules/base64-js/lib/b64';
 
