@@ -51,17 +51,22 @@ class ToolbarCtrl {
         {
             console.log('show dialog');
             DialogCtrl.open(this.$mdDialog, menuItem.component, $event, menuItem.size);
+            SidenavCtrl.toggle('tg-menu', this.$mdSidenav, this.$mdUtil);
         }
         else if('sref' in menuItem)
         {
             this.$state.go(menuItem.sref);
+
+            if(menuItem.sref != 'login')
+            {
+                SidenavCtrl.toggle('tg-menu', this.$mdSidenav, this.$mdUtil);
+            }
         }
         else if('func' in menuItem)
         {
             menuItem.func();
+            SidenavCtrl.toggle('tg-menu', this.$mdSidenav, this.$mdUtil);
         }
-
-        SidenavCtrl.toggle('tg-menu', this.$mdSidenav, this.$mdUtil);
     }
 
     delete()
