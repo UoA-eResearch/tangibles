@@ -67,7 +67,8 @@ p {
 
 .login-container
 {
-  background-image: url('online/background.jpg'); background-size: cover; background-position: center;
+  background-size: cover;
+  background: url('online/background.jpg') center;
 }
 
 .form-background
@@ -124,7 +125,7 @@ md-toolbar .md-toolbar-tools {
 
 .tg-dialog md-dialog-content
 {
-  padding: 0px 30px 0px 14px;
+  padding: 0 30px 0 14px;
 }
 
 .tg-dialog md-dialog-actions

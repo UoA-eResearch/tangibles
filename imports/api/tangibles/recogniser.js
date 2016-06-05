@@ -3,7 +3,7 @@ import {Points, Point} from './points';
 export class Recogniser {
 
     /**
-     * An API similar to a skikit learn recogniser
+     * An API similar to a scikit learn recogniser
      */
 
     constructor() {

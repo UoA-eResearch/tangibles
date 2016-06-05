@@ -1,14 +1,13 @@
 import hammer from 'hammerjs/hammer';
 import Konva from 'konva';
-import {Point} from './points'
 
 export class Visual {
 
-    constructor(instanceId, typeId, template, stage, imageUrl, cb) {
+    constructor(instanceId, template, stage, imageUrl, cb) {
         this.id = instanceId;
         this.template = template;
 
-        this.selected = false;
+        
         this.onTapCallback = null;
         this.onDragStartCallback = null;
         this.onDragEndCallback = null;
@@ -20,11 +19,6 @@ export class Visual {
         this.imageObj = new Image();
         this.imageObj.onload = this.onLoad.bind(this);
         this.imageObj.src = imageUrl;
-    }
-
-    setTouchEnabled(isEnabled) {
-        this.isTouchEnabled = isEnabled;
-        this.shape.draggable(isEnabled);
     }
 
     onLoad() {
@@ -143,7 +137,7 @@ export class Visual {
             this.shape.drawHitFromCache();
         }
 
-        this.selected = true;
+        
     }
 
     deselect() {
@@ -160,7 +154,7 @@ export class Visual {
             this.shape.drawHitFromCache();
         }
 
-        this.selected = false; //update model
+         //update model
     }
 
     /**
@@ -187,19 +181,6 @@ export class Visual {
         this.shape.setZIndex(zIndex);
     }
 
-    /**
-     *
-     * @param scale
-     */
-
-    setScale(scale) {
-        var width = this.imageObj.naturalWidth * scale;
-        var height = this.imageObj.naturalHeight * scale;
-        this.shape.width(width);
-        this.shape.height(height);
-        this.shape.offsetX(width / 2);
-        this.shape.offsetY(height / 2);
-    }
 }
 
 

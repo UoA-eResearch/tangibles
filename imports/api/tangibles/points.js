@@ -4,7 +4,8 @@ export class Point {
     /**
      * Distance between two points
      *
-     * @param other
+     * @param point1
+     * @param point2
      */
     static distance(point1, point2) {
         var ax = point1.x - point2.x;

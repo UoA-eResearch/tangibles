@@ -69,7 +69,7 @@ class ToolbarCtrl {
         }
     }
 
-    delete()
+    deleteTangible()
     {
         PubSub.publishSync('delete', 0);
     }

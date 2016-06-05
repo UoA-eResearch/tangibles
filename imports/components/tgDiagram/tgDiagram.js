@@ -4,8 +4,6 @@ import template from './tgDiagram.html';
 import {TangibleController} from '../../api/tangibles/controller';
 import {Diagrams} from '../../api/collections/diagrams.js';
 import {Libraries} from '../../api/collections/libraries.js';
-import {Images} from '../../api/collections/images.js';
-import {Points} from '../../api/tangibles/points.js';
 import 'pubsub-js/src/pubsub';
 
 
@@ -143,7 +141,7 @@ class DiagramCtrl {
             this.saveThumb(this.diagramId);
             this.localDiagram.name = this.sharedData.diagramName;
 
-            //get latest diagram state, could do from inside visuals if want diagram saving to be ractive
+            //get latest diagram state, could do from inside visuals if want diagram saving to be reactive
             for (let [id, visual] of Object.entries(this.tangibleController.visuals)) {
                 this.localDiagram.tangibles[id].position.x = visual.shape.getX();
                 this.localDiagram.tangibles[id].position.y = visual.shape.getY();

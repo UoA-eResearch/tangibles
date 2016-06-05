@@ -34,6 +34,7 @@ export class AbstractTangibleController {
     /**
      *
      * @param rawPoints A Konvajs event with touch points, e.g. a touchstart event
+     * @param scale
      * @returns {Array}
      */
 
@@ -170,7 +171,7 @@ export class TangibleController extends AbstractTangibleController{
 
         this.deselected_rect.on('touchstart', this.onDeselected.bind(this));
         this.deselectLayer.add(this.deselected_rect);
-        this.onDeselectedCallback = null;
+        
 
         //this.touchPointsLayer = new Konva.Layer();
         this.tangibleLayer = new Konva.Layer();
@@ -344,13 +345,13 @@ export class TangibleController extends AbstractTangibleController{
     }
 
     addVisual(instanceId, typeId, model, template, stage) {
-        var visual = new Visual(instanceId, typeId, template, stage, this.$tgImages.getTangibleImage(typeId, this.library), this.initVisual.bind(this, model));
+        var visual = new Visual(instanceId, template, stage, this.$tgImages.getTangibleImage(typeId, this.library), this.initVisual.bind(this, model));
         this.visuals[instanceId] = visual;
         visual.onTapCallback = this.onTap.bind(this);
         visual.onDragStartCallback = this.onDragStart.bind(this);
     }
 
-    initZIndicies()
+    initZIndices()
     {
         for (let [id, instance] of Object.entries(this.diagram.tangibles)) {
             var visual = this.visuals[id];
@@ -372,7 +373,7 @@ export class TangibleController extends AbstractTangibleController{
         if(this.tangibleLayer.children.length == Object.entries(this.diagram.tangibles).length && this.init)
         {
             console.log('init z indicies');
-            this.initZIndicies();
+            this.initZIndices();
             this.init = false;
         }
 

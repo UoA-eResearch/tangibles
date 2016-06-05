@@ -4,8 +4,6 @@ import angularUiRouter from 'angular-ui-router';
 import template from './tgNew.html';
 import {DialogCtrl} from '../tgDialog/tgDialog';
 import {Libraries} from '../../api/collections/libraries.js';
-import {Images} from '../../api/collections/images.js';
-import {Visual} from '../../api/tangibles/visual.js';
 
 class NewDiagramCtrl extends DialogCtrl {
     constructor($scope, $mdDialog, $const, $state, $tgImages) {

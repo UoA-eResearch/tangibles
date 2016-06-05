@@ -4,8 +4,6 @@ import angularUiRouter from 'angular-ui-router';
 import template from './tgOpen.html';
 import {DialogCtrl} from '../tgDialog/tgDialog'
 import {Diagrams} from '/imports/api/collections/diagrams';
-import {Visual} from '/imports/api/tangibles/visual';
-import {Images} from '/imports/api/collections/images';
 
 class OpenDiagramCtrl extends DialogCtrl {
     constructor($scope, $mdDialog, $const, $state, $tgImages) {
