@@ -4,14 +4,8 @@ export const Diagrams = new Mongo.Collection('diagrams');
 Ground.Collection(Diagrams);
 
 if (Meteor.isServer) {
-    Meteor.publish('diagram', function(id) {
-        check(id, String);
-        console.log('Find diagram with id:', id);
-        return Diagrams.find({_id: id});
-    });
-
     Meteor.publish('diagrams', function() {
-        return Diagrams.find({}); //, {fields: {'tangibles': 0}}
+        return Diagrams.find({});
     });
 
     Diagrams.allow({
