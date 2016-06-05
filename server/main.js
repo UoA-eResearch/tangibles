@@ -15,6 +15,9 @@ function getImage(path, id) {
     return "data:image/png;base64," + fromByteArray(data);
 }
 
+
+Meteor.AppCache.config({onlineOnly: ['/online/']});
+
 Meteor.startup(() => {
     console.log('starting!');
     var path = 'default_db/';
