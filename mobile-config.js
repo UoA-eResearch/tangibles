@@ -1,5 +1,5 @@
 
-App.accessRule('about:blank'); //needed for html to canvas to function in cordova
+App.accessRule('about:blank', { type: 'navigation' }); //needed for html to canvas to function in cordova
 
 App.icons({
   // iOS
