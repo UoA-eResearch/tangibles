@@ -49,7 +49,6 @@ class ToolbarCtrl {
     {
         if('component' in menuItem)
         {
-            console.log('show dialog');
             DialogCtrl.open(this.$mdDialog, menuItem.component, $event, menuItem.size);
             SidenavCtrl.toggle('tg-menu', this.$mdSidenav, this.$mdUtil);
         }

@@ -97,11 +97,8 @@ class DiagramCtrl {
     {
         if(newVal != undefined && !this.isNewDiagram)
         {
-            console.log(this.localDiagram);
-
             this.diagramWatch(); //cancels watch
             this.localDiagram = angular.copy(newVal);
-            console.log(this.localDiagram);
             this.sharedData.diagramName = this.localDiagram.name;
             PubSub.publish('updateName', this.localDiagram.name);
             var library = Libraries.findOne({_id: this.libraryId});
@@ -159,7 +156,6 @@ class DiagramCtrl {
 
             this.localDiagram.scale = this.tangibleController.stage.scaleX();
             this.localDiagram.position = {x: this.tangibleController.stage.x(), y:  this.tangibleController.stage.y()};
-            console.log(this.localDiagram.position);
 
             if (Diagrams.find({_id: this.diagramId}).count() == 0) {
                 Diagrams.insert(this.localDiagram);

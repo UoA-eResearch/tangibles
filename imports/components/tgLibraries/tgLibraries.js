@@ -106,14 +106,12 @@ export class LibrariesCtrl extends AbstractTangibleController{
     editLibrary(library)
     {
         this.selectedLibrary = angular.copy(library);
-        console.log(this.selectedLibrary);
         SidenavCtrl.toggle('library-side-nav', this.$mdSidenav, this.$mdUtil);
     }
 
     editTangible(id, tangible)
     {
         this.selectedTangible = angular.copy({id: id, tangible: tangible});
-        console.log(this.selectedTangible);
         SidenavCtrl.toggle('tangible-side-nav', this.$mdSidenav, this.$mdUtil, this.initTouchWindow.bind(this));
     }
 
@@ -185,7 +183,6 @@ export class LibrariesCtrl extends AbstractTangibleController{
 
     addLibrary()
     {
-        console.log(Random.id());
         Libraries.insert({_id: Random.id(), name: "Untitled", images: {}, tangibles: {}});
     }
 
