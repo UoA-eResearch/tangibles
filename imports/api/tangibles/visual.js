@@ -72,8 +72,6 @@ export class Visual {
 
     onStartRotate(event) {
         if (this.isTouchEnabled) {
-            console.log(event);
-            //this.shape.setDraggable(false);
             this.hammerStartAngle = this.shape.rotation() - this.template.startAngle;
         }
     }
@@ -101,8 +99,6 @@ export class Visual {
     }
 
     onDragEnd(event) {
-        console.log('blah');
-
         if (this.onDragEndCallback != null && this.isTouchEnabled) {
             this.onDragEndCallback(this);
         }

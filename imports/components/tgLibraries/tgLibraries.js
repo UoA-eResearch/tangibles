@@ -17,6 +17,7 @@ export class LibrariesCtrl extends AbstractTangibleController{
         this.$scope = $scope;
         this.$const = $const;
         $scope.$tgImages = $tgImages;
+        this.isCordova = Meteor.isCordova;
         this.$tgImages = $tgImages;
 
         this.$mdSidenav = $mdSidenav;

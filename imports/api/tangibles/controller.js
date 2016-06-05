@@ -16,8 +16,6 @@ export class AbstractTangibleController {
 
     destroy()
     {
-        console.log('destroying!');
-
         if(this.stage != null)
         {
             this.stage.destroyChildren();
@@ -60,12 +58,10 @@ export class AbstractTangibleController {
     onResize() {
         if (this.stage != null) {
             var container = document.getElementById(this.containerID);
-            console.log(container);
 
             if(container != undefined)
             {
                 var rect = container.getBoundingClientRect();
-                console.log("Resizing. " + this.containerID + ": w" + rect.width + ", h" + rect.height);
                 this.stage.setWidth(rect.right - rect.left);
                 this.stage.setHeight(rect.bottom - rect.top);
                 this.width = rect.right - rect.left;
@@ -194,8 +190,6 @@ export class TangibleController extends AbstractTangibleController{
     }
 
     onTap(visual) {
-
-        console.log(arguments);
         if (this.selectedVisual != null) {
             this.selectedVisual.deselect();
         }
@@ -368,7 +362,6 @@ export class TangibleController extends AbstractTangibleController{
 
         if(this.tangibleLayer.children.length == Object.entries(this.diagram.tangibles).length && this.init)
         {
-            console.log('init z indicies');
             this.initZIndices();
             this.init = false;
         }
