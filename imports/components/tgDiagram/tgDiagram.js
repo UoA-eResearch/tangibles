@@ -69,6 +69,7 @@ class DiagramCtrl {
         PubSub.unsubscribe(this.sendToBackSub);
         PubSub.unsubscribe(this.copyDiagramSub);
         PubSub.unsubscribe(this.saveDiagramSub);
+        this.tangibleController.destroy();
     }
 
     openNewDiagram(newVal, oldVal)

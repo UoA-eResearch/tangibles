@@ -42,6 +42,8 @@ export class LibrariesCtrl extends AbstractTangibleController{
             $scope.tgLibraries.imageObj.src = 'data:image/png;base64,' + base64_object.base64;
             return deferred.promise;
         };
+
+        $scope.$on("$destroy", this.destroy.bind(this));
     }
 
     newImageLoaded()
@@ -232,7 +234,6 @@ export class LibrariesCtrl extends AbstractTangibleController{
         });
         this.imageLayer = new Konva.Layer();
         this.stage.add(this.imageLayer, this.touchPointsLayer); //Left param on bottom, right on top
-        $(window).resize(this.onResize.bind(this));
         this.stage.getContent().addEventListener('touchstart', this.onTouch.bind(this));
         this.onTangibleLoaded();
     }

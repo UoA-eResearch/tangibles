@@ -14,6 +14,21 @@ export class AbstractTangibleController {
         }
 
         this.touchPointsLayer = new Konva.Layer();
+        this.resizeFunc = this.onResize.bind(this);
+        $(window).resize(this.resizeFunc);
+    }
+
+    destroy()
+    {
+        console.log('destroying!');
+
+        if(this.stage != null)
+        {
+            this.stage.destroyChildren();
+            this.stage.destroy();
+        }
+
+        $(window).off("resize", this.resizeFunc);
     }
 
     /**
@@ -160,9 +175,6 @@ export class TangibleController extends AbstractTangibleController{
         //this.touchPointsLayer = new Konva.Layer();
         this.tangibleLayer = new Konva.Layer();
         this.stage.add(this.deselectLayer, this.tangibleLayer, this.touchPointsLayer); //Left param on bottom, right on top
-
-        $(window).resize(this.onResize.bind(this));
-
         this.stage.getContent().addEventListener('touchstart', this.onTouch.bind(this));
     }
 
@@ -290,6 +302,7 @@ export class TangibleController extends AbstractTangibleController{
         this.visuals = {};
         this.stage.batchDraw();
     }
+
 
     openDiagram(diagram, library, $tgImages) {
 
