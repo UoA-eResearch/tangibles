@@ -118,23 +118,6 @@ export class LibrariesCtrl {
         $('#file').trigger('click');
     }
 
-    //TODO: combine with TangibleController
-    initTouchWindow()
-    {
-        var rect = document.getElementById(this.containerID).getBoundingClientRect();
-        this.stage = new Konva.Stage({
-            container: this.containerID,
-            width: rect.right - rect.left,
-            height: rect.bottom - rect.top
-        });
-        this.touchPointsLayer = new Konva.Layer();
-        this.imageLayer = new Konva.Layer();
-        this.stage.add(this.imageLayer, this.touchPointsLayer); //Left param on bottom, right on top
-        $(window).resize(this.onResize.bind(this));
-        this.stage.getContent().addEventListener('touchstart', this.onTouch.bind(this));
-        this.onTangibleLoaded();
-    }
-
     deleteTangible(tangibleId)
     {
         delete this.selectedLibrary.tangibles[tangibleId];
@@ -230,6 +213,28 @@ export class LibrariesCtrl {
         }
 
         this.imageObj.src = this.$tgImages.getTangibleImage(this.selectedTangible.id, this.selectedLibrary);
+    }
+
+    closeTangibleEditor()
+    {
+        SidenavCtrl.toggle('tangible-side-nav', this.$mdSidenav, this.$mdUtil);
+    }
+
+    //TODO: combine with TangibleController
+    initTouchWindow()
+    {
+        var rect = document.getElementById(this.containerID).getBoundingClientRect();
+        this.stage = new Konva.Stage({
+            container: this.containerID,
+            width: rect.right - rect.left,
+            height: rect.bottom - rect.top
+        });
+        this.touchPointsLayer = new Konva.Layer();
+        this.imageLayer = new Konva.Layer();
+        this.stage.add(this.imageLayer, this.touchPointsLayer); //Left param on bottom, right on top
+        $(window).resize(this.onResize.bind(this));
+        this.stage.getContent().addEventListener('touchstart', this.onTouch.bind(this));
+        this.onTangibleLoaded();
     }
 
     //TODO: combine with TangibleController
