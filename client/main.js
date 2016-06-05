@@ -37,14 +37,20 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', home.name, 
             .icon('tg:tangibles', '/images/stamp.svg')
             .icon('tg:to_front', '/images/to_front.svg')
             .icon('tg:to_back', '/images/to_back.svg')
-            .icon('tg:delete_all', '/images/delete_all.svg')
-            .iconSet("file", "/packages/planettraining_material-design-icons/bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-file.svg")
-            .iconSet("action", "/packages/planettraining_material-design-icons/bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-action.svg")
-            .iconSet("hardware", "/packages/planettraining_material-design-icons/bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-hardware.svg")
-            .iconSet("content", "/packages/planettraining_material-design-icons/bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-content.svg")
-            .iconSet("navigation", "/packages/planettraining_material-design-icons/bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-navigation.svg")
-            .iconSet("av", "/packages/planettraining_material-design-icons/bower_components/material-design-icons/sprites/svg-sprite/svg-sprite-av.svg");
-
+            .icon('file:ic_folder_open', '/images/ic_folder_open_black_48px.svg')
+            .icon('action:ic_delete_sweep', '/images/ic_delete_sweep_black_48px.svg')
+            .icon('action:ic_power_settings_new', '/images/ic_power_settings_new_black_48px.svg')
+            .icon('action:ic_zoom_in', '/images/ic_zoom_in_black_48px.svg')
+            .icon('action:ic_zoom_out', '/images/ic_zoom_out_black_48px.svg')
+            .icon('action:ic_delete', '/images/ic_delete_black_48px.svg')
+            .icon('hardware:ic_keyboard_arrow_up', '/images/ic_keyboard_arrow_up_black_48px.svg')
+            .icon('hardware:ic_keyboard_arrow_down', '/images/ic_keyboard_arrow_down_black_48px.svg')
+            .icon('content:ic_add', '/images/ic_add_black_48px.svg')
+            .icon('content:ic_save', '/images/ic_save_black_48px.svg')
+            .icon('content:ic_content_copy', '/images/ic_content_copy_black_48px.svg')
+            .icon('navigation:ic_close', '/images/ic_close_black_48px.svg')
+            .icon('av:ic_library_books', '/images/ic_library_books_black_48px.svg');
+        
         $urlRouterProvider.otherwise("/login");
 
         var resolve = {
@@ -104,7 +110,6 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', home.name, 
             }]
         });
     }).factory('$tgSharedData', function () {
-    //noinspection UnnecessaryLocalVariableJS
     var service = {
         data: {
             stateName: '',

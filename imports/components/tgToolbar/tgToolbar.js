@@ -23,12 +23,12 @@ class ToolbarCtrl {
         this.$scope = $scope;
 
         this.menuItems = [
-            {'index': 1, 'name': 'New', icon: 'content:ic_add_24px', component: tgNew.name, size: 'big'},
-            {'index': 2, 'name': 'Open', icon: 'file:ic_folder_open_24px', component: tgOpen.name, size: 'big'},
-            {'index': 3, 'name': 'Save', icon: 'content:ic_save_24px', func: this.saveDiagram.bind(this)},
-            {'index': 4, 'name': 'Make a copy',  icon: 'content:ic_content_copy_24px', component: tgCopy.name, size: 'small'},
-            {'index': 5, 'name': 'Libraries', icon: 'av:ic_library_books_24px', sref: 'home.libraries'},
-            {'index': 6, 'name': 'Logout', icon: 'action:ic_power_settings_new_24px',  sref: 'login'}
+            {'index': 1, 'name': 'New', icon: 'content:ic_add', component: tgNew.name, size: 'big'},
+            {'index': 2, 'name': 'Open', icon: 'file:ic_folder_open', component: tgOpen.name, size: 'big'},
+            {'index': 3, 'name': 'Save', icon: 'content:ic_save', func: this.saveDiagram.bind(this)},
+            {'index': 4, 'name': 'Make a copy',  icon: 'content:ic_content_copy', component: tgCopy.name, size: 'small'},
+            {'index': 5, 'name': 'Libraries', icon: 'av:ic_library_books', sref: 'home.libraries'},
+            {'index': 6, 'name': 'Logout', icon: 'action:ic_power_settings_new',  sref: 'login'}
         ];
 
         this.updateNameSub = PubSub.subscribe('updateName', this.updateName.bind(this));
