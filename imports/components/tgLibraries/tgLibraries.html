@@ -99,7 +99,7 @@
                     </div>
 
                     <md-button flex="40" style="margin: 0;" layout-align="left center" class="md-primary"
-                               ng-click="tgLibraries.triggerImageUpload()">
+                               ng-click="tgLibraries.triggerImageUpload()" ng-disabled="Meteor.isCordova">
                         Choose image
                     </md-button>
 
