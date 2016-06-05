@@ -14,6 +14,8 @@ if (!Object.entries) {
     entries.shim();
 }
 
+Meteor.AppCache.config({onlineOnly: ['/online/']});
+
 angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', home.name, diagram.name, login.name, libraries.name])
     .constant("$const", {
         "APP": "Tangibles",
