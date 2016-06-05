@@ -9,10 +9,6 @@ export class AbstractTangibleController {
 
     constructor()
     {
-        if (new.target === AbstractTangibleController) {
-            throw new TypeError("Cannot construct AbstractTangibleController instances directly");
-        }
-
         this.touchPointsLayer = new Konva.Layer();
         this.resizeFunc = this.onResize.bind(this);
         $(window).resize(this.resizeFunc);
