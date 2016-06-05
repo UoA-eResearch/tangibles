@@ -5,10 +5,118 @@ import {Recogniser} from './recogniser';
 import {Canvas2Image} from 'canvas2image';
 import html2canvas from 'html2canvas';
 
+export class AbstractTangibleController {
 
-export class TangibleController {
+    constructor()
+    {
+        if (new.target === AbstractTangibleController) {
+            throw new TypeError("Cannot construct AbstractTangibleController instances directly");
+        }
+
+        this.touchPointsLayer = new Konva.Layer();
+    }
+
+    /**
+     *
+     * @param rawPoints A Konvajs event with touch points, e.g. a touchstart event
+     * @returns {Array}
+     */
+
+    toPoints(rawPoints, scale=false) {
+        var touchPoints = [];
+        var rect = this.stage.container().getBoundingClientRect();
+
+        for (var i = 0; i < rawPoints.length; i++) {
+            var touch = rawPoints[i];
+            var x = touch.clientX - rect.left;
+            var y = touch.clientY - rect.top;
+
+            if(scale)
+            {
+                var pointScaled = this.touchToStage({x: x, y: y});
+                touchPoints.push(pointScaled);
+            }
+            else
+            {
+                touchPoints.push({x: x, y: y});
+            }
+        }
+
+        return touchPoints;
+    }
+
+    onResize() {
+        if (this.stage != null) {
+            var container = document.getElementById(this.containerID);
+            console.log(container);
+
+            if(container != undefined)
+            {
+                var rect = container.getBoundingClientRect();
+                console.log("Resizing. " + this.containerID + ": w" + rect.width + ", h" + rect.height);
+                this.stage.setWidth(rect.right - rect.left);
+                this.stage.setHeight(rect.bottom - rect.top);
+                this.width = rect.right - rect.left;
+                this.height = rect.bottom - rect.top;
+                this.stage.draw();
+            }
+        }
+    }
+
+    stageToTouch (point) {
+        return {
+            x: this.stage.x() + point.x * this.stage.scaleX(),
+            y: this.stage.y() + point.y * this.stage.scaleY()
+        };
+    }
+
+    touchToStage (point) {
+        return {
+            x: (point.x - this.stage.x() + this.stage.offsetX()*this.stage.scaleX()) / this.stage.scaleX(),
+            y: (point.y - this.stage.y() + this.stage.offsetY()*this.stage.scaleY()) / this.stage.scaleY()
+        };
+    }
+
+    drawTouchPoints(touchPoints) {
+        for (var i = 0; i < touchPoints.length; i++) {
+
+            if (i < this.touchPointsLayer.children.length) {
+                var shape = this.touchPointsLayer.children[i];
+                shape.setX(touchPoints[i].x);
+                shape.setY(touchPoints[i].y);
+                shape.scaleX(1.0/this.stage.scaleX());
+                shape.scaleY(1.0/this.stage.scaleY());
+                shape.show();
+            }
+            else {
+                this.touchPointsLayer.add(new Konva.Circle({
+                    radius: 10,
+                    fill: '#6eb3ca',
+                    stroke: '#ffffff',
+                    x: touchPoints[i].x,
+                    y: touchPoints[i].y,
+                    scaleX: 1.0/this.stage.scaleX(),
+                    scaleY: 1.0/this.stage.scaleY(),
+                    perfectDrawEnabled: false,
+                    listening: false
+                }));
+            }
+        }
+
+        //Hide all touch points that we haven't edited
+        for (i = touchPoints.length; i < this.touchPointsLayer.children.length; i++) {
+            this.touchPointsLayer.children[i].hide();
+        }
+
+        this.touchPointsLayer.draw();
+    }
+}
+
+
+export class TangibleController extends AbstractTangibleController{
 
     constructor(containerID) {
+        super();
         this.visuals = {};
         this.scale = 1.0;
         this.selectedVisual = null;
@@ -49,13 +157,8 @@ export class TangibleController {
         this.deselectLayer.add(this.deselected_rect);
         this.onDeselectedCallback = null;
 
-        this.touchPointsLayer = new Konva.Layer();
-        //this.dragLayer = new Konva.Layer();
+        //this.touchPointsLayer = new Konva.Layer();
         this.tangibleLayer = new Konva.Layer();
-
-        // this.tangibleLayer.scaleX(0.5);
-        // this.tangibleLayer.scaleY(0.5);
-        // this.tangibleLayer.config.scale = 0.5;
         this.stage.add(this.deselectLayer, this.tangibleLayer, this.touchPointsLayer); //Left param on bottom, right on top
 
         $(window).resize(this.onResize.bind(this));
@@ -100,7 +203,6 @@ export class TangibleController {
         }
         this.selectedVisual = visual;
         this.selectedVisual.select();
-        //this.selectedVisual.shape.moveTo(this.stage.dragLayer); // TODO: fix, goes crazy if I use this
         this.stage.batchDraw();
     }
 
@@ -111,11 +213,6 @@ export class TangibleController {
             this.scale = Math.max(0.1, this.scale - 0.1);
             this.stage.scaleX(this.scale);
             this.stage.scaleY(this.scale);
-
-            // this.tangibleLayer.scaleX(this.scale);
-            // this.tangibleLayer.scaleY(this.scale);
-            // this.touchPointsLayer.scaleX(this.scale);
-            // this.touchPointsLayer.scaleY(this.scale);
             this.stage.draw();
         }
 
@@ -124,7 +221,6 @@ export class TangibleController {
     deleteSelected() {
         if(this.selectedVisual != null)
         {
-            //this.tangibleLayer.destroy(this.selectedVisual.shape);
             this.selectedVisual.remove();
             delete this.visuals[this.selectedVisual.id];
             this.selectedVisual = null;
@@ -148,10 +244,6 @@ export class TangibleController {
             this.scale = Math.min(2.0, this.scale + 0.1);
             this.stage.scaleX(this.scale);
             this.stage.scaleY(this.scale);
-            // this.tangibleLayer.scaleX(this.scale);
-            // this.tangibleLayer.scaleY(this.scale);
-            // this.touchPointsLayer.scaleX(this.scale);
-            // this.touchPointsLayer.scaleY(this.scale);
             this.stage.draw();
         }
     }
@@ -192,26 +284,7 @@ export class TangibleController {
         }
     }
 
-    onDragEnd(visual) {
-        //this.selectedVisual.shape.moveTo(this.stage.tangibleLayer);
-        // this.stage.batchDraw();
-
-
-        //this.updateCb();
-
-
-        // if(x > this.surface.width || x < 0 || y > this.surface.height || y < 0)
-        // {
-        //     //delete
-        //     tangible.shape.destroy();
-        //     //delete[tangible.id];
-        //     this.surface.batchDraw();
-        // }
-    }
-
-
     clear() {
-        //this.dragLayer.destroyChildren();
         this.touchPointsLayer.destroyChildren();
         this.tangibleLayer.destroyChildren();
         this.visuals = {};
@@ -262,7 +335,6 @@ export class TangibleController {
         this.visuals[instanceId] = visual;
         visual.onTapCallback = this.onTap.bind(this);
         visual.onDragStartCallback = this.onDragStart.bind(this);
-        visual.onDragEndCallback = this.onDragEnd.bind(this);
     }
 
     initZIndicies()
@@ -288,13 +360,11 @@ export class TangibleController {
         {
             console.log('init z indicies');
             this.initZIndicies();
-            //this.stage.batchDraw();
             this.init = false;
         }
 
         this.stage.batchDraw();
     }
-
 
     /** Visual detection loop TODO: customise for registration and active use
      *
@@ -305,18 +375,19 @@ export class TangibleController {
     onTouch(event) {
         if (this.enable) {
             var points = this.toPoints(event.touches);
-            this.drawTouchPoints(points.scaled); //Visualise touch points
+            var scaledPoints = this.toPoints(event.touches, true);
+            this.drawTouchPoints(scaledPoints); //Visualise touch points
 
             //Get recognised tangible and add to surface
             if (event.touches.length > 2) {
-                var matches = this.recogniser.predict(points.normal);
+                var matches = this.recogniser.predict(points);
 
                 if (matches.length > 0) {
                     var closestMatch = matches[0];
                     var template = this.library.tangibles[closestMatch.target];
 
-                    var position = Points.getCentroid(points.scaled);
-                    var orientation = Points.getOrientation(points.normal) - Points.getOrientation(template.registrationPoints); //current-original orientation
+                    var position = Points.getCentroid(scaledPoints);
+                    var orientation = Points.getOrientation(points) - Points.getOrientation(template.registrationPoints); //current-original orientation
 
                     var id = Random.id();
                     var instance = {type: closestMatch.target, position: position, orientation: orientation, zIndex: 0};
@@ -326,96 +397,6 @@ export class TangibleController {
             }
 
             this.stage.batchDraw();
-        }
-    }
-
-
-    /**
-     *
-     * @param rawPoints A Konvajs event with touch points, e.g. a touchstart event
-     * @returns {Array}
-     */
-
-    toPoints(rawPoints) {
-        var touchPoints = [];
-        var touchPointsScaled = [];
-        var rect = this.stage.container().getBoundingClientRect();
-
-        for (var i = 0; i < rawPoints.length; i++) {
-            var touch = rawPoints[i];
-            var nonScaled = {x:touch.clientX - rect.left, y:touch.clientY - rect.top};
-            var scaled = this.touchToStage(nonScaled);
-            touchPoints.push(nonScaled);
-            touchPointsScaled.push(scaled);
-        }
-
-        return {normal: touchPoints, scaled: touchPointsScaled};
-    }
-
-    stageToTouch (point) {
-        return {
-            x: this.stage.x() + point.x * this.scale,
-            y: this.stage.y() + point.y * this.scale
-        };
-    }
-
-    touchToStage (point) {
-        return {
-            x: (point.x - this.stage.x() + this.stage.offsetX()*this.scale) / this.scale,
-            y: (point.y - this.stage.y() + this.stage.offsetY()*this.scale) / this.scale
-        };
-    }
-
-    /**
-     *
-     * @param touchPoints
-     */
-
-    drawTouchPoints(touchPoints) {
-        for (var i = 0; i < touchPoints.length; i++) {
-            var point = touchPoints[i];
-            //console.log('Point', point);
-
-            if (i < this.touchPointsLayer.children.length) {
-                var shape = this.touchPointsLayer.children[i];
-                shape.setX(touchPoints[i].x);
-                shape.setY(touchPoints[i].y);
-                shape.scaleX(1.0/this.scale);
-                shape.scaleY(1.0/this.scale);
-                shape.show();
-            }
-            else {
-                this.touchPointsLayer.add(new Konva.Circle({
-                    radius: 10,
-                    fill: '#6eb3ca',
-                    stroke: '#ffffff',
-                    scaleX: 1.0/this.scale,
-                    scaleY: 1.0/this.scale,
-                    x: touchPoints[i].x,
-                    y: touchPoints[i].y,
-                    perfectDrawEnabled: false,
-                    listening: false
-                }));
-            }
-        }
-
-        //Hide all touch points
-        for (i = touchPoints.length; i < this.touchPointsLayer.children.length; i++) {
-            this.touchPointsLayer.children[i].hide();
-        }
-
-        this.touchPointsLayer.batchDraw();
-    }
-
-    onResize() {
-        if (this.stage != null) {
-            var rect = document.getElementById(this.containerID).getBoundingClientRect();
-            console.log("Resizing. " + this.containerID + ": w" + rect.width + ", h" + rect.height);
-            this.stage.setWidth(rect.right - rect.left);
-            this.stage.setHeight(rect.bottom - rect.top);
-            this.width = rect.right - rect.left;
-            this.height = rect.bottom - rect.top;
-            //console.log('Resizing surface', rect);
         }
     }
 }

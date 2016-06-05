@@ -5,11 +5,13 @@ import template from './tgLibraries.html';
 import {Libraries} from '../../api/collections/libraries.js';
 import {SidenavCtrl} from '../tgSidenav/tgSidenav';
 import {Points, Point} from '../../api/tangibles/points';
+import {AbstractTangibleController} from '../../api/tangibles/controller';
 import naifBase64 from 'angular-base64-upload';
 
-export class LibrariesCtrl {
+export class LibrariesCtrl extends AbstractTangibleController{
     constructor($scope, $mdSidenav, $mdUtil, $q, $const, $tgImages) {
         'ngInject';
+        super();
         $scope.viewModel(this);
         this.touchWindow = 'Uneditable';
         this.$scope = $scope;
@@ -220,7 +222,6 @@ export class LibrariesCtrl {
         SidenavCtrl.toggle('tangible-side-nav', this.$mdSidenav, this.$mdUtil);
     }
 
-    //TODO: combine with TangibleController
     initTouchWindow()
     {
         var rect = document.getElementById(this.containerID).getBoundingClientRect();
@@ -229,7 +230,6 @@ export class LibrariesCtrl {
             width: rect.right - rect.left,
             height: rect.bottom - rect.top
         });
-        this.touchPointsLayer = new Konva.Layer();
         this.imageLayer = new Konva.Layer();
         this.stage.add(this.imageLayer, this.touchPointsLayer); //Left param on bottom, right on top
         $(window).resize(this.onResize.bind(this));
@@ -237,90 +237,13 @@ export class LibrariesCtrl {
         this.onTangibleLoaded();
     }
 
-    //TODO: combine with TangibleController
     onTouch(event) {
-        console.log(this.touchWindow);
         if (this.touchWindow == 'Editable') {
             var touchPoints = this.toPoints(event.touches);
             this.selectedTangible.tangible.registrationPoints = touchPoints;
-            console.log(touchPoints);
             this.touchPointsLayer.destroyChildren();
             this.drawTouchPoints(touchPoints); //Visualise touch points
             this.stage.draw();
-        }
-    }
-
-    /**
-     *
-     * @param rawPoints A Konvajs event with touch points, e.g. a touchstart event
-     * @returns {Array}
-     */
-
-    //TODO: combine with TangibleController
-    toPoints(rawPoints) {
-        var touchPoints = [];
-        var rect = this.stage.container().getBoundingClientRect();
-
-        for (var i = 0; i < rawPoints.length; i++) {
-            var touch = rawPoints[i];
-            var x = touch.clientX - rect.left;
-            var y = touch.clientY - rect.top;
-
-            touchPoints.push({x: x, y: y});
-        }
-
-        return touchPoints;
-    }
-
-    /**
-     *
-     * @param touchPoints
-     */
-
-    //TODO: combine with TangibleController
-    drawTouchPoints(touchPoints) {
-        for (var i = 0; i < touchPoints.length; i++) {
-
-            if (i < this.touchPointsLayer.children.length) {
-                var shape = this.touchPointsLayer.children[i];
-                shape.setX(touchPoints[i].x);
-                shape.setY(touchPoints[i].y);
-                shape.show();
-            }
-            else {
-                this.touchPointsLayer.add(new Konva.Circle({
-                    radius: 10,
-                    fill: '#6eb3ca',
-                    stroke: '#ffffff',
-                    x: touchPoints[i].x,
-                    y: touchPoints[i].y,
-                    perfectDrawEnabled: false,
-                    listening: false
-                }));
-            }
-        }
-
-        // //Hide all touch points
-        // for (i = touchPoints.length; i < this.touchPointsLayer.children.length; i++) {
-        //     this.touchPointsLayer.children[i].hide();
-        // }
-
-        this.touchPointsLayer.draw();
-    }
-
-    //TODO: combine with TangibleController
-    onResize() {
-        if (this.stage != null) {
-            var rect = document.getElementById(this.containerID).getBoundingClientRect();
-            console.log("Resizing. " + this.containerID + ": w" + rect.width + ", h" + rect.height);
-            this.stage.setWidth(rect.right - rect.left);
-            this.stage.setHeight(rect.bottom - rect.top);
-
-            //TODO: change center of image / reg points
-            // this.width = rect.right - rect.left;
-            // this.height = rect.bottom - rect.top;
-            this.stage.draw();
-            //console.log('Resizing surface', rect);
         }
     }
 }
