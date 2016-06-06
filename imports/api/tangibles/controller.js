@@ -180,11 +180,14 @@ export class TangibleController extends AbstractTangibleController{
 
     diagramThumb()
     {
+        console.log('enter!');
         return new Promise(function(resolve, reject) {
+            console.log('new Promise', resolve, reject);
             html2canvas($("#" + this.containerID)).then(function(canvas) {
+                console.log('html2canvas');
                 var thumbWidth = 100;
                 var scale = thumbWidth / this.width;
-                resolve(Canvas2Image.convertToImage(canvas, thumbWidth, this.height * scale).currentSrc.slice(22));
+                resolve(Canvas2Image.convertToImage(canvas, thumbWidth, this.height * scale).src.slice(22)); //currentSrc doesn't work in Cordova
             }.bind(this));
         }.bind(this));
     }
