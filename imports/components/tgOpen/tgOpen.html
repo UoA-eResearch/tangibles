@@ -1,0 +1,28 @@
+<div class="tg-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h1>{{$const.OPEN}}</h1>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="tgOpen.close($event)">
+                <md-icon class="white" md-svg-src="navigation:ic_close" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <div class="tg-search-box">
+        <md-input-container>
+            <label>Search</label>
+            <input ng-model="query">
+        </md-input-container>
+        <md-subheader class="md-no-sticky tg-list-header">Diagrams</md-subheader>
+    </div>
+    <md-dialog-content flex>
+        <md-list-item ng-repeat="diagram in tgOpen.diagrams | filter:query" ng-click="tgOpen.openDiagram(diagram, $event)">
+            <div class="horizontal tg-list-item">
+                <div class="vertical">
+                    <img ng-src="{{$tgImages.getDiagramImage(diagram)}}" alt="{{diagram.name}}"/>
+                </div>
+            </div>
+            <p>{{diagram.name}}</p>
+        </md-list-item>
+    </md-dialog-content>
+</div>
