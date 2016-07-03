@@ -6,8 +6,6 @@
 
         <h1 ng-if="tgToolbar.sharedData.stateName == 'home.libraries'" style="margin-left: 5px;">Libraries</h1>
 
-
-
         <md-input-container ng-if-start="tgToolbar.sharedData.stateName == 'home.diagram'" class="tg-diagram-name" >
             <input ng-model="tgToolbar.sharedData.diagramName" aria-label="Diagram Name">
         </md-input-container>
@@ -49,13 +47,29 @@
 
 <md-sidenav class="md-sidenav-left" md-component-id="tg-menu" md-whiteframe="4">
     <md-toolbar class="md-hue-4" ng-click="tgToolbar.toggleSidenav('tg-menu')">
-        <h1 class="md-toolbar-tools">{{tgToolbar.$const.APP}}</h1>
+        <h2 class="md-toolbar-tools sign-in" style=""><login-buttons></login-buttons></h2>
     </md-toolbar>
     <md-content layout-padding>
         <md-list ng-cloak>
-            <md-list-item ng-repeat="item in tgToolbar.menuItems" ng-click="tgToolbar.navigateTo(item, $event)">
-                <md-icon class="tg-menu-icon" md-svg-icon="{{item.icon}}"></md-icon>
-                <p>{{item.name}}</p>
+            <md-list-item ng-click="tgToolbar.openDialog(tgToolbar.tgNew.name, $event, 'big')">
+                <md-icon class="tg-menu-icon" md-svg-icon="content:ic_add"></md-icon>
+                <p>New</p>
+            </md-list-item>
+            <md-list-item ng-click="tgToolbar.openDialog(tgToolbar.tgOpen.name, $event, 'big')">
+                <md-icon class="tg-menu-icon" md-svg-icon="file:ic_folder_open"></md-icon>
+                <p>Open</p>
+            </md-list-item>
+            <md-list-item ng-disabled="!tgToolbar.isLoggedIn()" ng-click="tgToolbar.saveDiagram()">
+                <md-icon class="tg-menu-icon" md-svg-icon="content:ic_save"></md-icon>
+                <p>Save</p>
+            </md-list-item>
+            <md-list-item ng-disabled="!tgToolbar.isLoggedIn()" ng-click="tgToolbar.openDialog(tgToolbar.tgCopy.name, $event, 'small')">
+                <md-icon class="tg-menu-icon" md-svg-icon="content:ic_content_copy"></md-icon>
+                <p>Make a copy</p>
+            </md-list-item>
+            <md-list-item ng-disabled="!tgToolbar.isLoggedIn()" ng-click="tgToolbar.navigateTo('home.libraries', $event)">
+                <md-icon class="tg-menu-icon" md-svg-icon="av:ic_library_books"></md-icon>
+                <p>Libraries</p>
             </md-list-item>
         </md-list>
     </md-content>

@@ -2,6 +2,7 @@
   {
     "_id": "Nu3qbu2FR6nuBqWCN",
     "name": "I killed a boar",
+    "owner": "everyone",
     "library": {
       "_id": "M5q3SwPNcgCCKDWQL"
     },
@@ -53,6 +54,7 @@
   {
     "_id": "45QmCzyypXG5bmxm9",
     "name": "Eat my boar",
+    "owner": "everyone",
     "position": {
       "x": 578,
       "y": 470
@@ -95,6 +97,7 @@
   {
     "_id": "Qmk4eRzgiMZXDFzJo",
     "name": "Going fishing",
+    "owner": "everyone",
     "position": {
       "x": 578,
       "y": 470

@@ -126,10 +126,7 @@ export class LibrariesCtrl extends AbstractTangibleController{
         delete this.selectedLibrary.tangibles[tangibleId];
         delete this.selectedLibrary.images[tangibleId];
 
-        Libraries.update(
-            { _id: this.selectedLibrary._id },
-            {$unset: { ['images.' + tangibleId]: "", ['tangibles.' + tangibleId]: ""}}
-        );
+        Meteor.call("libraries.removeTangible", this.selectedLibrary._id, tangibleId);
     }
 
     saveTangible()
@@ -148,48 +145,41 @@ export class LibrariesCtrl extends AbstractTangibleController{
 
         if(this.image != undefined)
         {
-            Libraries.update(
-                { _id: this.selectedLibrary._id },
-                {$set: { ['images.' + this.selectedTangible.id]: this.selectedLibrary.images[this.selectedTangible.id]}}
-            );
+            Meteor.call("libraries.updateTangibleImage", this.selectedLibrary._id, this.selectedTangible.id, this.selectedLibrary.images[this.selectedTangible.id]);
         }
 
-        Libraries.update(this.selectedLibrary._id, {
-            $set: {tangibles: this.selectedLibrary.tangibles, name: this.selectedLibrary.name},
-        });
+        Meteor.call("libraries.updateTangible", this.selectedLibrary._id, this.selectedTangible.id, this.selectedTangible);
 
         SidenavCtrl.toggle('tangible-side-nav', this.$mdSidenav, this.$mdUtil)
     }
 
     addTangible()
     {
-        this.selectedLibrary.tangibles[Random.id()] = {"name": "Untitled",
+        let tangibleId = Random.id();
+        let tangible = {"name": "Untitled",
             "icon": false,
             "scale": 1,
             "startAngle": 90,
             "registrationPoints": []
         };
 
-        Libraries.update(this.selectedLibrary._id, {
-            $set: {tangibles: this.selectedLibrary.tangibles, name: this.selectedLibrary.name},
-        });
+        this.selectedLibrary.tangibles[tangibleId] = tangible;
+        Meteor.call("libraries.addTangible", this.selectedLibrary._id, tangibleId, tangible);
     }
 
     updateName()
     {
-        Libraries.update(this.selectedLibrary._id, {
-            $set: {name: this.selectedLibrary.name},
-        });
+        Meteor.call("libraries.updateName", this.selectedLibrary._id, this.selectedLibrary.name);
     }
 
     addLibrary()
     {
-        Libraries.insert({_id: Random.id(), name: "Untitled", images: {}, tangibles: {}});
+        Meteor.call("libraries.insert");
     }
 
     deleteLibrary(library)
     {
-        Libraries.remove(library._id);
+        Meteor.call("libraries.remove", library._id);
     }
 
     onTangibleLoaded()

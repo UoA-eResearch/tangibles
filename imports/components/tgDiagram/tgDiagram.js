@@ -8,16 +8,22 @@ import 'pubsub-js/src/pubsub';
 
 
 class DiagramCtrl {
-    constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData) {
+    constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const) {
         'ngInject';
         $reactive(this).attach($scope);
         this.$tgImages = $tgImages;
+        this.$const = $const;
         this.$state = $state;
         this.sharedData = $tgSharedData.data;
         this.tangibleController = new TangibleController('diagramContainer');
         this.diagramId = $stateParams.diagramId;
         this.libraryId = $stateParams.libraryId;
         this.isNewDiagram = ($stateParams.isNewDiagram === "true");
+
+        if(this.diagramId == undefined || this.libraryId == undefined)
+        {
+            this.openDefault();
+        }
 
         this.helpers({
             remoteDiagram: ()=> {
@@ -53,6 +59,16 @@ class DiagramCtrl {
         this.libraryWatch = $scope.$watch('tgDiagram.remoteLibrary', this.openNewDiagram.bind(this));
         this.diagramWatch = $scope.$watch('tgDiagram.remoteDiagram', this.openExistingDiagram.bind(this));
         $scope.$on("$destroy", this.destroy.bind(this));
+    }
+
+    openDefault()
+    {
+        console.log('open default!', Meteor.userId(), Meteor.user());
+
+        if(Meteor.userId())
+            this.$state.go('home.diagram',{diagramId: Random.id(), isNewDiagram: true, libraryId: Meteor.user().profile.defaultLibraryId});
+        else
+            this.$state.go('home.diagram',{diagramId: Random.id(), isNewDiagram: true, libraryId: this.$const.DEFAULT_LIBRARY_ID});
     }
 
     destroy()
@@ -114,7 +130,7 @@ class DiagramCtrl {
             copy._id = Random.id();
             this.saveThumb(copy._id);
             copy.name = data;
-            Diagrams.insert(copy);
+            Meteor.call("diagrams.insert", copy);
             this.$state.go('home.diagram', {diagramId: copy._id, isNewDiagram: false, libraryId: copy.library._id});
         }
     }
@@ -122,13 +138,7 @@ class DiagramCtrl {
     saveThumb(diagramId)
     {
         this.tangibleController.diagramThumb().then(function(imageData) {
-            Diagrams.update({
-                _id: diagramId
-            }, {
-                $set: {
-                    image: 'data:image/png;base64,' + imageData
-                }
-            });
+            Meteor.call("diagrams.saveThumb", diagramId, imageData);
         }.bind(this));
     }
 
@@ -158,19 +168,10 @@ class DiagramCtrl {
             this.localDiagram.position = {x: this.tangibleController.stage.x(), y:  this.tangibleController.stage.y()};
 
             if (Diagrams.find({_id: this.diagramId}).count() == 0) {
-                Diagrams.insert(this.localDiagram);
+                Meteor.call("diagrams.insert", this.localDiagram);
             }
             else {
-                Diagrams.update({
-                    _id: this.localDiagram._id
-                }, {
-                    $set: {
-                        name: this.sharedData.diagramName,
-                        scale: this.localDiagram.scale,
-                        position: this.localDiagram.position,
-                        tangibles: this.localDiagram.tangibles
-                    }
-                });
+                Meteor.call("diagrams.update", this.localDiagram._id, this.sharedData.diagramName, this.localDiagram.scale, this.localDiagram.position, this.localDiagram.tangibles);
             }
         }
     }

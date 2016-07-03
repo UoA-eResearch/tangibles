@@ -21,15 +21,9 @@ class ToolbarCtrl {
         this.$mdUtil = $mdUtil;
         this.$mdSidenav = $mdSidenav;
         this.$scope = $scope;
-
-        this.menuItems = [
-            {'index': 1, 'name': 'New', icon: 'content:ic_add', component: tgNew.name, size: 'big'},
-            {'index': 2, 'name': 'Open', icon: 'file:ic_folder_open', component: tgOpen.name, size: 'big'},
-            {'index': 3, 'name': 'Save', icon: 'content:ic_save', func: this.saveDiagram.bind(this)},
-            {'index': 4, 'name': 'Make a copy',  icon: 'content:ic_content_copy', component: tgCopy.name, size: 'small'},
-            {'index': 5, 'name': 'Libraries', icon: 'av:ic_library_books', sref: 'home.libraries'},
-            {'index': 6, 'name': 'Logout', icon: 'action:ic_power_settings_new',  sref: 'login'}
-        ];
+        this.tgNew = tgNew;
+        this.tgOpen = tgOpen;
+        this.tgCopy = tgCopy;
 
         this.updateNameSub = PubSub.subscribe('updateName', this.updateName.bind(this));
         $scope.$on("$destroy", this.destroy.bind(this));
@@ -45,27 +39,25 @@ class ToolbarCtrl {
         PubSub.unsubscribe(this.updateNameSub);
     }
 
-    navigateTo(menuItem, $event)
+    openDialog(component, $event, size)
     {
-        if('component' in menuItem)
-        {
-            DialogCtrl.open(this.$mdDialog, menuItem.component, $event, menuItem.size);
-            SidenavCtrl.toggle('tg-menu', this.$mdSidenav, this.$mdUtil);
-        }
-        else if('sref' in menuItem)
-        {
-            this.$state.go(menuItem.sref);
+        DialogCtrl.open(this.$mdDialog, component, $event, size);
+        SidenavCtrl.toggle('tg-menu', this.$mdSidenav, this.$mdUtil);
+    }
 
-            if(menuItem.sref != 'login')
-            {
-                SidenavCtrl.toggle('tg-menu', this.$mdSidenav, this.$mdUtil);
-            }
-        }
-        else if('func' in menuItem)
+    navigateTo(sref, $event)
+    {
+        this.$state.go(sref);
+
+        if(sref != 'login')
         {
-            menuItem.func();
             SidenavCtrl.toggle('tg-menu', this.$mdSidenav, this.$mdUtil);
         }
+    }
+
+    isLoggedIn()
+    {
+        return Meteor.userId() != null;
     }
 
     deleteTangible()
@@ -111,6 +103,7 @@ class ToolbarCtrl {
     saveDiagram()
     {
         PubSub.publishSync('save', 0);
+        SidenavCtrl.toggle('tg-menu', this.$mdSidenav, this.$mdUtil);
     }
 
     openMenu()

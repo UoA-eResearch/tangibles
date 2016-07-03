@@ -2,20 +2,24 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import ngMaterial from 'angular-material';
 import angularUiRouter from 'angular-ui-router';
-import login from '../imports/components/tgLogin/tgLogin'
 import home from '../imports/components/tgHome/tgHome';
 import diagram from '../imports/components/tgDiagram/tgDiagram';
 import libraries from '../imports/components/tgLibraries/tgLibraries';
 import entries from 'object.entries';
 import 'pubsub-js/src/pubsub';
 import {Images} from '../imports/components/tgImages/tgImages';
+import { Accounts } from 'meteor/accounts-base';
 
 if (!Object.entries) {
     entries.shim();
 }
 
+Accounts.ui.config({
+    passwordSignupFields: 'USERNAME_ONLY',
+});
 
-angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', home.name, diagram.name, login.name, libraries.name])
+
+angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.ui', home.name, diagram.name, libraries.name])
     .constant("$const", {
         "APP": "Tangibles",
         "NEW": "New diagram",
@@ -27,7 +31,7 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', home.name, 
         "DEFAULT_LIBRARY_ID": "M5q3SwPNcgCCKDWQL",
         "DEFAULT_IMAGE_URL": __meteor_runtime_config__.ROOT_URL + 'images/stamp.png'
     })
-    .config(function ($mdThemingProvider, $mdIconProvider, $stateProvider, $urlRouterProvider) {
+    .config(function ($mdThemingProvider, $mdIconProvider, $stateProvider, $urlRouterProvider, $const) {
         'ngInject';
         $mdThemingProvider.theme('default')
             .primaryPalette('green')
@@ -51,7 +55,15 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', home.name, 
             .icon('navigation:ic_close', '/images/ic_close_black_48px.svg')
             .icon('av:ic_library_books', '/images/ic_library_books_black_48px.svg');
         
-        $urlRouterProvider.otherwise("/login");
+        // Default route
+        let defaultLibraryId = "";
+        if(Meteor.userId())
+            defaultLibraryId = Meteor.user().profile.defaultLibraryId;
+        else
+            defaultLibraryId = $const.DEFAULT_LIBRARY_ID;
+
+        $urlRouterProvider.otherwise("home/diagram/" + Random.id() + "/true/" + defaultLibraryId);
+
 
         var resolve = {
             libraries: function ($rootScope) {
@@ -69,15 +81,6 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', home.name, 
         };
 
         $stateProvider
-            .state('login', {
-                url: "/login",
-                views: {
-                    'main-view': {
-                        component: login.name
-                    }
-                },
-                resolve: resolve
-            })
             .state('home', {
                 url: "/home",
                 abstract: true,
@@ -98,16 +101,17 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', home.name, 
                 onEnter: ['$tgSharedData', function ($tgSharedData) {
                     $tgSharedData.data.stateName = 'home.diagram';
                 }]
-            }).state('home.libraries', {
-            url: "/libraries",
-            views: {
-                'home-view': {
-                    component: libraries.name
-                }
-            },
-            onEnter: ['$tgSharedData', function ($tgSharedData) {
-                $tgSharedData.data.stateName = 'home.libraries';
-            }]
+            })
+            .state('home.libraries', {
+                url: "/libraries",
+                views: {
+                    'home-view': {
+                        component: libraries.name
+                    }
+                },
+                onEnter: ['$tgSharedData', function ($tgSharedData) {
+                    $tgSharedData.data.stateName = 'home.libraries';
+                }]
         });
     }).factory('$tgSharedData', function () {
     var service = {
