@@ -65,7 +65,7 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
         $urlRouterProvider.otherwise("home/diagram/" + Random.id() + "/true/" + defaultLibraryId);
 
 
-        var resolve = {
+        let resolve = {
             libraries: function ($rootScope) {
                 'ngInject';
                 return $rootScope.subscribe('libraries');
@@ -114,7 +114,7 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
                 }]
         });
     }).factory('$tgSharedData', function () {
-    var service = {
+    let service = {
         data: {
             stateName: '',
             diagramName: ''
