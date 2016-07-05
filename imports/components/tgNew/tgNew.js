@@ -13,7 +13,6 @@ class NewDiagramCtrl extends DialogCtrl {
         $scope.$tgImages = $tgImages;
         this.$state = $state;
         this.subscribe('libraries');
-        this.subscribe('images');
 
         this.helpers({
             libraries() {
