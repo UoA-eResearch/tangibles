@@ -31,7 +31,7 @@
 
 .tg-menu-icon
 {
-  @extend .grey;
+  @extend .grey !optional;
   margin-bottom: 10px !important;
   margin-top: 10px !important;
   margin-right: 20px !important;
