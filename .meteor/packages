@@ -26,3 +26,5 @@ ground:db
 accounts-password
 dotansimha:accounts-ui-angular
 force-ssl
+meteorhacks:kadira
+meteorhacks:zones
