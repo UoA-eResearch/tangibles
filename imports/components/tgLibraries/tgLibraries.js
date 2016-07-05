@@ -38,7 +38,7 @@ export class LibrariesCtrl extends AbstractTangibleController{
 
         $scope.imageUploaded = function(file, base64_object)
         {
-            var deferred = $q.defer();
+            let deferred = $q.defer();
             $scope.tgLibraries.image = base64_object.base64;
             $scope.tgLibraries.imageObj.src = 'data:image/png;base64,' + base64_object.base64;
             return deferred.promise;
@@ -49,8 +49,8 @@ export class LibrariesCtrl extends AbstractTangibleController{
 
     newImageLoaded()
     {
-        var width = this.imageObj.naturalWidth * this.selectedTangible.tangible.scale;
-        var height = this.imageObj.naturalHeight * this.selectedTangible.tangible.scale;
+        let width = this.imageObj.naturalWidth * this.selectedTangible.tangible.scale;
+        let height = this.imageObj.naturalHeight * this.selectedTangible.tangible.scale;
 
         this.shape = new Konva.Image({
             image: this.imageObj,
@@ -71,7 +71,7 @@ export class LibrariesCtrl extends AbstractTangibleController{
 
         this.$scope.$watch('tgLibraries.selectedTangible.tangible.scale', function() {
 
-            var scale = 1;
+            let scale = 1;
             if(this.selectedTangible.tangible.scale != undefined)
             {
                 scale = this.selectedTangible.tangible.scale;
@@ -82,8 +82,8 @@ export class LibrariesCtrl extends AbstractTangibleController{
                 scale = 0.0001;
             }
 
-            var width = this.imageObj.naturalWidth * -scale;
-            var height = this.imageObj.naturalHeight * -scale;
+            let width = this.imageObj.naturalWidth * -scale;
+            let height = this.imageObj.naturalHeight * -scale;
             this.shape.setWidth(width);
             this.shape.setHeight(height);
             this.shape.offsetX(width / 2);
@@ -93,7 +93,7 @@ export class LibrariesCtrl extends AbstractTangibleController{
 
         this.$scope.$watch('tgLibraries.selectedTangible.tangible.startAngle', function() {
 
-            var startAngle = 0;
+            let startAngle = 0;
             if(this.selectedTangible.tangible.startAngle != undefined)
             {
                 startAngle = this.selectedTangible.tangible.startAngle;
@@ -188,15 +188,15 @@ export class LibrariesCtrl extends AbstractTangibleController{
         this.touchWindow = 'Uneditable';
 
         // Centre registration points and draw them
-        var points = this.selectedTangible.tangible.registrationPoints;
+        let points = this.selectedTangible.tangible.registrationPoints;
 
         if(points.length > 0)
         {
-            var curCentre = Points.getCentroid(points);
-            var newCentre = {x: this.stage.getWidth()/2, y: this.stage.getHeight()/2};
-            var offset = Point.subtract(newCentre, curCentre);
+            let curCentre = Points.getCentroid(points);
+            let newCentre = {x: this.stage.getWidth()/2, y: this.stage.getHeight()/2};
+            let offset = Point.subtract(newCentre, curCentre);
 
-            for(var i = 0; i < points.length; i++)
+            for(let i = 0; i < points.length; i++)
             {
                 points[i] = Point.add(points[i], offset);
             }
@@ -214,7 +214,7 @@ export class LibrariesCtrl extends AbstractTangibleController{
 
     initTouchWindow()
     {
-        var rect = document.getElementById(this.containerID).getBoundingClientRect();
+        let rect = document.getElementById(this.containerID).getBoundingClientRect();
         this.stage = new Konva.Stage({
             container: this.containerID,
             width: rect.right - rect.left,
@@ -228,7 +228,7 @@ export class LibrariesCtrl extends AbstractTangibleController{
 
     onTouch(event) {
         if (this.touchWindow == 'Editable') {
-            var touchPoints = this.toPoints(event.touches);
+            let touchPoints = this.toPoints(event.touches);
             this.selectedTangible.tangible.registrationPoints = touchPoints;
             this.touchPointsLayer.destroyChildren();
             this.drawTouchPoints(touchPoints); //Visualise touch points

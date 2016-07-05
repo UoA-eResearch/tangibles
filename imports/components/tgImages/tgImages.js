@@ -14,7 +14,7 @@ export class Images
 
     getLibraryImage(library)
     {
-        var image = undefined;
+        let image = undefined;
 
         for (let [id, instance] of Object.entries(library.tangibles)) {
             if(instance.icon)
@@ -29,7 +29,7 @@ export class Images
 
     getTangibleImage(tangibleId, library)
     {
-        var image = library.images[tangibleId];
+        let image = library.images[tangibleId];
         return this.getUrl(image);
     }
 

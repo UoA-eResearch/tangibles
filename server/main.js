@@ -41,6 +41,8 @@ Accounts.onCreateUser(function (options, user) {
         Diagrams.insert(diagram);
     }
 
+
+
     if (options.profile) {
         user.profile = options.profile;
         user.profile.defaultLibraryId = defaultLibId;
@@ -48,6 +50,8 @@ Accounts.onCreateUser(function (options, user) {
     else {
         user.profile = {defaultLibraryId: defaultLibId};
     }
+
+    console.log('user', user);
 
     return user;
 });

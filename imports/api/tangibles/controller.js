@@ -33,17 +33,17 @@ export class AbstractTangibleController {
      */
 
     toPoints(rawPoints, scale=false) {
-        var touchPoints = [];
-        var rect = this.stage.container().getBoundingClientRect();
+        let touchPoints = [];
+        let rect = this.stage.container().getBoundingClientRect();
 
-        for (var i = 0; i < rawPoints.length; i++) {
-            var touch = rawPoints[i];
-            var x = touch.clientX - rect.left;
-            var y = touch.clientY - rect.top;
+        for (let i = 0; i < rawPoints.length; i++) {
+            let touch = rawPoints[i];
+            let x = touch.clientX - rect.left;
+            let y = touch.clientY - rect.top;
 
             if(scale)
             {
-                var pointScaled = this.touchToStage({x: x, y: y});
+                let pointScaled = this.touchToStage({x: x, y: y});
                 touchPoints.push(pointScaled);
             }
             else
@@ -57,11 +57,11 @@ export class AbstractTangibleController {
 
     onResize() {
         if (this.stage != null) {
-            var container = document.getElementById(this.containerID);
+            let container = document.getElementById(this.containerID);
 
             if(container != undefined)
             {
-                var rect = container.getBoundingClientRect();
+                let rect = container.getBoundingClientRect();
                 this.stage.setWidth(rect.right - rect.left);
                 this.stage.setHeight(rect.bottom - rect.top);
                 this.width = rect.right - rect.left;
@@ -86,10 +86,10 @@ export class AbstractTangibleController {
     }
 
     drawTouchPoints(touchPoints) {
-        for (var i = 0; i < touchPoints.length; i++) {
+        for (let i = 0; i < touchPoints.length; i++) {
 
             if (i < this.touchPointsLayer.children.length) {
-                var shape = this.touchPointsLayer.children[i];
+                let shape = this.touchPointsLayer.children[i];
                 shape.setX(touchPoints[i].x);
                 shape.setY(touchPoints[i].y);
                 shape.scaleX(1.0/this.stage.scaleX());
@@ -134,7 +134,7 @@ export class TangibleController extends AbstractTangibleController{
         this.enable = true;
         this.init = true;
 
-        var rect = document.getElementById(containerID).getBoundingClientRect();
+        let rect = document.getElementById(containerID).getBoundingClientRect();
 
         this.width = rect.right - rect.left;
         this.height = rect.bottom - rect.top;
@@ -185,8 +185,8 @@ export class TangibleController extends AbstractTangibleController{
             console.log('new Promise', resolve, reject);
             html2canvas($("#" + this.containerID)).then(function(canvas) {
                 console.log('html2canvas');
-                var thumbWidth = 100;
-                var scale = thumbWidth / this.width;
+                let thumbWidth = 100;
+                let scale = thumbWidth / this.width;
                 resolve(Canvas2Image.convertToImage(canvas, thumbWidth, this.height * scale).src.slice(22)); //currentSrc doesn't work in Cordova
             }.bind(this));
         }.bind(this));
@@ -306,8 +306,8 @@ export class TangibleController extends AbstractTangibleController{
         this.$tgImages = $tgImages;
 
         //Setup recogniser
-        var features = [];
-        var targets = [];
+        let features = [];
+        let targets = [];
 
         for (let [id, tangible] of Object.entries(this.library.tangibles)) {
             features.push(tangible.registrationPoints);
@@ -317,14 +317,14 @@ export class TangibleController extends AbstractTangibleController{
         this.recogniser.fit(features, targets);
 
         //Centre diagram
-        var points = [];
+        let points = [];
         for (let [id, instance] of Object.entries(this.diagram.tangibles)) {
             points.push(instance.position);
         }
 
-        var curCentre = Points.getCentroid(points);
-        var newCentre = {x: this.stage.getWidth()/2, y: this.stage.getHeight()/2};
-        var offset = Point.subtract(newCentre, curCentre);
+        let curCentre = Points.getCentroid(points);
+        let newCentre = {x: this.stage.getWidth()/2, y: this.stage.getHeight()/2};
+        let offset = Point.subtract(newCentre, curCentre);
 
         for (let [id, instance] of Object.entries(this.diagram.tangibles)) {
             instance.position = Point.add(instance.position, offset);
@@ -332,13 +332,13 @@ export class TangibleController extends AbstractTangibleController{
 
         //Setup visuals
         for (let [id, instance] of Object.entries(this.diagram.tangibles)) {
-            var template = this.library.tangibles[instance.type];
+            let template = this.library.tangibles[instance.type];
             this.addVisual(id, instance.type, instance, template, this.stage);
         }
     }
 
     addVisual(instanceId, typeId, model, template, stage) {
-        var visual = new Visual(instanceId, template, stage, this.$tgImages.getTangibleImage(typeId, this.library), this.initVisual.bind(this, model));
+        let visual = new Visual(instanceId, template, stage, this.$tgImages.getTangibleImage(typeId, this.library), this.initVisual.bind(this, model));
         this.visuals[instanceId] = visual;
         visual.onTapCallback = this.onTap.bind(this);
         visual.onDragStartCallback = this.onDragStart.bind(this);
@@ -347,7 +347,7 @@ export class TangibleController extends AbstractTangibleController{
     initZIndices()
     {
         for (let [id, instance] of Object.entries(this.diagram.tangibles)) {
-            var visual = this.visuals[id];
+            let visual = this.visuals[id];
             visual.setZIndex(instance.zIndex);
         }
 
@@ -380,23 +380,23 @@ export class TangibleController extends AbstractTangibleController{
 
     onTouch(event) {
         if (this.enable) {
-            var points = this.toPoints(event.touches);
-            var scaledPoints = this.toPoints(event.touches, true);
+            let points = this.toPoints(event.touches);
+            let scaledPoints = this.toPoints(event.touches, true);
             this.drawTouchPoints(scaledPoints); //Visualise touch points
 
             //Get recognised tangible and add to surface
             if (event.touches.length > 2) {
-                var matches = this.recogniser.predict(points);
+                let matches = this.recogniser.predict(points);
 
                 if (matches.length > 0) {
-                    var closestMatch = matches[0];
-                    var template = this.library.tangibles[closestMatch.target];
+                    let closestMatch = matches[0];
+                    let template = this.library.tangibles[closestMatch.target];
 
-                    var position = Points.getCentroid(scaledPoints);
-                    var orientation = Points.getOrientation(points) - Points.getOrientation(template.registrationPoints); //current-original orientation
+                    let position = Points.getCentroid(scaledPoints);
+                    let orientation = Points.getOrientation(points) - Points.getOrientation(template.registrationPoints); //current-original orientation
 
-                    var id = Random.id();
-                    var instance = {type: closestMatch.target, position: position, orientation: orientation, zIndex: 0};
+                    let id = Random.id();
+                    let instance = {type: closestMatch.target, position: position, orientation: orientation, zIndex: 0};
                     this.diagram.tangibles[id] = instance;
                     this.addVisual(id, instance.type, instance, template, this.stage);
                 }

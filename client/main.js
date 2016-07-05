@@ -18,7 +18,6 @@ Accounts.ui.config({
     passwordSignupFields: 'USERNAME_ONLY',
 });
 
-
 angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.ui', home.name, diagram.name, libraries.name])
     .constant("$const", {
         "APP": "Tangibles",
@@ -54,16 +53,6 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
             .icon('content:ic_content_copy', '/images/ic_content_copy_black_48px.svg')
             .icon('navigation:ic_close', '/images/ic_close_black_48px.svg')
             .icon('av:ic_library_books', '/images/ic_library_books_black_48px.svg');
-        
-        // Default route
-        let defaultLibraryId = "";
-        if(Meteor.userId())
-            defaultLibraryId = Meteor.user().profile.defaultLibraryId;
-        else
-            defaultLibraryId = $const.DEFAULT_LIBRARY_ID;
-
-        $urlRouterProvider.otherwise("home/diagram/" + Random.id() + "/true/" + defaultLibraryId);
-
 
         let resolve = {
             libraries: function ($rootScope) {
@@ -79,6 +68,8 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
                 return $rootScope.subscribe('diagrams');
             }
         };
+
+        $urlRouterProvider.otherwise('home/diagram///');
 
         $stateProvider
             .state('home', {
@@ -113,6 +104,7 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
                     $tgSharedData.data.stateName = 'home.libraries';
                 }]
         });
+
     }).factory('$tgSharedData', function () {
     let service = {
         data: {

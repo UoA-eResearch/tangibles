@@ -8,16 +8,16 @@ export class Point {
      * @param point2
      */
     static distance(point1, point2) {
-        var ax = point1.x - point2.x;
-        var ay = point1.y - point2.y;
+        let ax = point1.x - point2.x;
+        let ay = point1.y - point2.y;
 
         return Math.sqrt(ax * ax + ay * ay);
     };
 
     static angle(point1, point2) {
-        var dx = point2.x - point1.x;
-        var dy = point2.y - point1.y;
-        var angle = Math.atan2(dy, dx); // range (-PI, PI]
+        let dx = point2.x - point1.x;
+        let dy = point2.y - point1.y;
+        let angle = Math.atan2(dy, dx); // range (-PI, PI]
         angle *= 180 / Math.PI;
         return angle;
     };
@@ -40,9 +40,9 @@ export class Points {
      */
 
     static getCentroid(points) {
-        var centre = {x: 0, y: 0};
+        let centre = {x: 0, y: 0};
 
-        for (var i = 0; i < points.length; i++) {
+        for (let i = 0; i < points.length; i++) {
             centre.x = centre.x + points[i].x;
             centre.y = centre.y + points[i].y;
         }
@@ -54,14 +54,14 @@ export class Points {
     }
 
     static sortClockwise(points) {
-        var centre = Points.getCentroid(points);
-        var max_i = Points.getAnchorIndex(centre, points); // Point with furthest distance
-        var indices = [0, 1, 2]; // indices of triangle
+        let centre = Points.getCentroid(points);
+        let max_i = Points.getAnchorIndex(centre, points); // Point with furthest distance
+        let indices = [0, 1, 2]; // indices of triangle
         indices.splice(indices.indexOf(max_i), 1); // remove index of anchor
 
         // Two possible orders
-        var sort_a = [points[max_i], points[indices[0]], points[indices[1]]];
-        var sort_b = [points[max_i], points[indices[1]], points[indices[0]]];
+        let sort_a = [points[max_i], points[indices[0]], points[indices[1]]];
+        let sort_b = [points[max_i], points[indices[1]], points[indices[0]]];
 
         // If determinant > 0 then sort_a CCW
         if (Points.determinant(sort_a) > 0) {
@@ -77,12 +77,12 @@ export class Points {
     }
 
     static getAnchorIndex(centre, points) {
-        var max = 0;
-        var max_i = -1;
+        let max = 0;
+        let max_i = -1;
 
         //Find point with greatest distance, we use this as a reference point for determining the angle of the tangible
-        for (var i = 0; i < points.length; i++) {
-            var dist = Point.distance(centre, points[i]);
+        for (let i = 0; i < points.length; i++) {
+            let dist = Point.distance(centre, points[i]);
 
             if (dist > max) {
                 max = dist;
@@ -100,8 +100,8 @@ export class Points {
      */
 
     static getOrientation(points) {
-        var centre = Points.getCentroid(points);
-        var max_i = Points.getAnchorIndex(centre, points);
+        let centre = Points.getCentroid(points);
+        let max_i = Points.getAnchorIndex(centre, points);
 
         return Point.angle(centre, points[max_i]);
     };
