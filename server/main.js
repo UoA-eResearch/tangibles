@@ -14,6 +14,44 @@ function getImage(path, id) {
     return "data:image/png;base64," + fromByteArray(data);
 }
 
+Accounts.onCreateUser(function (options, user) {
+    let libraries = Libraries.find({owner: "everyone"}).fetch();
+    let diagrams = Diagrams.find({owner: "everyone"}).fetch();
+    let defaultLibId = "";
+    let oldIds = {};
+
+    for (let i = 0; i < libraries.length; i++) {
+        let lib = libraries[i];
+        let newId = Random.id();
+        oldIds[lib._id] = newId;
+        lib._id = newId;
+        lib.owner = user._id;
+
+        if (lib.name == "Oroo")
+            defaultLibId = lib._id;
+
+        Libraries.insert(lib);
+    }
+
+    for (let i = 0; i < diagrams.length; i++) {
+        let diagram = diagrams[i];
+        diagram._id = Random.id();
+        diagram.library._id = oldIds[diagram.library._id];
+        diagram.owner = user._id;
+        Diagrams.insert(diagram);
+    }
+
+    if (options.profile) {
+        user.profile = options.profile;
+        user.profile.defaultLibraryId = defaultLibId;
+    }
+    else {
+        user.profile = {defaultLibraryId: defaultLibId};
+    }
+
+    return user;
+});
+
 
 Meteor.AppCache.config({onlineOnly: ['/online/']});
 
@@ -21,13 +59,11 @@ Meteor.startup(() => {
     console.log('starting!');
     var path = 'default_db/';
 
-    if(Libraries.find({}).count() == 0)
-    {
+    if (Libraries.find({}).count() == 0) {
         console.log("No libraries found, creating default.");
         var libraries = JSON.parse(Assets.getText(path + "libraries.json"));
 
-        for(var i=0; i < libraries.length; i++)
-        {
+        for (var i = 0; i < libraries.length; i++) {
             var lib = libraries[i];
 
             // Insert images for each tangible
@@ -40,12 +76,10 @@ Meteor.startup(() => {
         }
     }
 
-    if(Diagrams.find({}).count() == 0)
-    {
+    if (Diagrams.find({}).count() == 0) {
         console.log("No diagrams found, creating default.");
         var diagrams = JSON.parse(Assets.getText(path + "diagrams.json"));
-        for(i=0; i < diagrams.length; i++)
-        {
+        for (i = 0; i < diagrams.length; i++) {
             var diagram = diagrams[i];
             diagram.image = getImage(path, diagrams[i]._id);
             Diagrams.insert(diagram);
