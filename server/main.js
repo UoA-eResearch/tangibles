@@ -57,7 +57,7 @@ Accounts.onCreateUser(function (options, user) {
 });
 
 
-Meteor.AppCache.config({onlineOnly: ['/online/']});
+// Meteor.AppCache.config({onlineOnly: ['/online/']});
 
 Meteor.startup(() => {
     console.log('starting!');
