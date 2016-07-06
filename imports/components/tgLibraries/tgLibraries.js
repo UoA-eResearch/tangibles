@@ -9,11 +9,13 @@ import {AbstractTangibleController} from '../../api/tangibles/controller';
 import naifBase64 from 'angular-base64-upload';
 
 export class LibrariesCtrl extends AbstractTangibleController{
-    constructor($scope, $mdSidenav, $mdUtil, $q, $const, $tgImages) {
+    constructor($scope, $mdSidenav, $mdUtil, $q, $const, $tgImages, $meteor) {
         'ngInject';
         super();
         $scope.viewModel(this);
         this.touchWindow = 'Uneditable';
+        this.$scope = $scope;
+        this.$meteor = $meteor;
         this.$scope = $scope;
         this.$const = $const;
         $scope.$tgImages = $tgImages;
@@ -39,8 +41,9 @@ export class LibrariesCtrl extends AbstractTangibleController{
         $scope.imageUploaded = function(file, base64_object)
         {
             let deferred = $q.defer();
-            $scope.tgLibraries.image = base64_object.base64;
-            $scope.tgLibraries.imageObj.src = 'data:image/png;base64,' + base64_object.base64;
+            var small = $scope.tgLibraries.resizeImage('data:image/png;base64,' + base64_object.base64, 1000);
+            $scope.tgLibraries.image = small;
+            $scope.tgLibraries.imageObj.src = small;
             return deferred.promise;
         };
 
@@ -116,6 +119,98 @@ export class LibrariesCtrl extends AbstractTangibleController{
         SidenavCtrl.toggle('tangible-side-nav', this.$mdSidenav, this.$mdUtil, this.initTouchWindow.bind(this));
     }
 
+    getImage()
+    {
+        if(Meteor.isCordova)
+            this.takePhoto();
+        else
+            this.triggerImageUpload();
+    }
+
+    resizeImage(img, maxLength) {
+        // create an off-screen canvas
+        var canvas = document.createElement('canvas'),
+            ctx = canvas.getContext('2d');
+
+        var imgElem = document.createElement('img');
+        imgElem.src = img;
+
+        var newWidth = 0;
+        var newHeight = 0;
+
+        if(imgElem.width > imgElem.height)
+        {
+            scale = maxLength / imgElem.width;
+            newWidth = maxLength;
+            newHeight = imgElem.height * scale;
+        }
+        else {
+            scale = maxLength / imgElem.height;
+            newHeight = maxLength;
+            newWidth = imgElem.width * scale;
+        }
+
+        // set its dimension to target size
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+
+        // draw source image into the off-screen canvas:
+        ctx.drawImage(imgElem, 0, 0, newWidth, newHeight);
+
+        // encode image to data-uri with base64 version of compressed image
+        return canvas.toDataURL('image/png');
+    }
+
+    white2transparent(img)
+    {
+        var imgElem = document.createElement('img');
+        imgElem.src = img;
+
+        var c = document.createElement('canvas');
+
+        var w = imgElem.width, h = imgElem.height;
+
+        c.width = w;
+        c.height = h;
+
+        var ctx = c.getContext('2d');
+
+        ctx.drawImage(imgElem, 0, 0, w, h);
+        var imageData = ctx.getImageData(0,0, w, h);
+        var pixel = imageData.data;
+
+        var r=0, g=1, b=2,a=3;
+        for (var p = 0; p<pixel.length; p+=4)
+        {
+            var pr = pixel[p+r];
+            var pg = pixel[p+g];
+            var pb = pixel[p+b];
+
+            var mean = (pr + pg + pb) / 3.0;
+            var rg = Math.abs(pr - pg);
+            var gb = Math.abs(pg - pb);
+            var rb = Math.abs(pr - pb);
+            var maxDiff = Math.max(Math.max(rg, gb), rb);
+
+            if (maxDiff < 20 && mean > 120) //white
+                pixel[p+a] = 0;
+        }
+
+        ctx.putImageData(imageData,0,0);
+
+        return c.toDataURL('image/png');
+    }
+
+    takePhoto(){
+        this.$meteor.getPicture().then(function(data){
+            console.log('get image');
+            var small = this.resizeImage(data, 1000);
+            var whiteRemoved = this.white2transparent(small);
+            this.$scope.tgLibraries.image = whiteRemoved;
+            this.$scope.tgLibraries.imageObj.src = whiteRemoved;
+        }.bind(this));
+    }
+
     triggerImageUpload()
     {
         $('#file').trigger('click');
@@ -141,7 +236,7 @@ export class LibrariesCtrl extends AbstractTangibleController{
         }
 
         this.selectedLibrary.tangibles[this.selectedTangible.id] = this.selectedTangible.tangible;
-        this.selectedLibrary.images[this.selectedTangible.id] = 'data:image/png;base64,' + this.image;
+        this.selectedLibrary.images[this.selectedTangible.id] = this.image;
 
         if(this.image != undefined)
         {
