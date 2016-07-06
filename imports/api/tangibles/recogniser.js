@@ -26,24 +26,24 @@ export class Recogniser {
      */
 
     predict(points) {
-        var matches = [];
+        let matches = [];
 
         // We need to have minimum of three touch points to identify the Visual and it's orientation.
         if (points.length == 3) {
-            var touchSorted = Points.sortClockwise(points);
-            var touchDistA = Point.distance(touchSorted[0], touchSorted[1]);
-            var touchDistB = Point.distance(touchSorted[0], touchSorted[2]);
-            var touchDistC = Point.distance(touchSorted[1], touchSorted[2]);
+            let touchSorted = Points.sortClockwise(points);
+            let touchDistA = Point.distance(touchSorted[0], touchSorted[1]);
+            let touchDistB = Point.distance(touchSorted[0], touchSorted[2]);
+            let touchDistC = Point.distance(touchSorted[1], touchSorted[2]);
 
-            for (var i = 0; i < this.features.length; i++) {
-                var feature = this.features[i];
+            for (let i = 0; i < this.features.length; i++) {
+                let feature = this.features[i];
 
                 if (feature.length == 3) {
-                    var regPointsDists = Points.sortClockwise(feature);
-                    var regDistA = Point.distance(regPointsDists[0], regPointsDists[1]);
-                    var regDistB = Point.distance(regPointsDists[0], regPointsDists[2]);
-                    var regDistC = Point.distance(regPointsDists[1], regPointsDists[2]);
-                    var similarity = Math.abs(touchDistA - regDistA) + Math.abs(touchDistB - regDistB) + Math.abs(touchDistC - regDistC);
+                    let regPointsDists = Points.sortClockwise(feature);
+                    let regDistA = Point.distance(regPointsDists[0], regPointsDists[1]);
+                    let regDistB = Point.distance(regPointsDists[0], regPointsDists[2]);
+                    let regDistC = Point.distance(regPointsDists[1], regPointsDists[2]);
+                    let similarity = Math.abs(touchDistA - regDistA) + Math.abs(touchDistB - regDistB) + Math.abs(touchDistC - regDistC);
                     matches.push({target: this.targets[i], similarity: similarity});
                 }
             }

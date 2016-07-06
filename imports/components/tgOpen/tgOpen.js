@@ -14,7 +14,6 @@ class OpenDiagramCtrl extends DialogCtrl {
         $scope.$tgImages = $tgImages;
 
         this.subscribe('diagrams');
-        this.subscribe('images');
 
         this.helpers({
             diagrams() {

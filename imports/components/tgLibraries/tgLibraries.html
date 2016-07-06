@@ -93,20 +93,24 @@
             </md-toolbar>
 
             <md-content style="margin: 20px;">
+
                 <div layout>
                     <div flex="10" layout="row" layout-align="left center" style="margin-right: 10px;">
                         <p>Image</p>
                     </div>
 
                     <md-button flex="40" style="margin: 0;" layout-align="left center" class="md-primary"
-                               ng-click="tgLibraries.triggerImageUpload()" ng-disabled="tgLibraries.isCordova">
-                        Choose image
+                               ng-click="tgLibraries.getImage()">
+                        <span ng-if="!tgLibraries.isCordova">Choose image</span>
+                        <span ng-if="tgLibraries.isCordova">Take photo*</span>
                     </md-button>
 
                     <span flex="10"></span>
 
                     <md-checkbox flex="50" style="margin-bottom: 0;" ng-model="tgLibraries.selectedTangible.tangible.icon"><p>Library icon</p></md-checkbox>
                 </div>
+
+                <p ng-if="tgLibraries.isCordova" style="font-style: italic;margin-top: 0; margin-bottom: 5px;">*Object should have a white background</p>
 
                 <div layout>
                     <div flex="10" layout="row" layout-align="left center" style="margin-right: 10px;">

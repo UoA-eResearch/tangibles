@@ -20,7 +20,7 @@ class DiagramCtrl {
         this.libraryId = $stateParams.libraryId;
         this.isNewDiagram = ($stateParams.isNewDiagram === "true");
 
-        if(this.diagramId == undefined || this.libraryId == undefined)
+        if(this.diagramId == "" || this.libraryId == "" || $stateParams.isNewDiagram == "")
         {
             this.openDefault();
         }
@@ -63,9 +63,7 @@ class DiagramCtrl {
 
     openDefault()
     {
-        console.log('open default!', Meteor.userId(), Meteor.user());
-
-        if(Meteor.userId())
+        if(Meteor.user())
             this.$state.go('home.diagram',{diagramId: Random.id(), isNewDiagram: true, libraryId: Meteor.user().profile.defaultLibraryId});
         else
             this.$state.go('home.diagram',{diagramId: Random.id(), isNewDiagram: true, libraryId: this.$const.DEFAULT_LIBRARY_ID});
@@ -117,7 +115,7 @@ class DiagramCtrl {
             this.localDiagram = angular.copy(newVal);
             this.sharedData.diagramName = this.localDiagram.name;
             PubSub.publish('updateName', this.localDiagram.name);
-            var library = Libraries.findOne({_id: this.libraryId});
+            let library = Libraries.findOne({_id: this.libraryId});
             this.tangibleController.openDiagram(this.localDiagram, angular.copy(library), this.$tgImages);
         }
     }
@@ -126,7 +124,7 @@ class DiagramCtrl {
     {
         if (this.localDiagram != undefined) {
             this.save();
-            var copy = angular.copy(this.localDiagram);
+            let copy = angular.copy(this.localDiagram);
             copy._id = Random.id();
             this.saveThumb(copy._id);
             copy.name = data;

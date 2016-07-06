@@ -80,7 +80,7 @@ export class Visual {
         if (this.isTouchEnabled) {
             //this.shape.setDraggable(true);
             this.setOrientation(this.hammerStartAngle + event.gesture.rotation);
-            var pos = event.gesture.center;
+            let pos = event.gesture.center;
             this.setPosition(this.touchToStage({x: pos.clientX, y: pos.clientY}));
         }
     }

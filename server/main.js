@@ -9,8 +9,8 @@ if (!Object.entries) {
 }
 
 function getImage(path, id) {
-    var file_name = path + 'images/' + id + '.png';
-    var data = Assets.getBinary(file_name);
+    let file_name = path + 'images/' + id + '.png';
+    let data = Assets.getBinary(file_name);
     return "data:image/png;base64," + fromByteArray(data);
 }
 
@@ -41,6 +41,8 @@ Accounts.onCreateUser(function (options, user) {
         Diagrams.insert(diagram);
     }
 
+
+
     if (options.profile) {
         user.profile = options.profile;
         user.profile.defaultLibraryId = defaultLibId;
@@ -49,22 +51,24 @@ Accounts.onCreateUser(function (options, user) {
         user.profile = {defaultLibraryId: defaultLibId};
     }
 
+    console.log('user', user);
+
     return user;
 });
 
 
-Meteor.AppCache.config({onlineOnly: ['/online/']});
+// Meteor.AppCache.config({onlineOnly: ['/online/']});
 
 Meteor.startup(() => {
     console.log('starting!');
-    var path = 'default_db/';
+    let path = 'default_db/';
 
     if (Libraries.find({}).count() == 0) {
         console.log("No libraries found, creating default.");
-        var libraries = JSON.parse(Assets.getText(path + "libraries.json"));
+        let libraries = JSON.parse(Assets.getText(path + "libraries.json"));
 
-        for (var i = 0; i < libraries.length; i++) {
-            var lib = libraries[i];
+        for (let i = 0; i < libraries.length; i++) {
+            let lib = libraries[i];
 
             // Insert images for each tangible
             for (let [id, tangible] of Object.entries(lib.tangibles)) {
@@ -78,9 +82,9 @@ Meteor.startup(() => {
 
     if (Diagrams.find({}).count() == 0) {
         console.log("No diagrams found, creating default.");
-        var diagrams = JSON.parse(Assets.getText(path + "diagrams.json"));
+        let diagrams = JSON.parse(Assets.getText(path + "diagrams.json"));
         for (i = 0; i < diagrams.length; i++) {
-            var diagram = diagrams[i];
+            let diagram = diagrams[i];
             diagram.image = getImage(path, diagrams[i]._id);
             Diagrams.insert(diagram);
         }

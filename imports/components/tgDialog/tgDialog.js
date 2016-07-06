@@ -23,7 +23,7 @@ export class DialogCtrl {
             $('html > head').append(DialogCtrl.largeDialog);
         }
 
-        var nameKebabCase = lodash.kebabCase(component);
+        let nameKebabCase = lodash.kebabCase(component);
         $mdDialog.show({
             template: '<' + nameKebabCase + '></' + nameKebabCase + '>',
             parent: angular.element(document.body),
