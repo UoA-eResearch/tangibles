@@ -4,3 +4,4 @@ Meteor
 fullchain.pem
 privkey.pem
 settings.json
+mup.json
