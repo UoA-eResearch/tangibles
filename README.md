@@ -33,10 +33,19 @@ Starting the Meteor app, see the [Meteor tutorial](https://www.meteor.com/tutori
 Open the application in your brower [http://localhost:3000](http://localhost:3000).
 
 ## Architecture
-The files that glue everything together are contained in the `tangibles/client` directory. `main.html` contains the root ui-router view, `main-view`, this is replaced by content when the user navigates to different pages of the app. `main.js` contains the tangibles app module, where the apps dependencies and configuration is defined. This includes the apps colour scheme, icons and the definition of the 'routes' for ui-router.
+### Main view, Angular module and CSS
+The files that glue everything together are contained in the `tangibles/client` directory. `main.html` contains the root ui-router view, `main-view`, this is replaced by content when the user navigates to different pages of the app. `main.js` contains the tangibles app module, where the apps dependencies and configuration is defined. This includes the apps colour scheme, icons and the definition of the 'routes' for ui-router. `main.css` contains the css styles.
 
-`tangibles/client` contains the main scss, javascript and html files. The routes are in main.js.
-`imports/api/collections` contains the diagrams and libraries collections.
+### Collections and methods
+The collections and Meteor methods are stored in `imports/api/collections`. There are two collections used in this application: `diagrams`, which stores diagrams (e.g. the I killed a boar library); and `libraries`, which stores the libraries (e.g. the Oroo library). The diagrams collection and methods are defined in diagrams.js and the libraries collection and methods are defined in libraries.js. Operations on the collections are performed through the Meteor methods defined in each respecitive file for secuirty reasons (since this is a multi user app).
+
+### Drawing and recognition
+Drawing, recognition and untility code is stored in `imports/api/tangibles`. The tangibles are drawn and touch points recognised with the [Konva.js](http://konvajs.github.io/) library. See `controller.js` for the drawing controller and `visual.js` for the individual tangible drawing code. The recogniser is a class defined in `recogniser.js`: to create a new recogniser just subclass the `Recogniser` class and override the `predict` method.
+
+
+
+
+
 `imports/api/tangibles` contains the recogniser and the tangible visualisation code.
 `imports/api/components` contains all of the user interface components. Each component has a controller (the javascript file) and a template (the html file).
 
