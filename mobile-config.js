@@ -1,4 +1,7 @@
 
+App.accessRule('https://fonts.googleapis.com/*');
+App.accessRule('https://enginex.kadira.io/*');
+
 App.icons({
   // iOS
   'iphone': 'resources/icons/Icon-60.png',
