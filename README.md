@@ -2,7 +2,7 @@
 The Penan people of Malaysian Borneo were traditionally nomads of the rainforest. They would leave messages in the jungle for each other by shaping natural objects into language tokens and arranging these symbols in specific ways -- much like words in a sentence. With settlement, the language is being lost as it is not being used by the younger generation. We report here, a tangible system designed to help the Penan preserve their unique object writing language. The key features of the system are that: its tangibles are made of real objects; it works in the wild; and new tangibles can be fabricated and added to the system by the users. Our evaluations show that the system is engaging and encourages intergenerational knowledge transfer and thus has the potential to help preserve this language.
 
 ## Overview
-Tangibles is built with the [Meteor](https://www.meteor.com/) framework. The user interface is created with [Angular JS 1](https://angularjs.org/) and [Angular Material](https://material.angularjs.org/latest/). [Angular UI Router](https://github.com/angular-ui/ui-router) is used to navigate between different pages of the app. Data is stored in MongoDB. The Tangibles app can be deployed as a website, an Android app (4.4 and above) or an iOS app.
+Tangibles is built with the [Meteor](https://www.meteor.com/) framework. The user interface is created with [Angular JS 1](https://angularjs.org/) and [Angular Material](https://material.angularjs.org/latest/). The tangibles are drawn and touch points recognised with the [Konva.js](http://konvajs.github.io/) library. [Angular UI Router](https://github.com/angular-ui/ui-router) is used to navigate between different pages of the app. Data is stored in MongoDB. The Tangibles app can be deployed as a website, an Android app (4.4 and above) or an iOS app.
 
 ### Software dependencies
 * To build the Android apk you need a computer with an Ubuntu or MacOS operating system. You also need to install Android Studio and the Java JDK. Make sure your environment variables are set correctly. See the [Meteor tutorial](https://www.meteor.com/tutorials/angular/running-on-mobile) for more details.
@@ -39,15 +39,24 @@ The files that glue everything together are contained in the `tangibles/client` 
 ### Collections and methods
 The collections and Meteor methods are stored in `imports/api/collections`. There are two collections used in this application: `diagrams`, which stores diagrams (e.g. the I killed a boar library); and `libraries`, which stores the libraries (e.g. the Oroo library). The diagrams collection and methods are defined in diagrams.js and the libraries collection and methods are defined in libraries.js. Operations on the collections are performed through the Meteor methods defined in each respecitive file for secuirty reasons (since this is a multi user app).
 
+See [`private/default_db`](https://github.com/UoA-eResearch/tangibles/tree/master/private/default_db) for json definitions of the data in the diagrams and libraries collections.
+
 ### Drawing and recognition
 Drawing, recognition and utility code is stored in `imports/api/tangibles`. The tangibles are drawn and touch points recognised with the [Konva.js](http://konvajs.github.io/) library. See `controller.js` for the drawing controller and `visual.js` for the individual tangible drawing code. The recogniser is a class defined in `recogniser.js`: to create a new recogniser just subclass the `Recogniser` class and override the `predict` method.
 
+### User interface
+The user interface views are defined in `imports/api/components`. Each user interface view is defined as an [Angular 1.5 component](https://docs.angularjs.org/guide/component). Each component contains an Angular template (.html) and an Angular controller (.js). These are described below:
 
+* tgDiagram:
+* tgDialog:
+* tgHome: 
+* tgImages:
+* tgLibraries:
+* tgNew:
+* tgOpen: 
+* tgSidenav:
+* tgToolbar:
 
-
-
-`imports/api/tangibles` contains the recogniser and the tangible visualisation code.
-`imports/api/components` contains all of the user interface components. Each component has a controller (the javascript file) and a template (the html file).
 
 
 
