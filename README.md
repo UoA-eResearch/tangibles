@@ -40,7 +40,7 @@ The files that glue everything together are contained in the `tangibles/client` 
 The collections and Meteor methods are stored in `imports/api/collections`. There are two collections used in this application: `diagrams`, which stores diagrams (e.g. the I killed a boar library); and `libraries`, which stores the libraries (e.g. the Oroo library). The diagrams collection and methods are defined in diagrams.js and the libraries collection and methods are defined in libraries.js. Operations on the collections are performed through the Meteor methods defined in each respecitive file for secuirty reasons (since this is a multi user app).
 
 ### Drawing and recognition
-Drawing, recognition and untility code is stored in `imports/api/tangibles`. The tangibles are drawn and touch points recognised with the [Konva.js](http://konvajs.github.io/) library. See `controller.js` for the drawing controller and `visual.js` for the individual tangible drawing code. The recogniser is a class defined in `recogniser.js`: to create a new recogniser just subclass the `Recogniser` class and override the `predict` method.
+Drawing, recognition and utility code is stored in `imports/api/tangibles`. The tangibles are drawn and touch points recognised with the [Konva.js](http://konvajs.github.io/) library. See `controller.js` for the drawing controller and `visual.js` for the individual tangible drawing code. The recogniser is a class defined in `recogniser.js`: to create a new recogniser just subclass the `Recogniser` class and override the `predict` method.
 
 
 
