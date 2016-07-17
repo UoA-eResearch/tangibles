@@ -5,7 +5,7 @@ The Penan people of Malaysian Borneo were traditionally nomads of the rainforest
 Tangibles is built with the [Meteor](https://www.meteor.com/) framework. The user interface is created with [Angular JS 1](https://angularjs.org/) and [Angular Material](https://material.angularjs.org/latest/). Data is stored in MongoDB. The Tangibles app can be deployed as a website, an Android app (4.4 and above) or an iOS app.
 
 ## Software dependencies
-* To build the Android apk you need a computer with an Ubuntu or MacOS operating system. You also need to install Android Studio and the Java JDK. Make sure your environment variables set correctly. See the [Meteor tutorial](https://www.meteor.com/tutorials/angular/running-on-mobile) for more details.
+* To build the Android apk you need a computer with an Ubuntu or MacOS operating system. You also need to install Android Studio and the Java JDK. Make sure your environment variables are set correctly. See the [Meteor tutorial](https://www.meteor.com/tutorials/angular/running-on-mobile) for more details.
 * To build the iOS version you need a computer with MacOS and XCode.
 
 ## Making physical tangibles
