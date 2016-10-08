@@ -9,11 +9,12 @@ import {AbstractTangibleController} from '../../api/tangibles/controller';
 import naifBase64 from 'angular-base64-upload';
 
 export class LibrariesCtrl extends AbstractTangibleController{
+
     constructor($scope, $mdSidenav, $mdUtil, $q, $const, $tgImages, $meteor) {
         'ngInject';
         super();
         $scope.viewModel(this);
-        this.touchWindow = 'Uneditable';
+        this.touchWindow = 'Editable';
         this.$scope = $scope;
         this.$meteor = $meteor;
         this.$scope = $scope;
@@ -38,13 +39,17 @@ export class LibrariesCtrl extends AbstractTangibleController{
             }
         });
 
+        var touchPointsRegistered = false;
+
         $scope.imageUploaded = function(file, base64_object)
         {
             let deferred = $q.defer();
             var small = $scope.tgLibraries.resizeImage('data:image/png;base64,' + base64_object.base64, 1000);
             $scope.tgLibraries.image = small;
             $scope.tgLibraries.imageObj.src = small;
+
             return deferred.promise;
+
         };
 
         $scope.$on("$destroy", this.destroy.bind(this));
@@ -52,6 +57,12 @@ export class LibrariesCtrl extends AbstractTangibleController{
 
     newImageLoaded()
     {
+
+        // $('button.md-raised:nth-child(1)').addClass("md-button md-ink-ripple");
+/*        if(initTouchWindow)
+            $('button.md-raised:nth-child(1)').prop('disabled',false); 
+*/
+
         let width = this.imageObj.naturalWidth * this.selectedTangible.tangible.scale;
         let height = this.imageObj.naturalHeight * this.selectedTangible.tangible.scale;
 
@@ -117,6 +128,7 @@ export class LibrariesCtrl extends AbstractTangibleController{
     {
         this.selectedTangible = angular.copy({id: id, tangible: tangible});
         SidenavCtrl.toggle('tangible-side-nav', this.$mdSidenav, this.$mdUtil, this.initTouchWindow.bind(this));
+  
     }
 
     getImage()
@@ -125,9 +137,11 @@ export class LibrariesCtrl extends AbstractTangibleController{
             this.takePhoto();
         else
             this.triggerImageUpload();
+
     }
 
     resizeImage(img, maxLength) {
+
         // create an off-screen canvas
         var canvas = document.createElement('canvas'),
             ctx = canvas.getContext('2d');
@@ -159,6 +173,7 @@ export class LibrariesCtrl extends AbstractTangibleController{
 
         // encode image to data-uri with base64 version of compressed image
         return canvas.toDataURL('image/png');
+
     }
 
     white2transparent(img)
@@ -203,12 +218,14 @@ export class LibrariesCtrl extends AbstractTangibleController{
 
     takePhoto(){
         this.$meteor.getPicture().then(function(data){
+
             console.log('get image');
             var small = this.resizeImage(data, 1000);
             var whiteRemoved = this.white2transparent(small);
             this.$scope.tgLibraries.image = whiteRemoved;
             this.$scope.tgLibraries.imageObj.src = whiteRemoved;
         }.bind(this));
+
     }
 
     triggerImageUpload()
@@ -245,7 +262,8 @@ export class LibrariesCtrl extends AbstractTangibleController{
 
         Meteor.call("libraries.updateTangible", this.selectedLibrary._id, this.selectedTangible.id, this.selectedTangible.tangible);
 
-        SidenavCtrl.toggle('tangible-side-nav', this.$mdSidenav, this.$mdUtil)
+        SidenavCtrl.toggle('tangible-side-nav', this.$mdSidenav, this.$mdUtil);
+
     }
 
     addTangible()
@@ -257,7 +275,6 @@ export class LibrariesCtrl extends AbstractTangibleController{
             "startAngle": 90,
             "registrationPoints": []
         };
-
         this.selectedLibrary.tangibles[tangibleId] = tangible;
         Meteor.call("libraries.addTangible", this.selectedLibrary._id, tangibleId, tangible);
     }
@@ -280,7 +297,7 @@ export class LibrariesCtrl extends AbstractTangibleController{
     onTangibleLoaded()
     {
         this.onResize();
-        this.touchWindow = 'Uneditable';
+        this.touchWindow = 'Editable';
 
         // Centre registration points and draw them
         let points = this.selectedTangible.tangible.registrationPoints;
@@ -300,6 +317,8 @@ export class LibrariesCtrl extends AbstractTangibleController{
         }
 
         this.imageObj.src = this.$tgImages.getTangibleImage(this.selectedTangible.id, this.selectedLibrary);
+
+
     }
 
     closeTangibleEditor()
@@ -319,6 +338,12 @@ export class LibrariesCtrl extends AbstractTangibleController{
         this.stage.add(this.imageLayer, this.touchPointsLayer); //Left param on bottom, right on top
         this.stage.getContent().addEventListener('touchstart', this.onTouch.bind(this));
         this.onTangibleLoaded();
+        touchPointsRegistered = true;
+        if(touchPointsRegistered){
+            $('button.md-raised:nth-child(1)').prop('disabled', false);
+        }
+
+
     }
 
     onTouch(event) {
@@ -328,6 +353,10 @@ export class LibrariesCtrl extends AbstractTangibleController{
             this.touchPointsLayer.destroyChildren();
             this.drawTouchPoints(touchPoints); //Visualise touch points
             this.stage.draw();
+
+            // $('button.md-raised:nth-child(1)').removeClass("md-button md-ink-ripple");
+
+ 
         }
     }
 }

@@ -39,6 +39,7 @@ export class Visual {
                 shadowBlur: 30,
                 shadowOffset: {x: 0, y: 0},
                 shadowOpacity: 0.0
+		
             });
 
             this.shape.cache();

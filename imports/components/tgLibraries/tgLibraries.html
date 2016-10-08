@@ -79,7 +79,7 @@
             </md-button>
         </div>
 
-        <md-sidenav md-component-id="tangible-side-nav" class="md-sidenav-right" style="width: 50%;min-width:50%;">
+        <md-sidenav md-component-id="tangible-side-nav" class="md-sidenav-right" style="width: 65%;min-width:65%;">
             <md-toolbar class="md-hue-4">
                 <div class="md-toolbar-tools">
                     <h1>Edit tangible</h1>
@@ -87,13 +87,21 @@
                     <md-input-container class="tg-diagram-name">
                         <input ng-model="tgLibraries.selectedTangible.tangible.name" aria-label="Tangible Name">
                     </md-input-container>
-
-                    <span flex></span>
+                        <span class="flex-15" flex="15" ></span>
+<div class="md-actions" layout="row">
+                <md-button ng-click="tgLibraries.saveTangible()" class="md-raised md-primary white">
+                    Save
+                </md-button>
+                <md-button ng-click="tgLibraries.closeTangibleEditor()" class="md-raised grey">
+                    Cancel
+                </md-button> 
+            </div>
+                    <span flex> 
+            </span>
                 </div>
             </md-toolbar>
 
             <md-content style="margin: 20px;">
-
                 <div layout>
                     <div flex="10" layout="row" layout-align="left center" style="margin-right: 10px;">
                         <p>Image</p>
@@ -118,7 +126,7 @@
                     </div>
 
                     <div flex layout="row" layout-align="left center">
-                        <md-slider flex min="-360" max="360" ng-model="tgLibraries.selectedTangible.tangible.startAngle"
+                        <md-slider flex min="0" max="360" ng-model="tgLibraries.selectedTangible.tangible.startAngle"
                                    aria-label="Angle" class>
                         </md-slider>
                     </div>
@@ -136,17 +144,28 @@
                         <p>Scale</p>
                     </div>
 
-                    <md-input-container style="margin-bottom: 0; margin-top: 0;" flex="40" layout="row" layout-align="left center">
+                    <!-- Added New Slider for the Scaling -->
+                    <div flex layout="row" layout-align="left center">
+                        <md-slider flex min="0.0001" max="100" ng-model="tgLibraries.selectedTangible.tangible.scale"
+                                   aria-label="Scale" class>
+                        </md-slider>
+                    </div>    
+                    <span flex="5"></span>
+                     <md-input-container flex="25" style="margin-bottom: 0; margin-top: 0;" layout="row" layout-align="left center">
                         <input required type="number" step="0.1" name="scale"
                                ng-model="tgLibraries.selectedTangible.tangible.scale" min="0.0001" max="1000"
                                style="text-align: center;" aria-label="Scale"/>
                     </md-input-container>
 
-                    <span flex="10"></span>
-
-                    <md-checkbox flex="50" style="margin-bottom: 0;"  ng-model="tgLibraries.selectedTangible.tangible.transparentHit"><p>Transparent hit</p></md-checkbox>
+                    <!-- <span flex="10"></span> -->
+<!-- 
+                    <md-checkbox flex="50" style="margin-bottom: 0;"  ng-model="tgLibraries.selectedTangible.tangible.transparentHit"><p>Transparent hit</p></md-checkbox> -->
                 </div>
 
+                <div layout>
+                    <p>Please stamp the physical tangible in the box below to register the touch points for the image:</p>
+                </div>
+<!--  Remove Touch points Editable button and replace it with an instruction of what to do
                 <div layout>
                     <div flex="10" layout="row" layout-align="left center" style="margin-right: 10px;">
                         <p>Touch points</p>
@@ -158,12 +177,12 @@
                             <p>{{tgLibraries.touchWindow}}</p>
                         </md-switch>
                     </div>
-                </div>
-
+                 </div>
+-->
                 <div id="touchPointsContainer"
                      style="max-width: 100%; height: 500px; background-color: antiquewhite"></div>
             </md-content>
-
+<!-- 
             <div class="md-actions" layout="row">
                 <span flex></span>
                 <md-button ng-click="tgLibraries.saveTangible()" class="md-raised md-primary white">
@@ -173,7 +192,7 @@
                     Cancel
                 </md-button>
             </div>
-        </md-sidenav>
+ -->        </md-sidenav>
     </md-sidenav>
 </div>
 
