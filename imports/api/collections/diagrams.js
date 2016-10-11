@@ -82,7 +82,7 @@ if (Meteor.isServer) {
             return false;
         },
         remove: function () {
-            return false;
+            return true;
         }
     });
 }

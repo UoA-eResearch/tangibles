@@ -294,6 +294,10 @@ export class LibrariesCtrl extends AbstractTangibleController{
         Meteor.call("libraries.remove", library._id);
     }
 
+    deleteDiagram (diagram) {
+        Meteor.call("diagrams.remove", diagram._id);
+    }
+
     onTangibleLoaded()
     {
         this.onResize();

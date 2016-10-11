@@ -64,6 +64,8 @@
                             <md-icon class="md-secondary grey" aria-label="Delete"
                                      md-svg-icon="navigation:ic_close" ng-click="tgLibraries.deleteTangible(id)"></md-icon>
                         </div>
+
+                    
                     </md-list-item>
                 </md-list>
             </md-content>
@@ -146,7 +148,7 @@
 
                     <!-- Added New Slider for the Scaling -->
                     <div flex layout="row" layout-align="left center">
-                        <md-slider flex min="0.0001" max="100" ng-model="tgLibraries.selectedTangible.tangible.scale"
+                        <md-slider flex min="0.0001" max="15" ng-model="tgLibraries.selectedTangible.tangible.scale"
                                    aria-label="Scale" class>
                         </md-slider>
                     </div>    
