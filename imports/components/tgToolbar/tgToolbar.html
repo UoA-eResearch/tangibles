@@ -11,14 +11,6 @@
         </md-input-container>
         <span flex></span>
 
-        <md-button class="md-icon-button" aria-label="Zoom in" ng-click="tgToolbar.zoomIn()">
-            <md-icon md-svg-icon="action:ic_zoom_in" class="white"></md-icon>
-        </md-button>
-
-        <md-button class="md-icon-button" aria-label="Zoom out" ng-click="tgToolbar.zoomOut()">
-            <md-icon md-svg-icon="action:ic_zoom_out" class="white"></md-icon>
-        </md-button>
-
         <md-button class="md-icon-button" aria-label="Bring forward" ng-click="tgToolbar.bringForward()">
             <md-icon md-svg-icon="hardware:ic_keyboard_arrow_up" class="white"></md-icon>
         </md-button>
@@ -74,3 +66,13 @@
         </md-list>
     </md-content>
 </md-sidenav>
+
+<div class="float-bottom-right-column">
+    <md-button class="md-fab md-mini green" aria-label="Zoom in" ng-click="tgToolbar.zoomIn()">
+        <md-icon md-svg-icon="action:ic_zoom_in" class="white"></md-icon>
+    </md-button>
+
+    <md-button class="md-fab md-mini green" aria-label="Zoom out" ng-click="tgToolbar.zoomOut()">
+        <md-icon md-svg-icon="action:ic_zoom_out" class="white"></md-icon>
+    </md-button>
+</div>

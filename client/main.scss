@@ -14,6 +14,24 @@
   //color: #757575 !important;
 }
 
+.green
+{
+  fill: #4caf50;
+  color: #4caf50 !important;
+  background-color: #4caf50 !important;
+}
+
+.float-bottom-right-column {
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  left: auto;
+  position: absolute;
+  right: 20px;
+  top: auto;
+  z-index: 20;
+}
+
 .login-button
 {
   background-color: #4caf50 !important;
