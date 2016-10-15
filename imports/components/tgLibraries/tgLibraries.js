@@ -272,7 +272,7 @@ export class LibrariesCtrl extends AbstractTangibleController{
         let tangible = {"name": "Untitled",
             "icon": false,
             "scale": 1,
-            "startAngle": 90,
+            "startAngle": 70,
             "registrationPoints": []
         };
         this.selectedLibrary.tangibles[tangibleId] = tangible;
