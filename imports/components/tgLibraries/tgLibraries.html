@@ -169,9 +169,9 @@
                     <md-checkbox flex="50" style="margin-bottom: 0;"  ng-model="tgLibraries.selectedTangible.tangible.transparentHit"><p>Transparent hit</p></md-checkbox> -->
                 </div>
 
-                <div layout>
+                <!--<div layout>
                     <p style="line-height:1px;">Stamp the physical tangible in the box below to register the touch points for the image:</p>
-                </div>
+                </div>-->
 <!--  Remove Touch points Editable button and replace it with an instruction of what to do
                 <div layout>
                     <div flex="10" layout="row" layout-align="left center" style="margin-right: 10px;">
@@ -194,14 +194,17 @@
             <!---Reduced the line spacing using line-height-->
             <div class="md-actions" layout="row">
                 <span flex></span>
+                <!----Information message to register the touch points-->
                
-                <md-button ng-click="tgLibraries.saveTangible()" style="line-height:2px;" class="md-raised md-primary white">
-                   Save
-                </md-button>
-                <md-button ng-click="tgLibraries.closeTangibleEditor()" class="md-raised grey">
-                    Cancel
-                </md-button>
-            </div>
+                    <p> Please upload the images and register the touch points </p>
+                    
+                        <md-button ng-click="tgLibraries.saveTangible()" style="line-height:2px;" class="md-raised md-primary white">
+                            Save
+                        </md-button>
+                        <md-button ng-click="tgLibraries.closeTangibleEditor()" class="md-raised grey">
+                            Cancel
+                        </md-button>
+                    </div>
         </md-sidenav>
     </md-sidenav>
 </div>
