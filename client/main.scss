@@ -10,8 +10,8 @@
 
 .grey
 {
-  //fill: #757575;
-  //color: #757575 !important;
+  fill: #757575;
+  color: #757575 !important;
 }
 
 .green
@@ -21,6 +21,7 @@
   background-color: #4caf50 !important;
 }
 
+//Update: Styling for new zoom buttons
 .float-bottom-right-column {
   bottom: 20px;
   display: flex;
@@ -37,8 +38,7 @@
   background-color: #4caf50 !important;
   border-color: #4caf50 !important;
   font-family: 'Roboto', sans-serif;
-  font-weight: 500;  
-  
+  font-weight: 500;    
 }
 
 .sign-in
@@ -47,7 +47,6 @@
   font-family: 'Roboto', sans-serif !important;
   font-weight: 400 !important;
   margin-left:160px;
-  
 }
 
 .tg-menu-icon
@@ -153,7 +152,6 @@ md-toolbar .md-toolbar-tools {
   margin-bottom: 0;
 }
 
-
 .tg-dialog md-dialog-content md-list-item
 {
   padding-top: 0;
@@ -190,7 +188,6 @@ md-toolbar .md-toolbar-tools {
   display: block;
   max-height: 70px;
   max-width: 70px;
-
 }
 
 div.vertical {
@@ -242,6 +239,4 @@ div.vertical {
   //object-fit: contain;
 }
 
-img {
-
-}
+img {}

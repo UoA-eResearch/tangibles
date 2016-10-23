@@ -16,16 +16,6 @@ class HomeCtrl {
                 $state.go('home.diagram', {diagramId: Random.id(), isNewDiagram: true, libraryId: $const.DEFAULT_LIBRARY_ID});
         });
     }
-
-    zoomIn(){
-        PubSub.publishSync('zoomIn', 0);
-    }
-
-    zoomOut()
-    {
-        PubSub.publishSync('zoomOut', 0);
-    }
-
 }
 
 const name = 'tgHome';

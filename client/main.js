@@ -131,7 +131,6 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
 
 function onReady() {
     angular.bootstrap(document, ['tangibles'], {strictDi: true});
-
 }
 
 if (Meteor.isCordova) {

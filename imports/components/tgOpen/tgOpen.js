@@ -28,10 +28,12 @@ class OpenDiagramCtrl extends DialogCtrl {
         this.close($event);
     }
 
+    //Update: call delete diagram fuction
     deleteDiagram (diagram) {
-        Meteor.call("diagrams.remove", diagram._id);
+         Meteor.call("diagrams.remove", diagram._id);
     }
 }
+
 
 const name = 'tgOpen';
 export default angular.module(name, [angularMeteor, 'ui.router'])

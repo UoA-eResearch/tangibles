@@ -21,8 +21,6 @@ export class Visual {
         this.imageObj.src = imageUrl;
     }
 
-
-
     onLoad() {
         this.width = this.imageObj.naturalWidth * this.template.scale;
         this.height = this.imageObj.naturalHeight * this.template.scale;
@@ -41,7 +39,6 @@ export class Visual {
                 shadowBlur: 30,
                 shadowOffset: {x: 0, y: 0},
                 shadowOpacity: 0.0
-		
             });
 
             this.shape.cache();
