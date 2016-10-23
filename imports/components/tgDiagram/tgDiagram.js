@@ -133,11 +133,6 @@ class DiagramCtrl {
         }
     }
 
-
-    deleteDiagram (diagramId) {
-        Meteor.call("diagrams.remove", diagramId._id);
-    }
-
     saveThumb(diagramId)
     {
         this.tangibleController.diagramThumb().then(function(imageData) {

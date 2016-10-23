@@ -55,6 +55,9 @@ export class AbstractTangibleController {
         return touchPoints;
     }
 
+
+
+
     onResize() {
         if (this.stage != null) {
             let container = document.getElementById(this.containerID);
@@ -254,6 +257,7 @@ export class TangibleController extends AbstractTangibleController{
         }
     }
 
+
     bringForward()
     {
         if(this.selectedVisual != null)
@@ -405,4 +409,5 @@ export class TangibleController extends AbstractTangibleController{
             this.stage.batchDraw();
         }
     }
+
 }

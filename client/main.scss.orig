@@ -1,0 +1,253 @@
+@import '{}/node_modules/angular-material/angular-material.scss';
+
+//TODO: separate into separate files
+
+.white
+{
+  fill: white;
+  color: white !important;
+}
+
+.grey
+{
+  fill: #757575;
+  color: #757575 !important;
+}
+
+.green
+{
+  fill: #4caf50;
+  color: #4caf50 !important;
+  background-color: #4caf50 !important;
+}
+
+//Update: Styling for new zoom buttons
+.float-bottom-right-column {
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  left: auto;
+  position: absolute;
+  right: 20px;
+  top: auto;
+  z-index: 20;
+}
+
+.login-button
+{
+  background-color: #4caf50 !important;
+  border-color: #4caf50 !important;
+  font-family: 'Roboto', sans-serif;
+<<<<<<< HEAD
+  font-weight: 500;  
+  
+=======
+  font-weight: 500;    
+>>>>>>> 878bc8070426344120e5e92069c16ab06feb856b
+}
+
+.sign-in
+{
+  color: white;
+  font-family: 'Roboto', sans-serif !important;
+  font-weight: 400 !important;
+  margin-left:160px;
+<<<<<<< HEAD
+  
+=======
+>>>>>>> 878bc8070426344120e5e92069c16ab06feb856b
+}
+
+.tg-menu-icon
+{
+  @extend .grey !optional;
+  margin-bottom: 10px !important;
+  margin-top: 10px !important;
+  margin-right: 20px !important;
+}
+
+h1 {
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  font-size: 50px;
+  line-height: 60px;
+  font-weight: 500;
+}
+
+h2 {
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  font-weight: 500;
+}
+
+h3 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+h4 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 25px;
+  color: #757575;
+}
+
+.fill-screen
+{
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+}
+
+.diagram-container
+{
+  @extend .fill-screen;
+  top: 64px;
+}
+
+.login-container
+{
+  background-size: cover;
+  background: url('online/background.jpg') center;
+}
+
+.form-background
+{
+  background-color: rgba(0,0,0,0.2);padding-top: 30px;padding-bottom: 30px;width: 100%;
+}
+
+md-toolbar {
+  height: 64px;
+  min-height: 64px;
+  max-height: 64px;
+}
+
+md-toolbar .md-toolbar-tools {
+  height: 64px;
+  min-height: 64px;
+  max-height: 64px;
+}
+
+.tg-diagram-name
+{
+  margin-left: 5px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  height: 35px !important;
+}
+
+.tg-diagram-name input
+{
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-style: italic;
+  border-bottom-color: transparent;
+  border-bottom-width: 1px !important;
+}
+
+//Dialog
+
+.tg-dialog .tg-search-box
+{
+  padding: 15px 30px 10px 30px;
+}
+
+.tg-dialog .tg-search-box md-input-container
+{
+  margin-bottom: 0;
+}
+
+
+.tg-dialog md-dialog-content md-list-item
+{
+  padding-top: 0;
+}
+
+.tg-dialog md-dialog-content
+{
+  padding: 0 30px 0 14px;
+}
+
+.tg-dialog md-dialog-actions
+{
+  padding: 15px 15px 15px 15px;
+  height: 70px;
+}
+
+.tg-dialog md-dialog-actions md-button {
+  margin: 0;
+}
+
+//List item
+
+.tg-list-item
+{
+  width: 70px;
+  height: 70px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 20px;
+}
+
+.tg-list-item div img
+{
+  display: block;
+  max-height: 70px;
+  max-width: 70px;
+
+}
+
+div.vertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tg-list-header .md-subheader-inner
+{
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.tangible-icon-container
+{
+  width: 70px;
+  height: 70px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 20px;
+}
+div.horizontal {
+  display: flex;
+  justify-content: center;
+}
+
+div.right {
+  display: flex;
+  justify-content: right;
+}
+
+div.left {
+  display: flex;
+  justify-content: left;
+}
+
+div.vertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.tangible-icon
+{
+  display: block;
+  max-height: 70px;
+  max-width: 70px;
+  //object-fit: contain;
+}
+
+img {}

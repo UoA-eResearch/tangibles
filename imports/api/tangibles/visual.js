@@ -21,6 +21,8 @@ export class Visual {
         this.imageObj.src = imageUrl;
     }
 
+
+
     onLoad() {
         this.width = this.imageObj.naturalWidth * this.template.scale;
         this.height = this.imageObj.naturalHeight * this.template.scale;
