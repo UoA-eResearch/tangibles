@@ -4,6 +4,7 @@ import {Visual} from './visual';
 import {Recogniser} from './recogniser';
 import {Canvas2Image} from 'canvas2image';
 import html2canvas from 'html2canvas';
+import {alphabet_tangibles} from './alphabetTangibles';
 
 export class AbstractTangibleController {
 
@@ -123,12 +124,14 @@ export class AbstractTangibleController {
 
 export class TangibleController extends AbstractTangibleController{
 
-    constructor(containerID) {
+    constructor(containerID, ootLevelCtrl) {
         super();
         this.visuals = {};
         this.scale = 1.0;
         this.selectedVisual = null;
         this.recogniser = new Recogniser();
+
+        this.levelCtrl = ootLevelCtrl
 
         this.containerID = containerID;
         this.enable = true;
@@ -163,7 +166,7 @@ export class TangibleController extends AbstractTangibleController{
 
         this.deselected_rect.on('touchstart', this.onDeselected.bind(this));
         this.deselectLayer.add(this.deselected_rect);
-        
+
 
         //this.touchPointsLayer = new Konva.Layer();
         this.tangibleLayer = new Konva.Layer();
@@ -305,6 +308,9 @@ export class TangibleController extends AbstractTangibleController{
         this.library = library;
         this.$tgImages = $tgImages;
 
+        //load library
+        this.library.tangibles = alphabet_tangibles;
+
         //Setup recogniser
         let features = [];
         let targets = [];
@@ -379,7 +385,9 @@ export class TangibleController extends AbstractTangibleController{
      */
 
     onTouch(event) {
+      console.log("i've been touched");
         if (this.enable) {
+          console.log("Enabled = true");
             let points = this.toPoints(event.touches);
             let scaledPoints = this.toPoints(event.touches, true);
             this.drawTouchPoints(scaledPoints); //Visualise touch points
@@ -389,6 +397,8 @@ export class TangibleController extends AbstractTangibleController{
                 let matches = this.recogniser.predict(points);
 
                 if (matches.length > 0) {
+                  this.levelCtrl.$scope.setLetter('a');
+
                     let closestMatch = matches[0];
                     let template = this.library.tangibles[closestMatch.target];
 

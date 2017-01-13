@@ -115,7 +115,10 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
                   component: ootLevelOne.name
                 }
               },
-              resolve: resolve
+              resolve: resolve,
+              onEnter: ['$tgSharedData', function ($tgSharedData) {
+                  $tgSharedData.data.stateName = 'levelOne';
+              }]
             })
             .state('home.diagram', {
                 url: "/diagram/:diagramId/:isNewDiagram/:libraryId",
