@@ -131,6 +131,7 @@ export class TangibleController extends AbstractTangibleController{
         this.selectedVisual = null;
         this.recogniser = new Recogniser();
 
+        console.log("Creating Controller Object");
         this.levelCtrl = ootLevelCtrl
 
         this.containerID = containerID;
@@ -141,6 +142,11 @@ export class TangibleController extends AbstractTangibleController{
 
         this.width = rect.right - rect.left;
         this.height = rect.bottom - rect.top;
+
+        this.width = 964;
+        this.height = 362;
+        console.log("height of div: " + this.height);
+        console.log("width of div: " + this.width);
 
         this.stage = new Konva.Stage({
             container: this.containerID,
@@ -310,7 +316,7 @@ export class TangibleController extends AbstractTangibleController{
 
         //load library
         this.library.tangibles = alphabet_tangibles;
-
+        console.log(this.library);
         //Setup recogniser
         let features = [];
         let targets = [];
@@ -387,7 +393,6 @@ export class TangibleController extends AbstractTangibleController{
     onTouch(event) {
       console.log("i've been touched");
         if (this.enable) {
-          console.log("Enabled = true");
             let points = this.toPoints(event.touches);
             let scaledPoints = this.toPoints(event.touches, true);
             this.drawTouchPoints(scaledPoints); //Visualise touch points

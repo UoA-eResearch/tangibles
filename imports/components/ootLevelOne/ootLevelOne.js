@@ -71,6 +71,7 @@ class LevelOneCtrl {
 
             this.sharedData.diagramName = this.localDiagram.name;
             PubSub.publish('updateName', this.localDiagram.name);
+            console.log("Calling openDiagram in CTRL");
             this.tangibleController.openDiagram(this.localDiagram, libraryDef, this.$tgImages);
         }
     }
