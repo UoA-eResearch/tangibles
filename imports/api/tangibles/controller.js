@@ -315,7 +315,7 @@ export class TangibleController extends AbstractTangibleController{
         this.$tgImages = $tgImages;
 
         //load library
-        this.library.tangibles = alphabet_tangibles;
+        //this.library.tangibles = alphabet_tangibles;
         console.log(this.library);
         //Setup recogniser
         let features = []; //the data of the tangible
