@@ -143,8 +143,8 @@ export class TangibleController extends AbstractTangibleController{
         this.width = rect.right - rect.left;
         this.height = rect.bottom - rect.top;
 
-        this.width = 964;
-        this.height = 362;
+        //this.width = 964;
+        this.height = 600;
         console.log("height of div: " + this.height);
         console.log("width of div: " + this.width);
 
@@ -318,8 +318,8 @@ export class TangibleController extends AbstractTangibleController{
         this.library.tangibles = alphabet_tangibles;
         console.log(this.library);
         //Setup recogniser
-        let features = [];
-        let targets = [];
+        let features = []; //the data of the tangible
+        let targets = []; //the id of the tangible
 
         for (let [id, tangible] of Object.entries(this.library.tangibles)) {
             features.push(tangible.registrationPoints);
@@ -402,6 +402,8 @@ export class TangibleController extends AbstractTangibleController{
                 let matches = this.recogniser.predict(points);
 
                 if (matches.length > 0) {
+                  console.log("match found!!!! Target: ");
+                  console.log(matches[0].target);
                   this.levelCtrl.$scope.setLetter('a');
 
                     let closestMatch = matches[0];
