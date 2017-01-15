@@ -5,6 +5,27 @@
     "owner": "everyone",
     "images": {},
     "tangibles": {
+      "large_red_triangle": {
+        "name": "Large Red Triangle",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": true,
+        "registrationPoints": [
+          {
+            "x": 213.3330078125,
+            "y": 298.3330078125
+          },
+          {
+            "x": 238,
+            "y": 233
+          },
+          {
+            "x": 348,
+            "y": 263
+          }
+        ]
+      },
       "NaEFePtk4RP3AWi8r": {
         "name": "Signpost",
         "icon": false,
@@ -128,27 +149,6 @@
           {
             "x": 223.3330078125,
             "y": 304.3330078125
-          }
-        ]
-      },
-      "ka2zMb8v9dcEi3tEv": {
-        "name": "Hungry",
-        "icon": false,
-        "scale": 1.0,
-        "startAngle": 270,
-        "transparentHit": true,
-        "registrationPoints": [
-          {
-            "x": 213.3330078125,
-            "y": 298.3330078125
-          },
-          {
-            "x": 238,
-            "y": 233
-          },
-          {
-            "x": 348,
-            "y": 263
           }
         ]
       },
