@@ -38,11 +38,10 @@ class LevelOneCtrl {
 
     $scope.letter = 'z';
 
-    $scope.setLetter = function(newLetter){
-      $scope.letter = newLetter;
-    }
+  }
 
-
+  setLetter(newLetter){
+    this.$scope.letter = newLetter;
   }
 
   openNewDiagram(newVal, oldVal){

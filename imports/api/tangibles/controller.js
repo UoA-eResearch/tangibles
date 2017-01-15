@@ -152,7 +152,7 @@ export class TangibleController extends AbstractTangibleController{
             container: this.containerID,
             width: this.width,
             height: this.height,
-            draggable: true,
+            draggable: false,
             x: this.width / 2,
             y: this.height / 2,
             offset: {
@@ -350,6 +350,7 @@ export class TangibleController extends AbstractTangibleController{
     }
 
     addVisual(instanceId, typeId, model, template, stage) {
+      console.log(this.$tgImages.getTangibleImage(typeId, this.library));
         let visual = new Visual(instanceId, template, stage, this.$tgImages.getTangibleImage(typeId, this.library), this.initVisual.bind(this, model));
         this.visuals[instanceId] = visual;
         visual.onTapCallback = this.onTap.bind(this);
@@ -372,7 +373,8 @@ export class TangibleController extends AbstractTangibleController{
     initVisual(model, visual) {
         //Set starting orientation and position
         visual.setPosition(model.position);
-        visual.setOrientation(model.orientation);
+        //disable orientation - always in right position
+        //visual.setOrientation(model.orientation);
         this.tangibleLayer.add(visual.shape);
 
         if(this.tangibleLayer.children.length == Object.entries(this.diagram.tangibles).length && this.init)
@@ -404,7 +406,7 @@ export class TangibleController extends AbstractTangibleController{
                 if (matches.length > 0) {
                   console.log("match found!!!! Target: ");
                   console.log(matches[0].target);
-                  this.levelCtrl.$scope.setLetter('a');
+                  this.levelCtrl.setLetter('a');
 
                     let closestMatch = matches[0];
                     let template = this.library.tangibles[closestMatch.target];
