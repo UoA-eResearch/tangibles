@@ -5,6 +5,48 @@
     "owner": "everyone",
     "images": {},
     "tangibles": {
+      "small_blue_triangle": {
+        "name": "Small Blue Triangle",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 90,
+        "transparentHit": true,
+        "registrationPoints": [
+          {
+            "x": 182.6669921875,
+            "y": 228.3330078125
+          },
+          {
+            "x": 329.3330078125,
+            "y": 339.6669921875
+          },
+          {
+            "x": 347.3330078125,
+            "y": 236.3330078125
+          }
+        ]
+      },
+      "medium_green_triangle": {
+        "name": "Medium Green Triangle",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 75,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x": 180.6669921875,
+            "y": 272.6669921875
+          },
+          {
+            "x": 397.3330078125,
+            "y": 302.6669921875
+          },
+          {
+            "x": 241,
+            "y": 200
+          }
+        ]
+      },
       "large_red_triangle": {
         "name": "Large Red Triangle",
         "icon": false,
@@ -152,27 +194,6 @@
           }
         ]
       },
-      "orTJj4kZqeqowmYE4": {
-        "name": "River",
-        "icon": false,
-        "scale": 1.0,
-        "startAngle": 75,
-        "transparentHit": false,
-        "registrationPoints": [
-          {
-            "x": 180.6669921875,
-            "y": 272.6669921875
-          },
-          {
-            "x": 397.3330078125,
-            "y": 302.6669921875
-          },
-          {
-            "x": 241,
-            "y": 200
-          }
-        ]
-      },
       "ftsqJa6zdQxRKcfAb": {
         "name": "Bit of Path",
         "icon": false,
@@ -191,27 +212,6 @@
           {
             "x": 206.6669921875,
             "y": 307.6669921875
-          }
-        ]
-      },
-      "mqG7uK3ew7ue5eYMr": {
-        "name": "Leaves",
-        "icon": false,
-        "scale": 1.0,
-        "startAngle": 90,
-        "transparentHit": true,
-        "registrationPoints": [
-          {
-            "x": 182.6669921875,
-            "y": 228.3330078125
-          },
-          {
-            "x": 329.3330078125,
-            "y": 339.6669921875
-          },
-          {
-            "x": 347.3330078125,
-            "y": 236.3330078125
           }
         ]
       }
