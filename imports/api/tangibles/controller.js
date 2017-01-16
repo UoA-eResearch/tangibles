@@ -133,6 +133,7 @@ export class TangibleController extends AbstractTangibleController{
 
         console.log("Creating Controller Object");
         this.levelCtrl = ootLevelCtrl
+        this.count = 0;
 
         this.containerID = containerID;
         this.enable = true;
@@ -300,12 +301,17 @@ export class TangibleController extends AbstractTangibleController{
     }
 
     clear() {
+      console.log("CLEARINGGGGGGG");
         this.touchPointsLayer.destroyChildren();
         this.tangibleLayer.destroyChildren();
         this.visuals = {};
         this.stage.batchDraw();
+        console.log("DONEEE");
     }
 
+    clearScreen(){
+      this.clear();
+    }
 
     openDiagram(diagram, library, $tgImages) {
 
@@ -342,15 +348,15 @@ export class TangibleController extends AbstractTangibleController{
             instance.position = Point.add(instance.position, offset);
         }
 
-        //Setup visuals
-        for (let [id, instance] of Object.entries(this.diagram.tangibles)) {
+        //Setup visuals - not needed
+        /*for (let [id, instance] of Object.entries(this.diagram.tangibles)) {
             let template = this.library.tangibles[instance.type];
             this.addVisual(id, instance.type, instance, template, this.stage);
-        }
+        }*/
     }
 
     addVisual(instanceId, typeId, model, template, stage) {
-      console.log(this.$tgImages.getTangibleImage(typeId, this.library));
+      //console.log(this.$tgImages.getTangibleImage(typeId, this.library));
         let visual = new Visual(instanceId, template, stage, this.$tgImages.getTangibleImage(typeId, this.library), this.initVisual.bind(this, model));
         this.visuals[instanceId] = visual;
         visual.onTapCallback = this.onTap.bind(this);
@@ -407,6 +413,7 @@ export class TangibleController extends AbstractTangibleController{
                   console.log("match found!!!! Target: ");
                   console.log(matches[0].target);
                   this.levelCtrl.setLetter('a');
+                  this.count++;
 
                     let closestMatch = matches[0];
                     let template = this.library.tangibles[closestMatch.target];
@@ -419,6 +426,13 @@ export class TangibleController extends AbstractTangibleController{
                     this.diagram.tangibles[id] = instance;
                     this.addVisual(id, instance.type, instance, template, this.stage);
                 }
+            }
+
+            //TODO
+            console.log("this.count: "+this.count);
+            if(this.count >= 4){
+              this.clear();
+              this.count = 0;
             }
 
             this.stage.batchDraw();

@@ -23,7 +23,7 @@ class LevelOneCtrl {
     this.libraryId = this.$const.DEFAULT_LIBRARY_ID;
     this.isNewDiagram = "true";
 
-    this.tangibleController = new TangibleController('tangibleContainer',this);
+    $scope.tangibleController = new TangibleController('tangibleContainer',this);
 
     this.helpers({
         remoteDiagram: ()=> {
@@ -37,6 +37,10 @@ class LevelOneCtrl {
     this.libraryWatch = $scope.$watch('ootLevelOne.remoteLibrary', this.openNewDiagram.bind(this));
 
     $scope.letter = 'z';
+    $scope.clear = function(){
+      //TODO: works now somehow??
+      $scope.tangibleController.clear();
+    }
 
   }
 
@@ -71,7 +75,7 @@ class LevelOneCtrl {
             this.sharedData.diagramName = this.localDiagram.name;
             PubSub.publish('updateName', this.localDiagram.name);
             console.log("Calling openDiagram in CTRL");
-            this.tangibleController.openDiagram(this.localDiagram, angular.copy(newVal), this.$tgImages);
+            this.$scope.tangibleController.openDiagram(this.localDiagram, angular.copy(newVal), this.$tgImages);
         }
     }
 
