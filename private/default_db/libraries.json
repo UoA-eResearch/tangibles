@@ -1,7 +1,7 @@
 [
   {
     "_id": "M5q3SwPNcgCCKDWQL",
-    "name": "Oroo",
+    "name": "ootShapes",
     "owner": "everyone",
     "images": {},
     "tangibles": {
@@ -9,7 +9,7 @@
         "name": "Small Blue Triangle",
         "icon": false,
         "scale": 1.0,
-        "startAngle": 90,
+        "startAngle": 0,
         "transparentHit": true,
         "registrationPoints": [
           {
@@ -30,7 +30,7 @@
         "name": "Medium Green Triangle",
         "icon": false,
         "scale": 1.0,
-        "startAngle": 75,
+        "startAngle": 0,
         "transparentHit": false,
         "registrationPoints": [
           {
@@ -68,95 +68,11 @@
           }
         ]
       },
-      "NaEFePtk4RP3AWi8r": {
-        "name": "Signpost",
-        "icon": false,
-        "scale": 0.4274809160305344,
-        "startAngle": 178,
-        "transparentHit": false,
-        "registrationPoints": [
-          {
-            "x": 294,
-            "y": 308
-          },
-          {
-            "x": 250,
-            "y": 114
-          },
-          {
-            "x": 265,
-            "y": 398
-          }
-        ]
-      },
-      "6gAw6TxyGYXPGY6h5": {
-        "name": "Dart",
+      "small_green_square": {
+        "name": "Small Green Square",
         "icon": false,
         "scale": 1.0,
         "startAngle": 0,
-        "transparentHit": false,
-        "registrationPoints": [
-          {
-            "x": 168,
-            "y": 256
-          },
-          {
-            "x": 352.6669921875,
-            "y": 204.3330078125
-          },
-          {
-            "x": 440,
-            "y": 286
-          }
-        ]
-      },
-      "GFuoa9HWSPuGje845": {
-        "name": "Don't",
-        "icon": false,
-        "scale": 1.0,
-        "startAngle": 90,
-        "transparentHit": false,
-        "registrationPoints": [
-          {
-            "x": 409.3330078125,
-            "y": 182.3330078125
-          },
-          {
-            "x": 237,
-            "y": 309
-          },
-          {
-            "x": 153,
-            "y": 193
-          }
-        ]
-      },
-      "dpN9dJkPdBRJnu2op": {
-        "name": "Boar",
-        "icon": true,
-        "scale": 1.0,
-        "startAngle": 200,
-        "transparentHit": true,
-        "registrationPoints": [
-          {
-            "x": 376,
-            "y": 207
-          },
-          {
-            "x": 267.3330078125,
-            "y": 289.6669921875
-          },
-          {
-            "x": 212,
-            "y": 174
-          }
-        ]
-      },
-      "H939S7TE95XQJR4Mj": {
-        "name": "One Person",
-        "icon": false,
-        "scale": 1.0,
-        "startAngle": -90,
         "transparentHit": true,
         "registrationPoints": [
           {
@@ -173,8 +89,50 @@
           }
         ]
       },
-      "3XhayBPjY5u5A43nP": {
-        "name": "Friends",
+      "medium_red_square": {
+        "name": "Medium Red Square",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x": 409.3330078125,
+            "y": 182.3330078125
+          },
+          {
+            "x": 237,
+            "y": 309
+          },
+          {
+            "x": 153,
+            "y": 193
+          }
+        ]
+      },
+      "large_blue_square": {
+        "name": "Large Blue Square",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": true,
+        "registrationPoints": [
+          {
+            "x": 130,
+            "y": 243
+          },
+          {
+            "x": 438,
+            "y": 265
+          },
+          {
+            "x": 206.6669921875,
+            "y": 307.6669921875
+          }
+        ]
+      },
+      "small_red_circle": {
+        "name": "Small Red Circle",
         "icon": false,
         "scale": 1.0,
         "startAngle": 90,
@@ -194,24 +152,66 @@
           }
         ]
       },
-      "ftsqJa6zdQxRKcfAb": {
-        "name": "Bit of Path",
+      "medium_blue_circle": {
+        "name": "Medium Blue Circle",
         "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x": 168,
+            "y": 256
+          },
+          {
+            "x": 352.6669921875,
+            "y": 204.3330078125
+          },
+          {
+            "x": 440,
+            "y": 286
+          }
+        ]
+      },
+      "large_green_circle": {
+        "name": "Large Green Circle",
+        "icon": true,
         "scale": 1.0,
         "startAngle": 0,
         "transparentHit": true,
         "registrationPoints": [
           {
-            "x": 130,
-            "y": 243
+            "x": 376,
+            "y": 207
           },
           {
-            "x": 438,
-            "y": 265
+            "x": 267.3330078125,
+            "y": 289.6669921875
           },
           {
-            "x": 206.6669921875,
-            "y": 307.6669921875
+            "x": 212,
+            "y": 174
+          }
+        ]
+      },
+      "NaEFePtk4RP3AWi8r": {
+        "name": "Signpost",
+        "icon": false,
+        "scale": 0.4274809160305344,
+        "startAngle": 178,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x": 294,
+            "y": 308
+          },
+          {
+            "x": 250,
+            "y": 114
+          },
+          {
+            "x": 265,
+            "y": 398
           }
         ]
       }
