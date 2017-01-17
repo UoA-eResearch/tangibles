@@ -41,6 +41,13 @@ class LevelOneCtrl {
       //TODO: works now somehow??
       $scope.tangibleController.clear();
     }
+    $scope.check = function(){
+      if($scope.tangibleController.count == 4){
+        console.log("CLEAR ME NOW!");
+        $scope.tangibleController.clear();
+        $scope.tangibleController.count = 0;
+      }
+    }
 
   }
 

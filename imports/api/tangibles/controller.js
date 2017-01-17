@@ -301,9 +301,9 @@ export class TangibleController extends AbstractTangibleController{
     }
 
     clear() {
-      console.log("CLEARINGGGGGGG");
+        console.log("CLEARINGGGGGGG");
         this.touchPointsLayer.destroyChildren();
-        this.tangibleLayer.destroyChildren();
+        this.tangibleLayer.destroyChildren();//error cannot read property _applyTransform
         this.visuals = {};
         this.stage.batchDraw();
         console.log("DONEEE");
@@ -428,12 +428,14 @@ export class TangibleController extends AbstractTangibleController{
                 }
             }
 
-            //TODO
-            console.log("this.count: "+this.count);
+            //TODO: put above addvisual? but below the if match.length>0
+            /*console.log("this.count: "+this.count);
             if(this.count >= 4){
               this.clear();
               this.count = 0;
-            }
+            }*/
+
+            this.levelCtrl.$scope.check();
 
             this.stage.batchDraw();
         }
