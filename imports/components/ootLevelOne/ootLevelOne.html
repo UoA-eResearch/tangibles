@@ -1,8 +1,30 @@
 <oot-toolbar></oot-toolbar>
 <h1 class="md-display-2 center">Welcome to level 1</h1>
-<md-button class="md-primary md-raised" ng-click="clear()">Clear</md-button>
-<span ng-bind="letter"></span>
+
+<!--<div layout="row">-->
+  <div ng-show="isCorrect" style="align-items: center;">
+      <md-card>
+          <md-card-title>
+            <md-card-title-text>
+              <span class="md-headline">Class: something</span>
+            </md-card-title-text>
+          </md-card-title>
+          <md-card-content>
+            <p>
+              The titles of Washed Out's breakthrough song and the first single from Paracosm share the
+              two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+            </p>
+          </md-card-content>
+          <md-card-actions layout="row" layout-align="end center">
+            <md-button>Action 1</md-button>
+            <md-button>Action 2</md-button>
+          </md-card-actions>
+        </md-card>
+  </div>
+<!--</div>-->
+
 <div class="tangibleContainer" id="tangibleContainer">
 <!--  STAMP HERE-->
 </div>
-<span ng-bind="letter"></span>
+<md-button class="md-primary md-raised" ng-click="clear()">
+  Clear</md-button> </br>
