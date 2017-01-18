@@ -39,31 +39,41 @@ class LevelOneCtrl {
     $scope.letter = '~okay~~~~~~~~~~~~~~~~~~~~~~~~~~~~';
     $scope.isCorrect = false;
 
+    //TODO
     $scope.clear = function(){
       $scope.tangibleController.clear();
       $scope.tangibleController.enable = true;
       $scope.tangibleController.count = 0;
       $scope.isCorrect = false;
     };
+
+    //TODO
     $scope.check = function(){
       if($scope.tangibleController.count === 3){
         console.log("I'm at 3 now!~!~!~!~!~!~!~!~!");
         $scope.tangibleController.enable = false;
         $scope.showNoMatchAlert();
-        $scope.isCorrect = true; //TODO: add if to check
+        if(true){//TODO: add if to check
+          $scope.isCorrect = true;
+        }
       }
+        let shapeTangible = $scope.tangibleController.currentTangible;
+        console.log("In lvl1Controller: ");
+        console.log("Size: "+shapeTangible.size);
+        console.log("Colour: "+shapeTangible.colour);
+        console.log("Shape: "+shapeTangible.shape);
     };
+
     $scope.showNoMatchAlert = function(){
       alert = $mdDialog.alert()
         .parent(angular.element(document.querySelector('#popupContainer')))
         .clickOutsideToClose(true)
         .title('Sorry. Please try again.')
         .textContent('There are no common attributes between these objects. Please clear the screen and try again.')
-        .ariaLabel('Alert Dialog Demo')
         .ok('Got it!');
       $mdDialog.show(alert)
         .finally(function(){
-          console.log("PRETEND TO CLEAR SCREEN");
+          console.log("PRETEND TO CLEAR SCREEN");//TODO: auto clear or manual
           $scope.tangibleController.clearTouchPoints();
         });
     };
@@ -96,7 +106,6 @@ class LevelOneCtrl {
 
             this.sharedData.diagramName = this.localDiagram.name;
             PubSub.publish('updateName', this.localDiagram.name);
-            console.log("Calling openDiagram in CTRL");
             this.$scope.tangibleController.openDiagram(this.localDiagram, angular.copy(newVal), this.$tgImages);
         }
     }

@@ -4,7 +4,6 @@ import {Visual} from './visual';
 import {Recogniser} from './recogniser';
 import {Canvas2Image} from 'canvas2image';
 import html2canvas from 'html2canvas';
-import {alphabet_tangibles} from './alphabetTangibles';
 
 export class AbstractTangibleController {
 
@@ -131,7 +130,6 @@ export class TangibleController extends AbstractTangibleController{
         this.selectedVisual = null;
         this.recogniser = new Recogniser();
 
-        console.log("Creating Controller Object");
         this.levelCtrl = ootLevelCtrl
         this.count = 0;
 
@@ -321,7 +319,6 @@ export class TangibleController extends AbstractTangibleController{
         this.$tgImages = $tgImages;
 
         //load library
-        //this.library.tangibles = alphabet_tangibles;
         console.log(this.library);
         //Setup recogniser
         let features = []; //the data of the tangible
@@ -356,7 +353,6 @@ export class TangibleController extends AbstractTangibleController{
     }
 
     addVisual(instanceId, typeId, model, template, stage) {
-      //console.log(this.$tgImages.getTangibleImage(typeId, this.library));
         let visual = new Visual(instanceId, template, stage, this.$tgImages.getTangibleImage(typeId, this.library), this.initVisual.bind(this, model));
         this.visuals[instanceId] = visual;
         visual.onTapCallback = this.onTap.bind(this);
@@ -422,7 +418,9 @@ export class TangibleController extends AbstractTangibleController{
                   let instance = {type: closestMatch.target, position: position, orientation: orientation, zIndex: 0};
                   this.diagram.tangibles[id] = instance;
                   this.addVisual(id, instance.type, instance, template, this.stage);
-                  
+
+                  //set tangible object as field - accessible by level controller.
+                  this.currentTangible = template;
                   this.levelCtrl.$scope.check();
                 }
             }

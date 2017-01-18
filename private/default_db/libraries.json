@@ -7,6 +7,9 @@
     "tangibles": {
       "small_blue_triangle": {
         "name": "Small Blue Triangle",
+        "size": "Small",
+        "colour": "Blue",
+        "shape": "Triangle",
         "icon": false,
         "scale": 1.0,
         "startAngle": 0,
@@ -28,6 +31,9 @@
       },
       "medium_green_triangle": {
         "name": "Medium Green Triangle",
+        "size": "Medium",
+        "colour": "Green",
+        "shape": "Triangle",
         "icon": false,
         "scale": 1.0,
         "startAngle": 0,
@@ -49,6 +55,9 @@
       },
       "large_red_triangle": {
         "name": "Large Red Triangle",
+        "size": "Large",
+        "colour": "Red",
+        "shape": "Triangle",
         "icon": false,
         "scale": 1.0,
         "startAngle": 0,
@@ -70,6 +79,9 @@
       },
       "small_green_square": {
         "name": "Small Green Square",
+        "size": "Small",
+        "colour": "Green",
+        "shape": "Square",
         "icon": false,
         "scale": 1.0,
         "startAngle": 0,
@@ -91,6 +103,9 @@
       },
       "medium_red_square": {
         "name": "Medium Red Square",
+        "size": "Medium",
+        "colour": "Red",
+        "shape": "Square",
         "icon": false,
         "scale": 1.0,
         "startAngle": 0,
@@ -112,6 +127,9 @@
       },
       "large_blue_square": {
         "name": "Large Blue Square",
+        "size": "Large",
+        "colour": "Blue",
+        "shape": "Square",
         "icon": false,
         "scale": 1.0,
         "startAngle": 0,
@@ -133,6 +151,9 @@
       },
       "small_red_circle": {
         "name": "Small Red Circle",
+        "size": "Small",
+        "colour": "Red",
+        "shape": "Circle",
         "icon": false,
         "scale": 1.0,
         "startAngle": 90,
@@ -154,6 +175,9 @@
       },
       "medium_blue_circle": {
         "name": "Medium Blue Circle",
+        "size": "Medium",
+        "colour": "Blue",
+        "shape": "Circle",
         "icon": false,
         "scale": 1.0,
         "startAngle": 0,
@@ -175,6 +199,9 @@
       },
       "large_green_circle": {
         "name": "Large Green Circle",
+        "size": "Large",
+        "colour": "Green",
+        "shape": "Circle",
         "icon": true,
         "scale": 1.0,
         "startAngle": 0,
@@ -196,6 +223,9 @@
       },
       "NaEFePtk4RP3AWi8r": {
         "name": "Signpost",
+        "size": "None",
+        "colour": "None",
+        "shape": "None",
         "icon": false,
         "scale": 0.4274809160305344,
         "startAngle": 178,
