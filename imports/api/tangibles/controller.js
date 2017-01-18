@@ -309,8 +309,8 @@ export class TangibleController extends AbstractTangibleController{
         console.log("DONEEE");
     }
 
-    clearScreen(){
-      this.clear();
+    clearTouchPoints(){
+      this.touchPointsLayer.destroyChildren();
     }
 
     openDiagram(diagram, library, $tgImages) {
@@ -410,32 +410,22 @@ export class TangibleController extends AbstractTangibleController{
                 let matches = this.recogniser.predict(points);
 
                 if (matches.length > 0) {
-                  console.log("match found!!!! Target: ");
-                  console.log(matches[0].target);
-                  this.levelCtrl.setLetter('a');
+                  console.log("match found!!!! Target: "+matches[0].target);
                   this.count++;
 
-                    let closestMatch = matches[0];
-                    let template = this.library.tangibles[closestMatch.target];
+                  let closestMatch = matches[0];
+                  let template = this.library.tangibles[closestMatch.target];
+                  let position = Points.getCentroid(scaledPoints);
+                  let orientation = Points.getOrientation(points) - Points.getOrientation(template.registrationPoints); //current-original orientation
 
-                    let position = Points.getCentroid(scaledPoints);
-                    let orientation = Points.getOrientation(points) - Points.getOrientation(template.registrationPoints); //current-original orientation
-
-                    let id = Random.id();
-                    let instance = {type: closestMatch.target, position: position, orientation: orientation, zIndex: 0};
-                    this.diagram.tangibles[id] = instance;
-                    this.addVisual(id, instance.type, instance, template, this.stage);
+                  let id = Random.id();
+                  let instance = {type: closestMatch.target, position: position, orientation: orientation, zIndex: 0};
+                  this.diagram.tangibles[id] = instance;
+                  this.addVisual(id, instance.type, instance, template, this.stage);
+                  
+                  this.levelCtrl.$scope.check();
                 }
             }
-
-            //TODO: put above addvisual? but below the if match.length>0
-            /*console.log("this.count: "+this.count);
-            if(this.count >= 4){
-              this.clear();
-              this.count = 0;
-            }*/
-
-            this.levelCtrl.$scope.check();
 
             this.stage.batchDraw();
         }

@@ -9,7 +9,7 @@ import 'pubsub-js/src/pubsub';
 import ootToolbar from '../ootToolbar/ootToolbar';
 
 class LevelOneCtrl {
-  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const){
+  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $mdDialog){
     'ngInject';
     $reactive(this).attach($scope);
 
@@ -36,23 +36,38 @@ class LevelOneCtrl {
 
     this.libraryWatch = $scope.$watch('ootLevelOne.remoteLibrary', this.openNewDiagram.bind(this));
 
-    $scope.letter = 'z';
+    $scope.letter = '~okay~~~~~~~~~~~~~~~~~~~~~~~~~~~~';
+    $scope.isCorrect = false;
+
     $scope.clear = function(){
-      //TODO: works now somehow??
       $scope.tangibleController.clear();
-    }
+      $scope.tangibleController.enable = true;
+      $scope.tangibleController.count = 0;
+      $scope.isCorrect = false;
+    };
     $scope.check = function(){
-      if($scope.tangibleController.count == 4){
-        console.log("CLEAR ME NOW!");
-        $scope.tangibleController.clear();
-        $scope.tangibleController.count = 0;
+      if($scope.tangibleController.count === 3){
+        console.log("I'm at 3 now!~!~!~!~!~!~!~!~!");
+        $scope.tangibleController.enable = false;
+        $scope.showNoMatchAlert();
+        $scope.isCorrect = true; //TODO: add if to check
       }
-    }
+    };
+    $scope.showNoMatchAlert = function(){
+      alert = $mdDialog.alert()
+        .parent(angular.element(document.querySelector('#popupContainer')))
+        .clickOutsideToClose(true)
+        .title('Sorry. Please try again.')
+        .textContent('There are no common attributes between these objects. Please clear the screen and try again.')
+        .ariaLabel('Alert Dialog Demo')
+        .ok('Got it!');
+      $mdDialog.show(alert)
+        .finally(function(){
+          console.log("PRETEND TO CLEAR SCREEN");
+          $scope.tangibleController.clearTouchPoints();
+        });
+    };
 
-  }
-
-  setLetter(newLetter){
-    this.$scope.letter = newLetter;
   }
 
   openNewDiagram(newVal, oldVal){

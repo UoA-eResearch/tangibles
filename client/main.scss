@@ -239,8 +239,23 @@ div.vertical {
   //object-fit: contain;
 }
 
+//ootTangibles below here
+
+md-card{
+  max-width: 700px;
+}
+
 .description-width{
   width: 70%;
+}
+
+.tangibleContainer{
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  border-style: solid;
+  border-color: green;
 }
 
 img {}
