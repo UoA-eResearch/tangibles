@@ -395,7 +395,7 @@ export class TangibleController extends AbstractTangibleController{
      */
 
     onTouch(event) {
-      console.log("i've been touched");
+        console.log("i've been touched");
         if (this.enable) {
             let points = this.toPoints(event.touches);
             let scaledPoints = this.toPoints(event.touches, true);
@@ -421,7 +421,7 @@ export class TangibleController extends AbstractTangibleController{
 
                   //set tangible object as field - accessible by level controller.
                   this.currentTangible = template;
-                  this.levelCtrl.$scope.check();
+                  this.levelCtrl.$scope.tangibleEntered();
                 }
             }
 

@@ -36,44 +36,89 @@ class LevelOneCtrl {
 
     this.libraryWatch = $scope.$watch('ootLevelOne.remoteLibrary', this.openNewDiagram.bind(this));
 
-    $scope.letter = '~okay~~~~~~~~~~~~~~~~~~~~~~~~~~~~';
-    $scope.isCorrect = false;
+    //=================FIELDS=================//
 
-    //TODO
+    //Setup required fields
+    $scope.isCorrect = false;
+    $scope.tangibleShapes = [];
+    //TODO: add attributes & class type to angular-card
+
+    //=================METHODS=================//
+
+    /*Clears the screen and resets all fields to default value*/
     $scope.clear = function(){
       $scope.tangibleController.clear();
       $scope.tangibleController.enable = true;
       $scope.tangibleController.count = 0;
       $scope.isCorrect = false;
+      $scope.tangibleShapes = [];
     };
 
-    //TODO
-    $scope.check = function(){
+    $scope.tangibleEntered = function(){
+      //save tangible info
+      $scope.tangibleShapes[$scope.tangibleController.count-1] = $scope.tangibleController.currentTangible;
+      console.log($scope.tangibleShapes);
+      //User has entered 3 ans - CHECK ANS
       if($scope.tangibleController.count === 3){
-        console.log("I'm at 3 now!~!~!~!~!~!~!~!~!");
+        //Prevent additional tangibles to be added to screen
         $scope.tangibleController.enable = false;
-        $scope.showNoMatchAlert();
-        if(true){//TODO: add if to check
+        if($scope.checkAns()){
+          //CORRECT
+          console.log("CORRECT");
           $scope.isCorrect = true;
+          $scope.showAlert();
+        }else{
+          //INCORRECT
+          console.log("INCORRECT");
+          $scope.isCorrect = false;
+          $scope.showAlert();
         }
       }
-        let shapeTangible = $scope.tangibleController.currentTangible;
-        console.log("In lvl1Controller: ");
-        console.log("Size: "+shapeTangible.size);
-        console.log("Colour: "+shapeTangible.colour);
-        console.log("Shape: "+shapeTangible.shape);
     };
 
-    $scope.showNoMatchAlert = function(){
+    $scope.checkAns = function(){
+      $scope.alertTitle = 'Incorrect';
+      $scope.alertMessage = 'There are no common attributes between these objects. Please clear the screen and try again.';
+      let ans = false;
+      let shape1 = $scope.tangibleShapes[0];
+      let shape2 = $scope.tangibleShapes[1];
+      let shape3 = $scope.tangibleShapes[2];
+      //no duplicates
+      if(shape1.name != shape2.name && shape2.name != shape3.name && shape1.name != shape3.name){
+        //check colour
+        if(shape1.colour == shape2.colour && shape2.colour == shape3.colour){
+          ans = true;
+          $scope.alertTitle = "Correct";
+          $scope.alertMessage = "The common attribute is COLOUR";
+        }
+        //check size
+        if(shape1.size == shape2.size && shape2.size == shape3.size){
+          ans = true;
+          $scope.alertTitle = "Correct";
+          $scope.alertMessage = "The common attribute is SIZE";
+        }
+        //check shape
+        if(shape1.shape == shape2.shape && shape2.shape == shape3.shape){
+          ans = true;
+          $scope.alertTitle = "Correct";
+          $scope.alertMessage = "The common attribute is SHAPE";
+        }
+      }else{
+        $scope.alertMessage = "Please enter 3 DIFFERENT tangibles. Please clear the screen and try again.";
+        ans = false;
+      }
+      return ans;
+    };
+
+    $scope.showAlert = function(){
       alert = $mdDialog.alert()
         .parent(angular.element(document.querySelector('#popupContainer')))
         .clickOutsideToClose(true)
-        .title('Sorry. Please try again.')
-        .textContent('There are no common attributes between these objects. Please clear the screen and try again.')
+        .title($scope.alertTitle)
+        .textContent($scope.alertMessage)
         .ok('Got it!');
       $mdDialog.show(alert)
         .finally(function(){
-          console.log("PRETEND TO CLEAR SCREEN");//TODO: auto clear or manual
           $scope.tangibleController.clearTouchPoints();
         });
     };
