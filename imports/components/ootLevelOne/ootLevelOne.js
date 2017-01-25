@@ -42,6 +42,10 @@ class LevelOneCtrl {
     $scope.isCorrect = false;
     $scope.tangibleShapes = [];
     //TODO: add attributes & class type to angular-card
+    $scope.typeAttribute = "";
+    $scope.class = "";
+    $scope.attributeOne = "";
+    $scope.attributeTwo = "";
 
     //=================METHODS=================//
 
@@ -52,6 +56,10 @@ class LevelOneCtrl {
       $scope.tangibleController.count = 0;
       $scope.isCorrect = false;
       $scope.tangibleShapes = [];
+      $scope.typeAttribute = "";
+      $scope.class = "";
+      $scope.attributeOne = "";
+      $scope.attributeTwo = "";
     };
 
     $scope.tangibleEntered = function(){
@@ -90,18 +98,30 @@ class LevelOneCtrl {
           ans = true;
           $scope.alertTitle = "Correct";
           $scope.alertMessage = "The common attribute is COLOUR";
+          $scope.typeAttribute = "Colour";
+          $scope.class = shape1.colour;
+          $scope.attributeOne = "shape";
+          $scope.attributeTwo = "size";
         }
         //check size
         if(shape1.size == shape2.size && shape2.size == shape3.size){
           ans = true;
           $scope.alertTitle = "Correct";
           $scope.alertMessage = "The common attribute is SIZE";
+          $scope.typeAttribute = "Size";
+          $scope.class = shape1.size;
+          $scope.attributeOne = "colour";
+          $scope.attributeTwo = "shape";
         }
         //check shape
         if(shape1.shape == shape2.shape && shape2.shape == shape3.shape){
           ans = true;
           $scope.alertTitle = "Correct";
           $scope.alertMessage = "The common attribute is SHAPE";
+          $scope.typeAttribute = "Shape";
+          $scope.class = shape1.shape;
+          $scope.attributeOne = "colour";
+          $scope.attributeTwo = "size";
         }
       }else{
         $scope.alertMessage = "Please enter 3 DIFFERENT tangibles. Please clear the screen and try again.";
