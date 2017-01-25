@@ -9,7 +9,7 @@ import 'pubsub-js/src/pubsub';
 import ootToolbar from '../ootToolbar/ootToolbar';
 
 class LevelOneCtrl {
-  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $mdDialog){
+  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $mdDialog, $mdSidenav){
     'ngInject';
     $reactive(this).attach($scope);
 
@@ -141,6 +141,10 @@ class LevelOneCtrl {
         .finally(function(){
           $scope.tangibleController.clearTouchPoints();
         });
+    };
+
+    $scope.openSummary = function(){
+        $mdSidenav('right').toggle();
     };
 
   }

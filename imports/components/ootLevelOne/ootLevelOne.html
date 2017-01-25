@@ -1,53 +1,45 @@
 <oot-toolbar></oot-toolbar>
-<h1 class="md-display-2 center">Welcome to level 1</h1>
+<h1 class="md-display-2">Welcome to Level 1</h1>
 
-<!--<div layout="row">-->
-  <div ng-show="isCorrect" style="align-items: center;">
-      <md-card>
-          <md-card-title>
-            <md-card-title-text>
-              <span class="md-headline">Common Attribute(Superclass): <span ng-bind="typeAttribute"></span></span>
-            </md-card-title-text>
-          </md-card-title>
-          <md-card-content>
-            <p>public class <span ng-bind="class"></span> {</br>
-              &emsp;//FIELDS</br>
-              &emsp;private <span ng-bind="attributeOne"></span>;</br>
-              &emsp;private <span ng-bind="attributeTwo"></span>;</br>
-            }</p>
-          </md-card-content>
-          <!--<md-card-actions layout="column" layout-align="end center">
-            <md-button>Action 1</md-button>
-            <md-button>Action 2</md-button>
-          </md-card-actions>-->
-        </md-card>
-        Please click "Summary" to progress to the next level.
-  </div>
-<!--</div>-->
-
-<div class="tangibleContainer" id="tangibleContainer">
-<!--  STAMP HERE-->
+<div ng-show="isCorrect">
+    <md-card>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Common Attribute(Superclass): <span ng-bind="typeAttribute"></span></span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+          <p>public class <span ng-bind="class"></span> {</br>
+            &emsp;//FIELDS</br>
+            &emsp;private <span ng-bind="attributeOne"></span>;</br>
+            &emsp;private <span ng-bind="attributeTwo"></span>;</br>
+          }</p>
+        </md-card-content>
+      </md-card>
+      Please click "Summary" to progress to the next level.
 </div>
-<md-button class="md-primary md-raised" ng-click="clear()">
-  Clear</md-button> </br>
 
-  <!--<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+<div class="tangibleContainer" id="tangibleContainer"></div>
+
+<div layout="row">
+  <div flex>
+    <md-button class="md-primary md-raised" ng-click="clear()">Clear</md-button>
+  </div>
+
+  <md-button class="md-accent md-raised" ng-show="isCorrect" ng-click=openSummary()>
+    Finish
+  </md-button>
+</div>
+
+  <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
 
     <md-toolbar class="md-theme-light">
-      <h1 class="md-toolbar-tools">Sidenav Right</h1>
+      <h1 class="md-toolbar-tools">Classes Overview</h1>
     </md-toolbar>
-    <md-content ng-controller="RightCtrl" layout-padding>
-      <form>
-        <md-input-container>
-          <label for="testInput">Test input</label>
-          <input type="text" id="testInput"
-                 ng-model="data" md-autofocus>
-        </md-input-container>
-      </form>
+    <md-content layout-padding>
       <md-button ng-click="close()" class="md-primary">
         Close Sidenav Right
       </md-button>
     </md-content>
 
 </md-sidenav>
--->

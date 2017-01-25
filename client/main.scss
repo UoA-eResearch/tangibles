@@ -250,12 +250,20 @@ md-card{
 }
 
 .tangibleContainer{
-  margin-top: 20px;
+  margin-top: 10px;
   margin-left: 20px;
   margin-right: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   border-style: solid;
   border-color: green;
+}
+
+md-sidenav,
+md-sidenav.md-locked-open,
+md-sidenav.md-closed.md-locked-open-add-active {
+    min-width: 400px !important;
+    width: 85vw !important;
+    max-width: 700px !important;
 }
 
 img {}

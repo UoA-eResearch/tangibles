@@ -143,7 +143,7 @@ export class TangibleController extends AbstractTangibleController{
         this.height = rect.bottom - rect.top;
 
         //this.width = 964;
-        this.height = 600;
+        this.height = 400;
         console.log("height of div: " + this.height);
         console.log("width of div: " + this.width);
 
