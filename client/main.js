@@ -130,7 +130,7 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
               },
               resolve: resolve,
               onEnter: ['$tgSharedData', function ($tgSharedData) {
-                  $tgSharedData.data.stateName = 'levelOne';
+                  $tgSharedData.data.stateName = 'levelTwo';
               }]
             })
             .state('home.diagram', {
