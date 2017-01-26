@@ -5,6 +5,7 @@ import angularUiRouter from 'angular-ui-router';
 
 import ootHome from '../imports/components/ootHome/ootHome';
 import ootLevelOne from '../imports/components/ootLevelOne/ootLevelOne';
+import ootLevelTwo from '../imports/components/ootLevelTwo/ootLevelTwo';
 
 import home from '../imports/components/tgHome/tgHome';
 import diagram from '../imports/components/tgDiagram/tgDiagram';
@@ -35,7 +36,7 @@ Accounts.ui.config({
     passwordSignupFields: 'USERNAME_ONLY'
 });
 
-angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.ui', home.name, diagram.name, libraries.name, ootHome.name, ootLevelOne.name])
+angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.ui', home.name, diagram.name, libraries.name, ootHome.name, ootLevelOne.name, ootLevelTwo.name])
     .constant("$const", {
         "APP": "Tangibles",
         "NEW": "New diagram",
@@ -113,6 +114,18 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
               views: {
                 'main-view': {
                   component: ootLevelOne.name
+                }
+              },
+              resolve: resolve,
+              onEnter: ['$tgSharedData', function ($tgSharedData) {
+                  $tgSharedData.data.stateName = 'levelOne';
+              }]
+            })
+            .state('levelTwo',{
+              url: "/level_two",
+              views: {
+                'main-view': {
+                  component: ootLevelTwo.name
                 }
               },
               resolve: resolve,

@@ -147,6 +147,10 @@ class LevelOneCtrl {
         $mdSidenav('right').toggle();
     };
 
+    $scope.goToLevelTwo = function(){
+      $state.go("levelTwo");
+    };
+
   }
 
   openNewDiagram(newVal, oldVal){
