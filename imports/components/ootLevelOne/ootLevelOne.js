@@ -62,7 +62,7 @@ class LevelOneCtrl {
       $scope.attributeTwo = "";
     };
 
-    $scope.tangibleEntered = function(){
+    $scope.tangibleEntered = function(containerID){
       //save tangible info
       $scope.tangibleShapes[$scope.tangibleController.count-1] = $scope.tangibleController.currentTangible;
       console.log($scope.tangibleShapes);

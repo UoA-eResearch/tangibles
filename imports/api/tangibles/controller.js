@@ -142,8 +142,6 @@ export class TangibleController extends AbstractTangibleController{
         this.width = rect.right - rect.left;
         this.height = rect.bottom - rect.top;
 
-        //this.width = 964;
-        this.height = 400;
         console.log("height of div: " + this.height);
         console.log("width of div: " + this.width);
 
@@ -421,7 +419,7 @@ export class TangibleController extends AbstractTangibleController{
 
                   //set tangible object as field - accessible by level controller.
                   this.currentTangible = template;
-                  this.levelCtrl.$scope.tangibleEntered();
+                  this.levelCtrl.$scope.tangibleEntered(this.containerID);
                 }
             }
 
