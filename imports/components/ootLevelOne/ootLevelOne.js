@@ -41,7 +41,6 @@ class LevelOneCtrl {
     //Setup required fields
     $scope.isCorrect = false;
     $scope.tangibleShapes = [];
-    //TODO: add attributes & class type to angular-card
     $scope.typeAttribute = "";
     $scope.class = "";
     $scope.attributeOne = "";
@@ -168,14 +167,6 @@ class LevelOneCtrl {
                 "position": {x:0, y:0},
                 "tangibles": {}
             };
-
-            /*let libraryDef = {
-                "_id": "M5q3SwPNcgCCKDWQL",
-                "name": "Alphabet",
-                "owner": "everyone",
-                "images": {},
-                "tangibles": {}
-            };*/
 
             this.sharedData.diagramName = this.localDiagram.name;
             PubSub.publish('updateName', this.localDiagram.name);
