@@ -62,6 +62,10 @@ class LevelOneCtrl {
     };
 
     $scope.tangibleEntered = function(containerID){
+      if($scope.tangibleController.currentTangible.type !== "Object"){
+        //TODO: show dialogbox popup
+        return false;
+      }//TODO: test this works correctly
       //save tangible info
       $scope.tangibleShapes[$scope.tangibleController.count-1] = $scope.tangibleController.currentTangible;
       console.log($scope.tangibleShapes);
@@ -81,6 +85,7 @@ class LevelOneCtrl {
           $scope.showAlert();
         }
       }
+      return true;
     };
 
     $scope.checkAns = function(){

@@ -404,22 +404,22 @@ export class TangibleController extends AbstractTangibleController{
                 let matches = this.recogniser.predict(points);
 
                 if (matches.length > 0) {
-                  console.log("match found!!!! Target: "+matches[0].target);
-                  this.count++;
-
                   let closestMatch = matches[0];
                   let template = this.library.tangibles[closestMatch.target];
                   let position = Points.getCentroid(scaledPoints);
                   let orientation = Points.getOrientation(points) - Points.getOrientation(template.registrationPoints); //current-original orientation
 
-                  let id = Random.id();
-                  let instance = {type: closestMatch.target, position: position, orientation: orientation, zIndex: 0};
-                  this.diagram.tangibles[id] = instance;
-                  this.addVisual(id, instance.type, instance, template, this.stage);
-
                   //set tangible object as field - accessible by level controller.
                   this.currentTangible = template;
-                  this.levelCtrl.$scope.tangibleEntered(this.containerID);
+                  this.count++;
+                  let validTangible = this.levelCtrl.$scope.tangibleEntered(this.containerID);
+                  console.log("validTangible: "+validTangible);
+                  if(validTangible){
+                    let id = Random.id();
+                    let instance = {type: closestMatch.target, position: position, orientation: orientation, zIndex: 0};
+                    this.diagram.tangibles[id] = instance;
+                    this.addVisual(id, instance.type, instance, template, this.stage);
+                  }
                 }
             }
 

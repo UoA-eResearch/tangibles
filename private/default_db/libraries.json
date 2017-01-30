@@ -7,6 +7,7 @@
     "tangibles": {
       "small_blue_triangle": {
         "name": "Small Blue Triangle",
+        "type": "Object",
         "size": "Small",
         "colour": "Blue",
         "shape": "Triangle",
@@ -31,6 +32,7 @@
       },
       "medium_green_triangle": {
         "name": "Medium Green Triangle",
+        "type": "Object",
         "size": "Medium",
         "colour": "Green",
         "shape": "Triangle",
@@ -55,6 +57,7 @@
       },
       "large_red_triangle": {
         "name": "Large Red Triangle",
+        "type": "Object",
         "size": "Large",
         "colour": "Red",
         "shape": "Triangle",
@@ -79,6 +82,7 @@
       },
       "small_green_square": {
         "name": "Small Green Square",
+        "type": "Object",
         "size": "Small",
         "colour": "Green",
         "shape": "Square",
@@ -103,6 +107,7 @@
       },
       "medium_red_square": {
         "name": "Medium Red Square",
+        "type": "Object",
         "size": "Medium",
         "colour": "Red",
         "shape": "Square",
@@ -127,6 +132,7 @@
       },
       "large_blue_square": {
         "name": "Large Blue Square",
+        "type": "Object",
         "size": "Large",
         "colour": "Blue",
         "shape": "Square",
@@ -151,6 +157,7 @@
       },
       "small_red_circle": {
         "name": "Small Red Circle",
+        "type": "Object",
         "size": "Small",
         "colour": "Red",
         "shape": "Circle",
@@ -175,6 +182,7 @@
       },
       "medium_blue_circle": {
         "name": "Medium Blue Circle",
+        "type": "Object",
         "size": "Medium",
         "colour": "Blue",
         "shape": "Circle",
@@ -199,6 +207,7 @@
       },
       "large_green_circle": {
         "name": "Large Green Circle",
+        "type": "Object",
         "size": "Large",
         "colour": "Green",
         "shape": "Circle",
