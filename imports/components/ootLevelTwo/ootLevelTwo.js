@@ -39,6 +39,7 @@ class LevelTwoCtrl {
 
     $scope.tangibleEntered = function(containerID){
       //TODO: check which container was used
+      return true;
     };
 
   }

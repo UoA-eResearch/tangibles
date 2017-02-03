@@ -31,7 +31,7 @@ export class Recogniser {
      * @returns []: an array of targets and their similarity to the detected touch points.
      */
 
-    predict(points) {
+    predict(points,scale) {
         let matches = [];
 
         // We need to have minimum of three touch points to identify the Visual and it's orientation.
@@ -41,10 +41,15 @@ export class Recogniser {
             // consistently compare the lengths of the triangle sides.
 
             // Find the length of each side of the detected triangle
-            let touchDistA = Point.distance(touchSorted[0], touchSorted[1]);
-            let touchDistB = Point.distance(touchSorted[0], touchSorted[2]);
-            let touchDistC = Point.distance(touchSorted[1], touchSorted[2]);
+            let touchDistA = Point.distance(touchSorted[0], touchSorted[1])*scale;
+            let touchDistB = Point.distance(touchSorted[0], touchSorted[2])*scale;
+            let touchDistC = Point.distance(touchSorted[1], touchSorted[2])*scale;
 
+            /*console.log("screen.height: "+screen.height);
+            console.log("screen.width: "+screen.width);*/
+            console.log("touchDistA: "+touchDistA);
+            console.log("touchDistB: "+touchDistB);
+            console.log("touchDistC: "+touchDistC);
             for (let i = 0; i < this.features.length; i++) {
                 let feature = this.features[i];
 
@@ -62,6 +67,12 @@ export class Recogniser {
                     // triangle and the feature triangle.
                     let similarity = Math.abs(touchDistA - regDistA) + Math.abs(touchDistB - regDistB) + Math.abs(touchDistC - regDistC);
                     matches.push({target: this.targets[i], similarity: similarity});
+                    /*if(this.targets[i]==="medium_green_triangle"){
+
+                      console.log("regDistA: "+regDistA);
+                      console.log("regDistB: "+regDistB);
+                      console.log("regDistC: "+regDistC);
+                    }*/
                 }
             }
 

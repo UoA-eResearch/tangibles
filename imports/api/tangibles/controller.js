@@ -401,7 +401,8 @@ export class TangibleController extends AbstractTangibleController{
 
             //Get recognised tangible and add to surface
             if (event.touches.length > 2) {
-                let matches = this.recogniser.predict(points);
+              //TODO: get scale from service (calibration)
+                let matches = this.recogniser.predict(points,1.365);
 
                 if (matches.length > 0) {
                   let closestMatch = matches[0];
