@@ -386,6 +386,10 @@ export class TangibleController extends AbstractTangibleController{
         this.stage.batchDraw();
     }
 
+    getCurrentTangibleTouchDistance(){
+      return this.recogniser.touchDistancesABC;
+    }
+
     /** Visual detection loop TODO: customise for registration and active use
      *
      * @param event
@@ -402,7 +406,8 @@ export class TangibleController extends AbstractTangibleController{
             //Get recognised tangible and add to surface
             if (event.touches.length > 2) {
               //TODO: get scale from service (calibration)
-                let matches = this.recogniser.predict(points,1.365);
+                //let matches = this.recogniser.predict(points,1.365);
+                let matches = this.recogniser.predict(points,1.0);
 
                 if (matches.length > 0) {
                   let closestMatch = matches[0];

@@ -44,6 +44,7 @@ export class Recogniser {
             let touchDistA = Point.distance(touchSorted[0], touchSorted[1])*scale;
             let touchDistB = Point.distance(touchSorted[0], touchSorted[2])*scale;
             let touchDistC = Point.distance(touchSorted[1], touchSorted[2])*scale;
+            this.touchDistancesABC = [touchDistA, touchDistB, touchDistC];
 
             /*console.log("screen.height: "+screen.height);
             console.log("screen.width: "+screen.width);*/
@@ -67,12 +68,6 @@ export class Recogniser {
                     // triangle and the feature triangle.
                     let similarity = Math.abs(touchDistA - regDistA) + Math.abs(touchDistB - regDistB) + Math.abs(touchDistC - regDistC);
                     matches.push({target: this.targets[i], similarity: similarity});
-                    /*if(this.targets[i]==="medium_green_triangle"){
-
-                      console.log("regDistA: "+regDistA);
-                      console.log("regDistB: "+regDistB);
-                      console.log("regDistC: "+regDistC);
-                    }*/
                 }
             }
 
