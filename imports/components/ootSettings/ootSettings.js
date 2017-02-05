@@ -25,6 +25,7 @@ class SettingsCtrl {
     this.isNewDiagram = "true";
 
     $scope.tangibleController = new TangibleController('tangibleContainer',this);
+    $scope.tangibleTestController = new TangibleController('tangibleTestContainer',this);
 
     this.helpers({
         remoteDiagram: ()=> {
@@ -38,39 +39,46 @@ class SettingsCtrl {
     this.libraryWatch = $scope.$watch('ootSettings.remoteLibrary', this.openNewDiagram.bind(this));
 
     $scope.tangibleEntered = function(containerID){
-      //TODO: only allow one tangible to be entered
-      if($scope.tangibleController.count === 1){
-        $scope.tangibleController.enable = false;
-        //get physical touch points' pixel distance
-        let touchDist = $scope.tangibleController.getCurrentTangibleTouchDistance();
-        //get registered touchpoints for Medium Green Triangle
-        let regPoints = $scope.library.tangibles.medium_green_triangle.registrationPoints;
+      if(containerID === $scope.tangibleController.containerID){
+        //only allow one tangible to be entered
+        if($scope.tangibleController.count === 1){
+          $scope.tangibleController.enable = false;
+          //get physical touch points' pixel distance
+          let touchDist = $scope.tangibleController.getCurrentTangibleTouchDistance();
+          //get registered touchpoints for Medium Green Triangle
+          let regPoints = $scope.library.tangibles.medium_green_triangle.registrationPoints;
 
-        let regPointsDists = Points.sortClockwise(regPoints);
-        let regDistA = Point.distance(regPointsDists[0], regPointsDists[1]);
-        let regDistB = Point.distance(regPointsDists[0], regPointsDists[2]);
-        let regDistC = Point.distance(regPointsDists[1], regPointsDists[2]);
+          let regPointsDists = Points.sortClockwise(regPoints);
+          let regDistA = Point.distance(regPointsDists[0], regPointsDists[1]);
+          let regDistB = Point.distance(regPointsDists[0], regPointsDists[2]);
+          let regDistC = Point.distance(regPointsDists[1], regPointsDists[2]);
 
-        console.log("regDistA: "+regDistA);
-        console.log("regDistB: "+regDistB);
-        console.log("regDistC: "+regDistC);
-        console.log(touchDist);
+          console.log("regDistA: "+regDistA);
+          console.log("regDistB: "+regDistB);
+          console.log("regDistC: "+regDistC);
+          console.log(touchDist);
 
-        //get average pixels per mm
-        let averageRegistered = (regDistA/39 + regDistB/35 + regDistC/18)/3;
-        let averageTouch = (touchDist[0]/39 + touchDist[1]/35 + touchDist[2]/18)/3;
-        console.log(averageRegistered);
-        console.log(averageTouch);
-        console.log(averageRegistered/averageTouch);
-        //TODO: get registered distances
+          //get average pixels per mm
+          let averageRegistered = (regDistA/39 + regDistB/35 + regDistC/18)/3;
+          let averageTouch = (touchDist[0]/39 + touchDist[1]/35 + touchDist[2]/18)/3;
+          console.log(averageRegistered);
+          console.log(averageTouch);
+          console.log(averageRegistered/averageTouch);
+          //TODO: get registered distances
+        }
+        return false;
+      }else{//the other container
+        return true;
       }
-      return true;
     };
 
     $scope.clear = function(){
       $scope.tangibleController.clear();
       $scope.tangibleController.enable = true;
-      $scope.tangibleController.count = 0;
+    }
+
+    $scope.clearTestArea = function(){
+      $scope.tangibleTestController.clear();
     }
 
   }
@@ -95,6 +103,7 @@ class SettingsCtrl {
             this.sharedData.diagramName = this.localDiagram.name;
             PubSub.publish('updateName', this.localDiagram.name);
             this.$scope.tangibleController.openDiagram(this.localDiagram, angular.copy(newVal), this.$tgImages);
+            this.$scope.tangibleTestController.openDiagram(this.localDiagram, angular.copy(newVal), this.$tgImages);
         }
     }
 

@@ -52,7 +52,6 @@ class LevelOneCtrl {
     $scope.clear = function(){
       $scope.tangibleController.clear();
       $scope.tangibleController.enable = true;
-      $scope.tangibleController.count = 0;
       $scope.isCorrect = false;
       $scope.tangibleShapes = [];
       $scope.typeAttribute = "";

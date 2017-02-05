@@ -298,6 +298,7 @@ export class TangibleController extends AbstractTangibleController{
 
     clear() {
         console.log("CLEARINGGGGGGG");
+        this.count = 0;
         this.touchPointsLayer.destroyChildren();
         this.tangibleLayer.destroyChildren();//error cannot read property _applyTransform
         this.visuals = {};
@@ -406,8 +407,8 @@ export class TangibleController extends AbstractTangibleController{
             //Get recognised tangible and add to surface
             if (event.touches.length > 2) {
               //TODO: get scale from service (calibration)
-                //let matches = this.recogniser.predict(points,1.365);
-                let matches = this.recogniser.predict(points,1.0);
+                let matches = this.recogniser.predict(points,1.365);
+                //let matches = this.recogniser.predict(points,1.0);
 
                 if (matches.length > 0) {
                   let closestMatch = matches[0];
