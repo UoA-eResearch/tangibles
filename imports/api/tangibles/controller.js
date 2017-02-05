@@ -131,7 +131,7 @@ export class TangibleController extends AbstractTangibleController{
         this.recogniser = new Recogniser();
         this.settingsService = $settingsService;
 
-        console.log("this.settingsService.scale: "+this.settingsService.scale);
+        console.log("CURRENT SCALE: "+this.settingsService.scale);
 
         this.levelCtrl = ootLevelCtrl
         this.count = 0;
@@ -409,9 +409,8 @@ export class TangibleController extends AbstractTangibleController{
 
             //Get recognised tangible and add to surface
             if (event.touches.length > 2) {
-              //TODO: get scale from service (calibration)
-                let matches = this.recogniser.predict(points,1.365);
-                //let matches = this.recogniser.predict(points,1.0);
+                let scale = this.settingsService.scale;
+                let matches = this.recogniser.predict(points,scale);
 
                 if (matches.length > 0) {
                   let closestMatch = matches[0];

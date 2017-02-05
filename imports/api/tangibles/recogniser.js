@@ -45,12 +45,7 @@ export class Recogniser {
             let touchDistB = Point.distance(touchSorted[0], touchSorted[2])*scale;
             let touchDistC = Point.distance(touchSorted[1], touchSorted[2])*scale;
             this.touchDistancesABC = [touchDistA, touchDistB, touchDistC];
-
-            /*console.log("screen.height: "+screen.height);
-            console.log("screen.width: "+screen.width);*/
-            console.log("touchDistA: "+touchDistA);
-            console.log("touchDistB: "+touchDistB);
-            console.log("touchDistC: "+touchDistC);
+            
             for (let i = 0; i < this.features.length; i++) {
                 let feature = this.features[i];
 
