@@ -9,7 +9,7 @@ import 'pubsub-js/src/pubsub';
 import ootToolbar from '../ootToolbar/ootToolbar';
 
 class LevelOneCtrl {
-  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $mdDialog, $mdSidenav){
+  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $mdDialog, $mdSidenav, $settingsService){
     'ngInject';
     $reactive(this).attach($scope);
 
@@ -23,7 +23,7 @@ class LevelOneCtrl {
     this.libraryId = this.$const.DEFAULT_LIBRARY_ID;
     this.isNewDiagram = "true";
 
-    $scope.tangibleController = new TangibleController('tangibleContainer',this);
+    $scope.tangibleController = new TangibleController('tangibleContainer',this,$settingsService);
 
     this.helpers({
         remoteDiagram: ()=> {

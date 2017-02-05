@@ -9,7 +9,7 @@ import 'pubsub-js/src/pubsub';
 import ootToolbar from '../ootToolbar/ootToolbar';
 
 class LevelTwoCtrl {
-  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const){
+  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $settingsService){
     'ngInject';
     $reactive(this).attach($scope);
 
@@ -23,8 +23,8 @@ class LevelTwoCtrl {
     this.libraryId = this.$const.DEFAULT_LIBRARY_ID;
     this.isNewDiagram = "true";
 
-    $scope.tangibleControllerOne = new TangibleController('tangibleContainerOne',this);
-    $scope.tangibleControllerTwo = new TangibleController('tangibleContainerTwo',this);
+    $scope.tangibleControllerOne = new TangibleController('tangibleContainerOne',this,$settingsService);
+    $scope.tangibleControllerTwo = new TangibleController('tangibleContainerTwo',this,$settingsService);
 
     this.helpers({
         remoteDiagram: ()=> {

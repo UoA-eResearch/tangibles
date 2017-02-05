@@ -177,6 +177,8 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
         }
     };
     return service;
+}).service('$settingsService', function(){
+  this.scale = 1.0;
 }).service('$tgImages', Images);
 
 function onReady() {

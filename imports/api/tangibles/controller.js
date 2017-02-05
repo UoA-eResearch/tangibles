@@ -123,12 +123,15 @@ export class AbstractTangibleController {
 
 export class TangibleController extends AbstractTangibleController{
 
-    constructor(containerID, ootLevelCtrl) {
+    constructor(containerID, ootLevelCtrl,$settingsService) {
         super();
         this.visuals = {};
         this.scale = 1.0;
         this.selectedVisual = null;
         this.recogniser = new Recogniser();
+        this.settingsService = $settingsService;
+
+        console.log("this.settingsService.scale: "+this.settingsService.scale);
 
         this.levelCtrl = ootLevelCtrl
         this.count = 0;
