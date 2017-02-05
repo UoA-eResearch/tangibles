@@ -10,7 +10,7 @@ import {Points, Point} from '../../api/tangibles/points';
 import ootToolbar from '../ootToolbar/ootToolbar';
 
 class SettingsCtrl {
-  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const){
+  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $settingsService){
     'ngInject';
     $reactive(this).attach($scope);
 
@@ -24,8 +24,8 @@ class SettingsCtrl {
     this.libraryId = this.$const.DEFAULT_LIBRARY_ID;
     this.isNewDiagram = "true";
 
-    $scope.tangibleController = new TangibleController('tangibleContainer',this);
-    $scope.tangibleTestController = new TangibleController('tangibleTestContainer',this);
+    $scope.tangibleController = new TangibleController('tangibleContainer',this,$settingsService);
+    $scope.tangibleTestController = new TangibleController('tangibleTestContainer',this,$settingsService);
 
     this.helpers({
         remoteDiagram: ()=> {
@@ -64,7 +64,8 @@ class SettingsCtrl {
           console.log(averageRegistered);
           console.log(averageTouch);
           console.log(averageRegistered/averageTouch);
-          //TODO: get registered distances
+          //TODO: set scale in service
+          $settingsService.scale = averageRegistered/averageTouch;
         }
         return false;
       }else{//the other container
@@ -73,6 +74,7 @@ class SettingsCtrl {
     };
 
     $scope.clear = function(){
+      //TODO: reset scale to previous value? or value before we entered settings
       $scope.tangibleController.clear();
       $scope.tangibleController.enable = true;
     }
