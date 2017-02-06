@@ -60,31 +60,34 @@ class LevelOneCtrl {
       $scope.attributeTwo = "";
     };
 
+    //TODO: test this works correctly
     $scope.tangibleEntered = function(containerID){
       if($scope.tangibleController.currentTangible.type !== "Object"){
-        //TODO: show dialogbox popup
+        $scope.alertTitle = 'Sorry, please try again';
+        $scope.alertMessage = 'Please enter an object tangible.';
+
+        $scope.showAlert();
         return false;
-      }//TODO: test this works correctly
-      //save tangible info
-      $scope.tangibleShapes[$scope.tangibleController.count-1] = $scope.tangibleController.currentTangible;
-      console.log($scope.tangibleShapes);
-      //User has entered 3 ans - CHECK ANS
-      if($scope.tangibleController.count === 3){
-        //Prevent additional tangibles to be added to screen
-        $scope.tangibleController.enable = false;
-        if($scope.checkAns()){
-          //CORRECT
-          console.log("CORRECT");
-          $scope.isCorrect = true;
-          $scope.showAlert();
-        }else{
-          //INCORRECT
-          console.log("INCORRECT");
-          $scope.isCorrect = false;
-          $scope.showAlert();
+      }else{
+        //save tangible info
+        $scope.tangibleShapes[$scope.tangibleController.count] = $scope.tangibleController.currentTangible;
+        console.log($scope.tangibleShapes);
+        //User has entered 3 ans - CHECK ANS
+        if($scope.tangibleController.count === 2){
+          //Prevent additional tangibles to be added to screen
+          $scope.tangibleController.enable = false;
+          if($scope.checkAns()){
+            console.log("CORRECT");
+            $scope.isCorrect = true;
+            $scope.showAlert();
+          }else{
+            console.log("INCORRECT");
+            $scope.isCorrect = false;
+            $scope.showAlert();
+          }
         }
+        return true;
       }
-      return true;
     };
 
     $scope.checkAns = function(){

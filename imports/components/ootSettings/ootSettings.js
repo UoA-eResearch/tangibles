@@ -53,18 +53,12 @@ class SettingsCtrl {
           let regDistB = Point.distance(regPointsDists[0], regPointsDists[2]);
           let regDistC = Point.distance(regPointsDists[1], regPointsDists[2]);
 
-          console.log("regDistA: "+regDistA);
-          console.log("regDistB: "+regDistB);
-          console.log("regDistC: "+regDistC);
-          console.log(touchDist);
-
           //get average pixels per mm
           let averageRegistered = (regDistA/39 + regDistB/35 + regDistC/18)/3;
           let averageTouch = (touchDist[0]/39 + touchDist[1]/35 + touchDist[2]/18)/3;
           console.log(averageRegistered);
           console.log(averageTouch);
-          console.log(averageRegistered/averageTouch);
-          //TODO: set scale in service
+          console.log("scale: "+averageRegistered/averageTouch);
           $settingsService.scale = averageRegistered/averageTouch;
         }
         return false;
