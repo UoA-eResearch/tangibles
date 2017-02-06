@@ -33,7 +33,6 @@ ejson@1.0.12
 email@1.1.17
 es5-shim@4.6.14
 fastclick@1.0.12
-force-ssl@1.0.12
 fourseven:scss@3.10.0
 geojson-utils@1.0.9
 ground:db@0.3.15
@@ -58,10 +57,6 @@ logging@1.1.15
 mdg:camera@1.4.1
 meteor@1.2.17
 meteor-base@1.0.4
-meteorhacks:inject-initial@1.0.4
-meteorhacks:kadira@2.30.0
-meteorhacks:meteorx@1.4.1
-meteorhacks:zones@1.6.0
 minifier-css@1.2.14
 minifier-js@1.2.14
 minimongo@1.0.17
@@ -71,7 +66,6 @@ modules@0.7.6
 modules-runtime@0.7.6
 mongo@1.1.12
 mongo-id@1.0.5
-mongo-livedata@1.0.12
 npm-bcrypt@0.9.1
 npm-mongo@1.5.49
 observe-sequence@1.0.12
