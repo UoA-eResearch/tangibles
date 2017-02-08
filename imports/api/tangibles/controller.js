@@ -123,18 +123,18 @@ export class AbstractTangibleController {
 
 export class TangibleController extends AbstractTangibleController{
 
-    constructor(containerID, ootLevelCtrl,$settingsService) {
+    constructor(containerID, ootLevelCtrl,$ootService) {
         super();
         this.visuals = {};
         this.scale = 1.0;
         this.selectedVisual = null;
         this.recogniser = new Recogniser();
-        this.settingsService = $settingsService;
+        this.ootService = $ootService;
 
-        console.log("CURRENT SCALE: "+this.settingsService.scale);
+        console.log("CURRENT SCALE: "+this.ootService.scale);
 
         this.levelCtrl = ootLevelCtrl
-        this.count = 0;
+        this.tangibleCount = 0;
 
         this.containerID = containerID;
         this.enable = true;
@@ -301,7 +301,7 @@ export class TangibleController extends AbstractTangibleController{
 
     clear() {
         console.log("CLEARINGGGGGGG");
-        this.count = 0;
+        this.tangibleCount = 0;
         this.touchPointsLayer.destroyChildren();
         this.tangibleLayer.destroyChildren();//error cannot read property _applyTransform
         this.visuals = {};
@@ -409,7 +409,7 @@ export class TangibleController extends AbstractTangibleController{
 
             //Get recognised tangible and add to surface
             if (event.touches.length > 2) {
-                let scale = this.settingsService.scale;
+                let scale = this.ootService.scale;
                 let matches = this.recogniser.predict(points,scale);
 
                 if (matches.length > 0) {
@@ -423,7 +423,7 @@ export class TangibleController extends AbstractTangibleController{
                   let validTangible = this.levelCtrl.$scope.tangibleEntered(this.containerID);
                   console.log("tangibleEntered returned: "+validTangible);
                   if(validTangible){
-                    this.count++;
+                    this.tangibleCount++;
                     let id = Random.id();
                     let instance = {type: closestMatch.target, position: position, orientation: orientation, zIndex: 0};
                     this.diagram.tangibles[id] = instance;

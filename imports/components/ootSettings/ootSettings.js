@@ -38,12 +38,12 @@ class SettingsCtrl {
 
     this.libraryWatch = $scope.$watch('ootSettings.remoteLibrary', this.openNewDiagram.bind(this));
 
-    this.previousScale = $ootService.scale;
+    $scope.previousScale = $ootService.scale;
 
     $scope.tangibleEntered = function(containerID){
       if(containerID === $scope.tangibleController.containerID){
         //only allow one tangible to be entered
-        if($scope.tangibleController.count === 0){
+        if($scope.tangibleController.tangibleCount === 0){
           $scope.tangibleController.enable = false;
           //get physical touch points' pixel distance
           let touchDist = $scope.tangibleController.getCurrentTangibleTouchDistance();
@@ -70,7 +70,7 @@ class SettingsCtrl {
     };
 
     $scope.clear = function(){
-      //TODO: reset scale to previous value? or value before we entered settings
+      $ootService.scale = $scope.previousScale;
       $scope.tangibleController.clear();
       $scope.tangibleController.enable = true;
     }

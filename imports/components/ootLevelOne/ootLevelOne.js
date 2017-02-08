@@ -60,7 +60,6 @@ class LevelOneCtrl {
       $scope.attributeTwo = "";
     };
 
-    //TODO: test this works correctly
     $scope.tangibleEntered = function(containerID){
       if($scope.tangibleController.currentTangible.type !== "Object"){
         $scope.alertTitle = 'Sorry, please try again';
@@ -70,10 +69,10 @@ class LevelOneCtrl {
         return false;
       }else{
         //save tangible info
-        $scope.tangibleShapes[$scope.tangibleController.count] = $scope.tangibleController.currentTangible;
+        $scope.tangibleShapes[$scope.tangibleController.tangibleCount] = $scope.tangibleController.currentTangible;
         console.log($scope.tangibleShapes);
         //User has entered 3 ans - CHECK ANS
-        if($scope.tangibleController.count === 2){
+        if($scope.tangibleController.tangibleCount === 2){
           //Prevent additional tangibles to be added to screen
           $scope.tangibleController.enable = false;
           if($scope.checkAns()){

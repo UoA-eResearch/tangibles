@@ -24,7 +24,7 @@ class LevelTwoCtrl {
     this.isNewDiagram = "true";
 
     $scope.tangibleControllerOne = new TangibleController('tangibleContainerOne',this,$ootService);
-    $scope.tangibleControllerTwo = new TangibleController('tangibleContainerTwo',this,$ootService);
+    //$scope.tangibleControllerTwo = new TangibleController('tangibleContainerTwo',this,$ootService);
 
     this.helpers({
         remoteDiagram: ()=> {
@@ -38,12 +38,12 @@ class LevelTwoCtrl {
     this.libraryWatch = $scope.$watch('ootLevelTwo.remoteLibrary', this.openNewDiagram.bind(this));
 
     $scope.tangibleEntered = function(containerID){
-      //TODO: check which container was used
-      if(containerID === $scope.tangibleControllerOne.containerID){
+
+      /*if(containerID === $scope.tangibleControllerOne.containerID){
 
       }else{
 
-      }
+      }*/
       return true;
     };
 
@@ -68,7 +68,7 @@ class LevelTwoCtrl {
             this.sharedData.diagramName = this.localDiagram.name;
             PubSub.publish('updateName', this.localDiagram.name);
             this.$scope.tangibleControllerOne.openDiagram(this.localDiagram, angular.copy(newVal), this.$tgImages);
-            this.$scope.tangibleControllerTwo.openDiagram(this.localDiagram, angular.copy(newVal), this.$tgImages);
+            //this.$scope.tangibleControllerTwo.openDiagram(this.localDiagram, angular.copy(newVal), this.$tgImages);
         }
     }
 
