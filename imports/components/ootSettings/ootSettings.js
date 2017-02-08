@@ -10,7 +10,7 @@ import {Points, Point} from '../../api/tangibles/points';
 import ootToolbar from '../ootToolbar/ootToolbar';
 
 class SettingsCtrl {
-  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $settingsService){
+  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $ootService){
     'ngInject';
     $reactive(this).attach($scope);
 
@@ -24,8 +24,8 @@ class SettingsCtrl {
     this.libraryId = this.$const.DEFAULT_LIBRARY_ID;
     this.isNewDiagram = "true";
 
-    $scope.tangibleController = new TangibleController('tangibleContainer',this,$settingsService);
-    $scope.tangibleTestController = new TangibleController('tangibleTestContainer',this,$settingsService);
+    $scope.tangibleController = new TangibleController('tangibleContainer',this,$ootService);
+    $scope.tangibleTestController = new TangibleController('tangibleTestContainer',this,$ootService);
 
     this.helpers({
         remoteDiagram: ()=> {
@@ -38,10 +38,12 @@ class SettingsCtrl {
 
     this.libraryWatch = $scope.$watch('ootSettings.remoteLibrary', this.openNewDiagram.bind(this));
 
+    this.previousScale = $ootService.scale;
+
     $scope.tangibleEntered = function(containerID){
       if(containerID === $scope.tangibleController.containerID){
         //only allow one tangible to be entered
-        if($scope.tangibleController.count === 1){
+        if($scope.tangibleController.count === 0){
           $scope.tangibleController.enable = false;
           //get physical touch points' pixel distance
           let touchDist = $scope.tangibleController.getCurrentTangibleTouchDistance();
@@ -59,7 +61,7 @@ class SettingsCtrl {
           console.log(averageRegistered);
           console.log(averageTouch);
           console.log("scale: "+averageRegistered/averageTouch);
-          $settingsService.scale = averageRegistered/averageTouch;
+          $ootService.scale = averageRegistered/averageTouch;
         }
         return false;
       }else{//the other container
