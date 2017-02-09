@@ -7,6 +7,7 @@ import ootHome from '../imports/components/ootHome/ootHome';
 import ootSettings from '../imports/components/ootSettings/ootSettings';
 import ootLevelOne from '../imports/components/ootLevelOne/ootLevelOne';
 import ootLevelTwo from '../imports/components/ootLevelTwo/ootLevelTwo';
+import ootLevelThree from '../imports/components/ootLevelThree/ootLevelThree';
 
 import home from '../imports/components/tgHome/tgHome';
 import diagram from '../imports/components/tgDiagram/tgDiagram';
@@ -37,7 +38,7 @@ Accounts.ui.config({
     passwordSignupFields: 'USERNAME_ONLY'
 });
 
-angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.ui', home.name, diagram.name, libraries.name, ootHome.name, ootSettings.name, ootLevelOne.name, ootLevelTwo.name])
+angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.ui', home.name, diagram.name, libraries.name, ootHome.name, ootSettings.name, ootLevelOne.name, ootLevelTwo.name, ootLevelThree.name])
     .constant("$const", {
         "APP": "Tangibles",
         "NEW": "New diagram",
@@ -144,6 +145,18 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
               resolve: resolve,
               onEnter: ['$tgSharedData', function ($tgSharedData) {
                   $tgSharedData.data.stateName = 'levelTwo';
+              }]
+            })
+            .state('levelThree',{
+              url: "/level_three",
+              views: {
+                'main-view': {
+                  component: ootLevelThree.name
+                }
+              },
+              resolve: resolve,
+              onEnter: ['$tgSharedData', function ($tgSharedData) {
+                  $tgSharedData.data.stateName = 'levelThree';
               }]
             })
             .state('home.diagram', {
