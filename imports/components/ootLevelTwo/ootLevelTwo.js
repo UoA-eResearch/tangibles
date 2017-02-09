@@ -9,7 +9,7 @@ import 'pubsub-js/src/pubsub';
 import ootToolbar from '../ootToolbar/ootToolbar';
 
 class LevelTwoCtrl {
-  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $ootService){
+  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $mdDialog, $ootService){
     'ngInject';
     $reactive(this).attach($scope);
 
@@ -23,8 +23,7 @@ class LevelTwoCtrl {
     this.libraryId = this.$const.DEFAULT_LIBRARY_ID;
     this.isNewDiagram = "true";
 
-    $scope.tangibleControllerOne = new TangibleController('tangibleContainerOne',this,$ootService);
-    //$scope.tangibleControllerTwo = new TangibleController('tangibleContainerTwo',this,$ootService);
+    $scope.tangibleController = new TangibleController('tangibleContainer',this,$ootService);
 
     this.helpers({
         remoteDiagram: ()=> {
@@ -37,14 +36,68 @@ class LevelTwoCtrl {
 
     this.libraryWatch = $scope.$watch('ootLevelTwo.remoteLibrary', this.openNewDiagram.bind(this));
 
+    //=================FIELDS=================//
+
+    $scope.classEntered = false;
+    $scope.classInEdit = "";
+    $scope.attributeList = ["Size","Shape"];
+
+    //=================METHODS=================//
+
     $scope.tangibleEntered = function(containerID){
-
-      /*if(containerID === $scope.tangibleControllerOne.containerID){
-
+      $scope.classEntered = !$scope.classEntered;//placeholder
+      $scope.showAlert();
+      if($scope.tangibleController.tangibleCount === 0){
+        if($scope.tangibleController.currentTangible.type === "Class"){
+          $scope.classInEdit = $scope.tangibleController.currentTangible.class;//TODO
+          //show popup inorder to refresh ngshow and ngdisable
+          return true;
+        }else{
+          //TODO: show error popup: please enter a class tangible to edit
+          return false;
+        }
       }else{
+        if($scope.tangibleController.currentTangible.type === "AttributeType"){
 
-      }*/
-      return true;
+          return true;
+        }else{
+          //TODO: show error popup: please enter an attribute type to add to your custom class (puzzle piece shaped)
+          return false;
+        }
+      }
+    };
+
+    $scope.remove = function(attributeToRemove){
+      let index = $scope.attributeList.indexOf(attributeToRemove);
+      if(index > -1){
+        $scope.attributeList.splice(index,1);
+      }
+    };
+
+    $scope.clear = function(){
+      $scope.tangibleController.clear();
+      $scope.tangibleController.enable = true;
+      $scope.classEntered = !$scope.classEntered;
+      $scope.classInEdit = "";
+      $scope.attributeList = ["Size"];
+    };
+
+    $scope.showAlert = function(){
+      alert = $mdDialog.alert()
+        .parent(angular.element(document.querySelector('#popupContainer')))
+        .clickOutsideToClose(true)
+        .title("wutwut")
+        .textContent($scope.classEntered)
+        .ok('Got it!');
+      $mdDialog.show(alert)
+        .finally(function(){
+        });
+    };
+
+    $scope.openSummary = function(){
+        //$mdSidenav('right').toggle();
+        //TODO: add sidenav for summary
+        //TODO: save attributes of the edited class to service
     };
 
   }
@@ -67,8 +120,7 @@ class LevelTwoCtrl {
 
             this.sharedData.diagramName = this.localDiagram.name;
             PubSub.publish('updateName', this.localDiagram.name);
-            this.$scope.tangibleControllerOne.openDiagram(this.localDiagram, angular.copy(newVal), this.$tgImages);
-            //this.$scope.tangibleControllerTwo.openDiagram(this.localDiagram, angular.copy(newVal), this.$tgImages);
+            this.$scope.tangibleController.openDiagram(this.localDiagram, angular.copy(newVal), this.$tgImages);
         }
     }
 
