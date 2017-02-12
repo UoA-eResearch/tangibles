@@ -3,9 +3,9 @@
 
 <div layout="row">
   <div flex>
-    <div class="tangibleContainer levelTwoContainerOne" id="tangibleContainer"></div>
+    <div class="tangibleContainer levelTwoContainer" id="tangibleContainer"></div>
   </div>
-  
+
   <div flex>
     <div ng-show="classEntered">
       <md-card>
@@ -15,10 +15,9 @@
             </md-card-title-text>
           </md-card-title>
           <md-card-content>
-            hello
             <md-list-item ng-repeat="attribute in attributeList">
               <p>{{attribute}}</p>
-              <md-button class="md-warn md-raised" ng-show="attribute !== 'Size'" ng-click="remove(attribute)">Remove</md-button>
+              <md-button class="md-warn md-raised"  ng-click="remove(attribute)">Remove</md-button>
             </md-list-item>
           </md-card-content>
         </md-card>

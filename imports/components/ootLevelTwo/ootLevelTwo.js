@@ -44,8 +44,6 @@ class LevelTwoCtrl {
     $scope.alertTitle = "";
     $scope.alertMessage= "";
 
-
-    console.log($ootService.classTemplates);
     //=================METHODS=================//
 
     $scope.tangibleEntered = function(containerID){
@@ -112,13 +110,18 @@ class LevelTwoCtrl {
     };
 
     $scope.openSummary = function(){
+      if($scope.attributeList.length === 0){
+        $scope.alertTitle = "Insufficient number of attributes";
+        $scope.alertMessage= "Please enter at least one attribute to your custom class";
+        $scope.showAlert();
+      }else{
         $mdSidenav('right').toggle();
         for(i=0;i<$ootService.classTemplates.length;i++){
           if($ootService.classTemplates[i].id === $scope.classInEdit){
             $ootService.classTemplates[i].attributes = $scope.attributeList;
-            console.log($ootService.classTemplates);
           }
         }
+      }
     };
 
     $scope.goToLevelThree = function(){
