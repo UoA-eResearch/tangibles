@@ -230,7 +230,7 @@
           }
         ]
       },
-      "GFuoa9HWSPuGje845": {
+      "class_square": {
         "name": "Square Class",
         "type": "Class",
         "class": "Square",
@@ -253,7 +253,7 @@
           }
         ]
       },
-      "ftsqJa6zdQxRKcfAb": {
+      "class_triangle": {
         "name": "Triangle Class",
         "type": "Class",
         "class": "Triangle",
@@ -276,7 +276,7 @@
           }
         ]
       },
-      "dpN9dJkPdBRJnu2op": {
+      "class_circle": {
         "name": "Circle Class",
         "type": "Class",
         "class": "Circle",
@@ -299,7 +299,7 @@
           }
         ]
       },
-      "BEjXCRXcM6Zb6Ky4N": {
+      "attribute_size": {
         "name": "Size Attribute",
         "type": "AttributeType",
         "class": "Size",
@@ -322,7 +322,7 @@
           }
         ]
       },
-      "45QmCzyypXG5bmxm9": {
+      "attribute_colour": {
         "name": "Colour Attribute",
         "type": "AttributeType",
         "class": "Colour",
@@ -345,7 +345,7 @@
           }
         ]
       },
-      "6gAw6TxyGYXPGY6h5": {
+      "attribute_outline_colour": {
         "name": "Outline Colour Attribute",
         "type": "AttributeType",
         "class": "OutlineColour",
@@ -368,7 +368,7 @@
           }
         ]
       },
-      "3XhayBPjY5u5A43nP": {
+      "attribute_pattern": {
         "name": "Pattern Attribute",
         "type": "AttributeType",
         "class": "Pattern",
