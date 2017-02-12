@@ -42,6 +42,7 @@ class LevelThreeCtrl {
     $scope.classInEdit = "";
     $scope.attributeList = ["Size","Shape"];
 
+    console.log($ootService.classTemplates);
     //=================METHODS=================//
 
     $scope.tangibleEntered = function(containerID){

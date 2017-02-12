@@ -192,6 +192,11 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
     return service;
 }).service('$ootService', function(){
   this.scale = 1.0;
+  this.classTemplates = [
+    {id: "Circle", attributes: ["Size"]},
+    {id: "Square", attributes: ["Size"]},
+    {id: "Triangle", attributes: ["Size"]}
+  ];
 }).service('$tgImages', Images);
 
 function onReady() {

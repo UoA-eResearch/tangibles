@@ -9,7 +9,7 @@ import 'pubsub-js/src/pubsub';
 import ootToolbar from '../ootToolbar/ootToolbar';
 
 class LevelTwoCtrl {
-  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $mdDialog, $ootService){
+  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $mdDialog, $mdSidenav, $ootService){
     'ngInject';
     $reactive(this).attach($scope);
 
@@ -40,28 +40,40 @@ class LevelTwoCtrl {
 
     $scope.classEntered = false;
     $scope.classInEdit = "";
-    $scope.attributeList = ["Size","Shape"];
+    $scope.attributeList = ["Size"]; //size added by default
+    $scope.alertTitle = "";
+    $scope.alertMessage= "";
 
+
+    console.log($ootService.classTemplates);
     //=================METHODS=================//
 
     $scope.tangibleEntered = function(containerID){
-      $scope.classEntered = !$scope.classEntered;//placeholder
-      $scope.showAlert();
+      let currentTangible = $scope.tangibleController.currentTangible;
       if($scope.tangibleController.tangibleCount === 0){
-        if($scope.tangibleController.currentTangible.type === "Class"){
-          $scope.classInEdit = $scope.tangibleController.currentTangible.class;//TODO
-          //show popup inorder to refresh ngshow and ngdisable
+        if(currentTangible.type === "Class"){
+          $scope.classEntered = true;
+          $scope.classInEdit = currentTangible.class;
+          $scope.$apply();
           return true;
         }else{
-          //TODO: show error popup: please enter a class tangible to edit
+          $scope.alertTitle = "Incorrect tangible";
+          $scope.alertMessage= "Please enter a class tangible to edit";
+          $scope.showAlert();
           return false;
         }
       }else{
-        if($scope.tangibleController.currentTangible.type === "AttributeType"){
-
-          return true;
+        if(currentTangible.type === "AttributeType"){
+          let newAttributeType = currentTangible.class;
+          if($scope.attributeList.indexOf(newAttributeType) === -1){//if not already in the attribute list
+            $scope.attributeList.push(newAttributeType);
+          }
+          $scope.$apply();
+          return false;
         }else{
-          //TODO: show error popup: please enter an attribute type to add to your custom class (puzzle piece shaped)
+          $scope.alertTitle = "Incorrect tangible";
+          $scope.alertMessage= "Please enter an attribute type to add to your class.\n Hint: attribute type tangibles look like a puzzle piece.";
+          $scope.showAlert();
           return false;
         }
       }
@@ -77,17 +89,22 @@ class LevelTwoCtrl {
     $scope.clear = function(){
       $scope.tangibleController.clear();
       $scope.tangibleController.enable = true;
-      $scope.classEntered = !$scope.classEntered;
+      $scope.classEntered = false;
       $scope.classInEdit = "";
       $scope.attributeList = ["Size"];
+      $ootService.classTemplates = [
+        {id: "Circle", attributes: ["Size"]},
+        {id: "Square", attributes: ["Size"]},
+        {id: "Triangle", attributes: ["Size"]}
+      ];
     };
 
     $scope.showAlert = function(){
       alert = $mdDialog.alert()
         .parent(angular.element(document.querySelector('#popupContainer')))
         .clickOutsideToClose(true)
-        .title("wutwut")
-        .textContent($scope.classEntered)
+        .title($scope.alertTitle)
+        .textContent($scope.alertMessage)
         .ok('Got it!');
       $mdDialog.show(alert)
         .finally(function(){
@@ -95,9 +112,17 @@ class LevelTwoCtrl {
     };
 
     $scope.openSummary = function(){
-        //$mdSidenav('right').toggle();
-        //TODO: add sidenav for summary
-        //TODO: save attributes of the edited class to service
+        $mdSidenav('right').toggle();
+        for(i=0;i<$ootService.classTemplates.length;i++){
+          if($ootService.classTemplates[i].id === $scope.classInEdit){
+            $ootService.classTemplates[i].attributes = $scope.attributeList;
+            console.log($ootService.classTemplates);
+          }
+        }
+    };
+
+    $scope.goToLevelThree = function(){
+      $state.go("levelThree");
     };
 
   }
