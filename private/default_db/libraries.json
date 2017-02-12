@@ -230,27 +230,164 @@
           }
         ]
       },
-      "NaEFePtk4RP3AWi8r": {
-        "name": "Signpost",
-        "size": "None",
-        "colour": "None",
-        "shape": "None",
+      "GFuoa9HWSPuGje845": {
+        "name": "Square Class",
+        "type": "Class",
+        "class": "Square",
         "icon": false,
-        "scale": 0.4274809160305344,
-        "startAngle": 178,
+        "scale": 1.0,
+        "startAngle": 0,
         "transparentHit": false,
         "registrationPoints": [
           {
-            "x": 294,
-            "y": 308
+            "x" : 432.90631103515625,
+            "y" : 92.57292175292969
           },
           {
-            "x": 250,
-            "y": 114
+            "x" : 129.57293701171875,
+            "y" : 404.90626525878906
           },
           {
-            "x": 265,
-            "y": 398
+            "x" : 437.57293701171875,
+            "y" : 412.90626525878906
+          }
+        ]
+      },
+      "ftsqJa6zdQxRKcfAb": {
+        "name": "Triangle Class",
+        "type": "Class",
+        "class": "Triangle",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 294.23956298828125,
+            "y" : 74.23956298828125
+          },
+          {
+            "x" : 442.23956298828125,
+            "y" : 377.57293701171875
+          },
+          {
+            "x" : 133.57293701171875,
+            "y" : 374.23956298828125
+          }
+        ]
+      },
+      "dpN9dJkPdBRJnu2op": {
+        "name": "Circle Class",
+        "type": "Class",
+        "class": "Circle",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 271.57293701171875,
+            "y" : 82.90625
+          },
+          {
+            "x" : 378.90631103515625,
+            "y" : 339.90625
+          },
+          {
+            "x" : 154.90625,
+            "y" : 366.90625
+          }
+        ]
+      },
+      "BEjXCRXcM6Zb6Ky4N": {
+        "name": "Size Attribute",
+        "type": "AttributeType",
+        "class": "Size",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 206.90631103515625,
+            "y" : 80.57290649414062
+          },
+          {
+            "x" : 437.57293701171875,
+            "y" : 254.90625
+          },
+          {
+            "x" : 95.57293701171875,
+            "y" : 388.90625
+          }
+        ]
+      },
+      "45QmCzyypXG5bmxm9": {
+        "name": "Colour Attribute",
+        "type": "AttributeType",
+        "class": "Colour",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 446.90631103515625,
+            "y" : 269.90625
+          },
+          {
+            "x" : 96.23956298828125,
+            "y" : 396.90625
+          },
+          {
+            "x" : 77.57293701171875,
+            "y" : 166.90625
+          }
+        ]
+      },
+      "6gAw6TxyGYXPGY6h5": {
+        "name": "Outline Colour Attribute",
+        "type": "AttributeType",
+        "class": "OutlineColour",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 340.90631103515625,
+            "y" : 157.90625
+          },
+          {
+            "x" : 105.57293701171875,
+            "y" : 388.23956298828125
+          },
+          {
+            "x" : 455.57293701171875,
+            "y" : 252.90625
+          }
+        ]
+      },
+      "3XhayBPjY5u5A43nP": {
+        "name": "Pattern Attribute",
+        "type": "AttributeType",
+        "class": "Pattern",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 340.90631103515625,
+            "y" : 145.23956298828125
+          },
+          {
+            "x" : 95.57293701171875,
+            "y" : 376.23956298828125
+          },
+          {
+            "x" : 150.90625,
+            "y" : 203.57290649414062
           }
         ]
       }
