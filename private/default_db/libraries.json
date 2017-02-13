@@ -240,16 +240,16 @@
         "transparentHit": false,
         "registrationPoints": [
           {
-            "x" : 432.90631103515625,
-            "y" : 92.57292175292969
+            "x" : 422.90631103515625,
+            "y" : 97.90625
           },
           {
-            "x" : 129.57293701171875,
-            "y" : 404.90626525878906
+            "x" : 99.57293701171875,
+            "y" : 386.23956298828125
           },
           {
-            "x" : 437.57293701171875,
-            "y" : 412.90626525878906
+            "x" : 418.23956298828125,
+            "y" : 408.90625
           }
         ]
       },
@@ -388,6 +388,292 @@
           {
             "x" : 150.90625,
             "y" : 203.57290649414062
+          }
+        ]
+      },
+      "size_small": {
+        "name": "Size Small",
+        "type": "AttributeValue",
+        "class": "Size",
+        "value": "Small",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 322.90631103515625,
+            "y" : 309.23956298828125
+          },
+          {
+            "x" : 169.57293701171875,
+            "y" : 310.90625
+          },
+          {
+            "x" : 317.57293701171875,
+            "y" : 233.57290649414062
+          }
+        ]
+      },
+      "size_medium": {
+        "name": "Size Medium",
+        "type": "AttributeValue",
+        "class": "Size",
+        "value": "Medium",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 341.90625,
+            "y" : 370.4271240234375 
+          },
+          {
+            "x" : 99.90625,
+            "y" : 136.42709350585938
+          },
+          {
+            "x" : 205.23956298828125,
+            "y" : 157.09375
+          }
+        ]
+      },
+      "size_large": {
+        "name": "Size Large",
+        "type": "AttributeValue",
+        "class": "Size",
+        "value": "Large",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 453.57293701171875,
+            "y" : 81.57290649414062
+          },
+          {
+            "x" : 151.57293701171875,
+            "y" : 182.90625
+          },
+          {
+            "x" : 456.90631103515625,
+            "y" : 391.90625
+          }
+        ]
+      },
+      "colour_blue": {
+        "name": "Colour Blue",
+        "type": "AttributeValue",
+        "class": "Colour",
+        "value": "Blue",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 373.6840311686198,
+            "y" : 333.888916015625
+          },
+          {
+            "x" : 174.3507792154948,
+            "y" : 91.5555419921875
+          },
+          {
+            "x" : 255.6840311686198,
+            "y" : 330.5555419921875
+          }
+        ]
+      },
+      "colour_green": {
+        "name": "Colour Green",
+        "type": "AttributeValue",
+        "class": "Colour",
+        "value": "Green",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 358.35069783528644,
+            "y" : 93.22220865885419
+          },
+          {
+            "x" : 171.01744588216144,
+            "y" : 333.55555216471356
+          },
+          {
+            "x" : 274.35069783528644,
+            "y" : 329.2222391764323
+          }
+        ]
+      },
+      "colour_red": {
+        "name": "Colour Red",
+        "type": "AttributeValue",
+        "class": "Colour",
+        "value": "Red",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 272.23956298828125,
+            "y" : 114.23956298828125
+          },
+          {
+            "x" : 218.90631103515625,
+            "y" : 363.90625
+          },
+          {
+            "x" : 342.90631103515625,
+            "y" : 364.57293701171875
+          }
+        ]
+      },
+      "outline_colour_blue": {
+        "name": "Outline Colour Blue",
+        "type": "AttributeValue",
+        "class": "OutLineColour",
+        "value": "Blue",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 172.23956298828125,
+            "y" : 167.57290649414062
+          },
+          {
+            "x" : 390.90631103515625,
+            "y" : 192.57290649414062
+          },
+          {
+            "x" : 388.23956298828125,
+            "y" :352.23956298828125
+          }
+        ]
+      },
+      "outline_colour_green": {
+        "name": "Outline Colour Green",
+        "type": "AttributeValue",
+        "class": "OutLineColour",
+        "value": "Green",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 343.68407185872394,
+            "y" : 131.22220865885419
+          },
+          {
+            "x" : 121.68407185872394,
+            "y" : 326.5555826822917
+          },
+          {
+            "x" : 338.35069783528644,
+            "y" : 298.2222086588542
+          }
+        ]
+      },
+      "outline_colour_red": {
+        "name": "Outline Colour Red",
+        "type": "AttributeValue",
+        "class": "OutLineColour",
+        "value": "Red",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 357.57293701171875,
+            "y" : 166.23956298828125
+          },
+          { "x" : 146.90625,
+            "y" : 264.23956298828125
+          },
+          { "x" : 358.23956298828125,
+            "y" : 360.23956298828125
+          }
+        ]
+      },
+      "pattern_dots": {
+        "name": "Pattern Dots",
+        "type": "AttributeValue",
+        "class": "Pattern",
+        "value": "Dots",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 286.90631103515625,
+            "y" : 248.57293701171875
+          },
+          {
+            "x" : 387.57293701171875,
+            "y" : 413.57293701171875
+          },
+          {
+            "x" : 125.57293701171875,
+            "y" : 180.90625
+          }
+        ]
+      },
+      "pattern_hexagon": {
+        "name": "Pattern Hexagon",
+        "type": "AttributeValue",
+        "class": "Pattern",
+        "value": "Hexagon",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 356.23956298828125,
+            "y" : 150.23956298828125
+          },
+          {
+            "x" : 200.90631103515625,
+            "y" : 375.90625
+          },
+          {
+            "x" : 341.57293701171875,
+            "y" : 384.90625
+          }
+        ]
+      },
+      "pattern_stripes": {
+        "name": "Pattern Stripes",
+        "type": "AttributeValue",
+        "class": "Pattern",
+        "value": "Stripes",
+        "icon": false,
+        "scale": 1.0,
+        "startAngle": 0,
+        "transparentHit": false,
+        "registrationPoints": [
+          {
+            "x" : 379.57293701171875,
+            "y" : 403.57293701171875
+          },
+          {
+            "x" : 348.23956298828125,
+            "y" : 296.90625
+          },
+          {
+            "x" : 143.57293701171875,
+            "y" : 154.90625
           }
         ]
       }

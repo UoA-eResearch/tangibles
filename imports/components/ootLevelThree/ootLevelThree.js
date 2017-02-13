@@ -85,6 +85,7 @@ class LevelThreeCtrl {
         $scope.lowerCaseFields.push($scope.fields[j].toLowerCase());
         $scope.attributeValues.push("...")
       }
+      console.log($scope.fields);
     };
 
     $scope.tangibleEntered = function(containerID){
