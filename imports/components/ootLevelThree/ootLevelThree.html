@@ -2,9 +2,47 @@
 <h1 class="md-display-2">Welcome to Level 3</h1>
 
 <div layout="row">
-  <div flex>
-    <div class="tangibleContainer levelOneContainer" id="tangibleContainer"></div>
+  <div flex="50">
+    <div class="tangibleContainer levelThreeContainer" id="tangibleContainer"></div>
   </div>
+
+  <div flex="50">
+    <div ng-show="editMode">
+      <md-card>
+          <md-card-title>
+            <md-card-title-text>
+              <span class="md-headline">Instantiating <span ng-bind="class"></span>:</span>
+            </md-card-title-text>
+          </md-card-title>
+          <md-card-content>
+            public class <span ng-bind="class"></span>{
+            <div ng-repeat="field in lowerCaseFields">
+              &emsp;private {{field}} = <span ng-show="attributeValues[$index]==='...'">... </span>
+                <span ng-show="attributeValues[$index]!=='...'">{{attributeValues[$index]}};</span></br>
+            </div>
+          }
+          </md-card-content>
+        </md-card>
+      </div>
+  </div>
+</div>
+
+<div layout="row">
+  <div flex ng-show="editMode">
+    <md-card>
+      <md-card-title-text>
+        <span class="md-headline">Java code:</span>
+      </md-card-title-text>
+        <md-card-content>
+          <span ng-bind="class"></span> myShape = new <span ng-bind="class"></span>(
+            <span ng-repeat="value in attributeValues track by $index">{{value}}
+              <span ng-show="$index!==attributeValues.length-1"> , </span>
+            </span>
+          );
+        </md-card-content>
+      </md-card>
+    </div>
+    <div flex="50"></div>
 </div>
 
 <div layout="row">
@@ -12,5 +50,14 @@
     <md-button class="md-primary md-raised" ng-click="clear()">Clear</md-button>
   </div>
 
-  <md-button class="md-accent md-raised" ng-click=openSummary()>Finish</md-button>
+  <md-button class="md-accent md-raised" ng-disabled="!complete" ng-click=openSummary()>Finish</md-button>
 </div>
+
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+  <md-toolbar class="md-theme-light">
+    <h1 class="md-toolbar-tools">Classes Overview</h1>
+  </md-toolbar>
+  <md-content layout-padding>
+    Well done !!!
+  </md-content>
+</md-sidenav>

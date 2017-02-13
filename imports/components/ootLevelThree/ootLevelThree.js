@@ -9,7 +9,7 @@ import 'pubsub-js/src/pubsub';
 import ootToolbar from '../ootToolbar/ootToolbar';
 
 class LevelThreeCtrl {
-  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $mdDialog, $ootService){
+  constructor($scope, $reactive, $stateParams, $tgImages, $state, $tgSharedData, $const, $mdDialog, $mdSidenav, $ootService){
     'ngInject';
     $reactive(this).attach($scope);
 
@@ -38,20 +38,94 @@ class LevelThreeCtrl {
 
     //=================FIELDS=================//
 
-    $scope.classEntered = false;
-    $scope.classInEdit = "";
-    $scope.attributeList = ["Size","Shape"];
+    $scope.editMode = false;
+    $scope.complete = false;
+    $scope.class = "";
+    $scope.fields = [];
+    $scope.lowerCaseFields = [];
+    $scope.attributeValues = [];
 
-    console.log($ootService.classTemplates);
+    //TODO: get Konva layer and draw custom shapes
+
     //=================METHODS=================//
 
+    $scope.setup = function(className){
+      $scope.class = className;
+      let templates = $ootService.classTemplates;
+      let indexOfClass = -1;
+
+      //get index of the class
+      for(i=0;i<templates.length;i++){
+        if(templates[i].id === className){
+          indexOfClass = i;
+        }
+      }
+
+      //save the fields and convert to lowercase
+      $scope.fields = templates[indexOfClass].attributes;
+      $scope.lowerCaseFields = [];
+      for(j=0;j<$scope.fields.length;j++){
+        $scope.lowerCaseFields.push($scope.fields[j].toLowerCase());
+        $scope.attributeValues.push("...")
+      }
+    };
+
     $scope.tangibleEntered = function(containerID){
-      return true;
+      let currentTangible = $scope.tangibleController.currentTangible;
+      if($scope.tangibleController.tangibleCount === 0){
+        if(currentTangible.type === "Class"){
+          $scope.editMode = true;
+          $scope.class = currentTangible.class;
+          $scope.setup($scope.class);
+          $scope.$apply();
+          return true;
+        }else{
+          $scope.alertTitle = "Incorrect tangible";
+          $scope.alertMessage= "Please enter a class tangible to instantiate.";
+          $scope.showAlert();
+          return false;
+        }
+      }else{
+        if(currentTangible.type === "AttributeValue"){
+          let newAttributeValue = currentTangible.class;
+          //TODO
+          //TODO: check if all values have been entered
+          $scope.$apply();
+          return false;
+        }else{
+          $scope.alertTitle = "Incorrect tangible";
+          $scope.alertMessage= "Please enter an attribute value.";
+          $scope.showAlert();
+          return false;
+        }
+      }
     };
 
     $scope.clear = function(){
       $scope.tangibleController.clear();
       $scope.tangibleController.enable = true;
+      $scope.editMode = false;
+      $scope.complete = false;
+      $scope.class = "";
+      $scope.fields = [];
+      $scope.lowerCaseFields = [];
+      $scope.attributeValues = [];
+    };
+
+    $scope.showAlert = function(){
+      alert = $mdDialog.alert()
+        .parent(angular.element(document.querySelector('#popupContainer')))
+        .clickOutsideToClose(true)
+        .title($scope.alertTitle)
+        .textContent($scope.alertMessage)
+        .ok('Got it!');
+      $mdDialog.show(alert)
+        .finally(function(){
+        });
+    };
+
+    $scope.openSummary = function(){
+      $mdSidenav('right').toggle();
     };
 
   }

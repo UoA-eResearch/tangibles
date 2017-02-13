@@ -250,7 +250,7 @@ md-card{
 .description-width{
   width: 70%;
 }
-
+//TODO: try viewport for width and height?
 .settingsContainer{
   height: 400px;
   width: 500px;
@@ -261,6 +261,11 @@ md-card{
 }
 
 .levelTwoContainer{
+  width: 500px;
+  height: 400px;
+}
+
+.levelThreeContainer{
   width: 500px;
   height: 400px;
 }
