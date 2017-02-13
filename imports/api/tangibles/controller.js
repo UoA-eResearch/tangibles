@@ -394,6 +394,15 @@ export class TangibleController extends AbstractTangibleController{
       return this.recogniser.touchDistancesABC;
     }
 
+    getKonvaStage(){
+      return this.stage
+    }
+
+    getKonvaLayer(){
+      return this.deselectLayer;
+    }
+
+
     /** Visual detection loop TODO: customise for registration and active use
      *
      * @param event
@@ -418,6 +427,7 @@ export class TangibleController extends AbstractTangibleController{
                   let position = Points.getCentroid(scaledPoints);
                   let orientation = Points.getOrientation(points) - Points.getOrientation(template.registrationPoints); //current-original orientation
 
+                  console.log(template)
                   //set tangible object as field - accessible by level controller.
                   this.currentTangible = template;
                   let validTangible = this.levelCtrl.$scope.tangibleEntered(this.containerID);

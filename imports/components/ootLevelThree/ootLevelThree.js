@@ -5,6 +5,7 @@ import {TangibleController} from '../../api/tangibles/controller';
 import {Diagrams} from '../../api/collections/diagrams.js';
 import {Libraries} from '../../api/collections/libraries.js';
 import 'pubsub-js/src/pubsub';
+import Konva from 'konva';
 
 import ootToolbar from '../ootToolbar/ootToolbar';
 
@@ -36,6 +37,9 @@ class LevelThreeCtrl {
 
     this.libraryWatch = $scope.$watch('ootLevelThree.remoteLibrary', this.openNewDiagram.bind(this));
 
+    $scope.konvaStage = $scope.tangibleController.getKonvaStage();
+    $scope.konvaLayer = $scope.tangibleController.getKonvaLayer();
+
     //=================FIELDS=================//
 
     $scope.editMode = false;
@@ -45,7 +49,20 @@ class LevelThreeCtrl {
     $scope.lowerCaseFields = [];
     $scope.attributeValues = [];
 
-    //TODO: get Konva layer and draw custom shapes
+    //testing purposes
+    var circle = new Konva.Circle({
+      x: 100,
+      y: 100,
+      radius: 70,
+      fill: 'red',
+      stroke: 'black',
+      strokeWidth: 4
+    });
+    var imageObj = new Image();
+    //TODO: get image path - get path from server through client
+    imageObj.src = '../../../private/default_db/images/class_triangle';
+    circle.fillPatternImage(imageObj);
+    $scope.konvaLayer.add(circle);
 
     //=================METHODS=================//
 
@@ -72,6 +89,7 @@ class LevelThreeCtrl {
 
     $scope.tangibleEntered = function(containerID){
       let currentTangible = $scope.tangibleController.currentTangible;
+      //TODO: draw using Konva (shapes)
       if($scope.tangibleController.tangibleCount === 0){
         if(currentTangible.type === "Class"){
           $scope.editMode = true;
