@@ -45,8 +45,8 @@ class LevelThreeCtrl {
     $scope.editMode = false;
     $scope.complete = false;
     $scope.class = "";
-    $scope.fields = [];
-    $scope.lowerCaseFields = [];
+    $scope.attributes = [];
+    $scope.lowerCaseAttributes = [];
     $scope.attributeValues = [];
 
     //testing purposes
@@ -60,9 +60,13 @@ class LevelThreeCtrl {
     });
     var imageObj = new Image();
     //TODO: get image path - get path from server through client
-    imageObj.src = '../../../private/default_db/images/class_triangle';
+    imageObj.src = 'default_db/images/class_triangle';
     circle.fillPatternImage(imageObj);
     $scope.konvaLayer.add(circle);
+
+    //==============KONVA METHODS==============//
+
+
 
     //=================METHODS=================//
 
@@ -71,27 +75,27 @@ class LevelThreeCtrl {
       let templates = $ootService.classTemplates;
       let indexOfClass = -1;
 
-      //get index of the class
+      //get index of the class and get fields
       for(i=0;i<templates.length;i++){
         if(templates[i].id === className){
           indexOfClass = i;
         }
       }
+      $scope.attributes = templates[indexOfClass].attributes;
 
-      //save the fields and convert to lowercase
-      $scope.fields = templates[indexOfClass].attributes;
-      $scope.lowerCaseFields = [];
-      for(j=0;j<$scope.fields.length;j++){
-        $scope.lowerCaseFields.push($scope.fields[j].toLowerCase());
+      //convert to lowercase and add attributeValues array
+      for(j=0;j<$scope.attributes.length;j++){
+        $scope.lowerCaseAttributes.push($scope.attributes[j].toLowerCase());
         $scope.attributeValues.push("...")
       }
-      console.log($scope.fields);
+      console.log("$scope.attributes: "+$scope.attributes);
+      console.log("$scope.lowerCaseAttributes: "+$scope.lowerCaseAttributes);
+      console.log("$scope.attributeValues: "+$scope.attributeValues);
     };
 
     $scope.tangibleEntered = function(containerID){
       let currentTangible = $scope.tangibleController.currentTangible;
-      //TODO: draw using Konva (shapes)
-      if($scope.tangibleController.tangibleCount === 0){
+      if($scope.tangibleController.tangibleCount === 0){//first tangible entered
         if(currentTangible.type === "Class"){
           $scope.editMode = true;
           $scope.class = currentTangible.class;
@@ -104,13 +108,24 @@ class LevelThreeCtrl {
           $scope.showAlert();
           return false;
         }
-      }else{
+      }else{//all other tangibles entered after first
         if(currentTangible.type === "AttributeValue"){
-          let newAttributeValue = currentTangible.class;
-          //TODO
-          //TODO: check if all values have been entered
-          $scope.$apply();
-          return false;
+          let newAttributeClass = currentTangible.class;//"Size","Colour","OutlineColour", or "Pattern"
+          let newAttributeValue = currentTangible.value;
+          let indexOfAtt = $scope.attributes.indexOf(newAttributeClass);
+
+          if(indexOfAtt === -1){
+            $scope.alertTitle = "Attribute not found in your class";
+            $scope.alertMessage= "Please enter an attribute value for one of the fields in your custom class";
+            $scope.showAlert();
+            return false;
+          }else{
+            $scope.attributeValues[indexOfAtt] = newAttributeValue;
+            //TODO: draw using Konva (shapes)
+            $scope.checkComplete();
+            $scope.$apply();
+            return false;
+          }
         }else{
           $scope.alertTitle = "Incorrect tangible";
           $scope.alertMessage= "Please enter an attribute value.";
@@ -120,14 +135,24 @@ class LevelThreeCtrl {
       }
     };
 
+    $scope.checkComplete = function(){
+      for(i = 0; i < $scope.attributeValues.length ; i++){
+        if($scope.attributeValues[i] === "..."){
+          return;
+        }
+      }
+      //all attributes have a value
+      $scope.complete = true;
+    };
+
     $scope.clear = function(){
       $scope.tangibleController.clear();
       $scope.tangibleController.enable = true;
       $scope.editMode = false;
       $scope.complete = false;
       $scope.class = "";
-      $scope.fields = [];
-      $scope.lowerCaseFields = [];
+      $scope.attributes = [];
+      $scope.lowerCaseAttributes = [];
       $scope.attributeValues = [];
     };
 
