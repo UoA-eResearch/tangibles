@@ -431,7 +431,7 @@ export class TangibleController extends AbstractTangibleController{
                   //set tangible object as field - accessible by level controller.
                   this.currentTangible = template;
                   let validTangible = this.levelCtrl.$scope.tangibleEntered(this.containerID);
-                  console.log("tangibleEntered returned: "+validTangible);
+                  console.log("Print Tangible on screen: "+validTangible);
                   if(validTangible){
                     this.tangibleCount++;
                     let id = Random.id();

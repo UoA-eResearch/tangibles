@@ -41,25 +41,33 @@ class SettingsCtrl {
     $scope.previousScale = $ootService.scale;
 
     $scope.tangibleEntered = function(containerID){
-      if(containerID === $scope.tangibleController.containerID){
+      if(containerID === $scope.tangibleController.containerID){//TODO: medium green triangle's touch points changed
         //only allow one tangible to be entered
         if($scope.tangibleController.tangibleCount === 0){
           $scope.tangibleController.enable = false;
-          //get physical touch points' pixel distance
-          let touchDist = $scope.tangibleController.getCurrentTangibleTouchDistance();
-          //get registered touchpoints for Medium Green Triangle
+          //get registered touchpoints for Medium Green Triangle and calculate distances
           let regPoints = $scope.library.tangibles.medium_green_triangle.registrationPoints;
-
           let regPointsDists = Points.sortClockwise(regPoints);
           let regDistA = Point.distance(regPointsDists[0], regPointsDists[1]);
           let regDistB = Point.distance(regPointsDists[0], regPointsDists[2]);
           let regDistC = Point.distance(regPointsDists[1], regPointsDists[2]);
 
+          //get physical touch points' pixel distance
+          let touchDist = $scope.tangibleController.getCurrentTangibleTouchDistance();
+
           //get average pixels per mm
-          let averageRegistered = (regDistA/39 + regDistB/35 + regDistC/18)/3;
-          let averageTouch = (touchDist[0]/39 + touchDist[1]/35 + touchDist[2]/18)/3;
+          let averageRegistered = (regDistA/45 + regDistB/45 + regDistC/40)/3;
+          let averageTouch = (touchDist[0]/45 + touchDist[1]/45 + touchDist[2]/40)/3;
+          /*console.log(regDistA/45);
+          console.log(regDistB/45);
+          console.log(regDistC/40);
+          console.log("    ");
+          console.log(touchDist[0]/45);
+          console.log(touchDist[1]/45);
+          console.log(touchDist[2]/40);
+          console.log("    ");
           console.log(averageRegistered);
-          console.log(averageTouch);
+          console.log(averageTouch);*/
           console.log("scale: "+averageRegistered/averageTouch);
           $ootService.scale = averageRegistered/averageTouch;
         }
