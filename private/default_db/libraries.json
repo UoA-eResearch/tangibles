@@ -427,7 +427,7 @@
         "registrationPoints": [
           {
             "x" : 341.90625,
-            "y" : 370.4271240234375 
+            "y" : 370.4271240234375
           },
           {
             "x" : 99.90625,
@@ -538,7 +538,7 @@
       "outline_colour_blue": {
         "name": "Outline Colour Blue",
         "type": "AttributeValue",
-        "class": "OutLineColour",
+        "class": "OutlineColour",
         "value": "Blue",
         "icon": false,
         "scale": 1.0,
@@ -562,7 +562,7 @@
       "outline_colour_green": {
         "name": "Outline Colour Green",
         "type": "AttributeValue",
-        "class": "OutLineColour",
+        "class": "OutlineColour",
         "value": "Green",
         "icon": false,
         "scale": 1.0,
@@ -586,7 +586,7 @@
       "outline_colour_red": {
         "name": "Outline Colour Red",
         "type": "AttributeValue",
-        "class": "OutLineColour",
+        "class": "OutlineColour",
         "value": "Red",
         "icon": false,
         "scale": 1.0,

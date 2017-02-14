@@ -49,24 +49,38 @@ class LevelThreeCtrl {
     $scope.lowerCaseAttributes = [];
     $scope.attributeValues = [];
 
-    //testing purposes
-    var circle = new Konva.Circle({
-      x: 100,
-      y: 100,
-      radius: 70,
-      fill: 'red',
-      stroke: 'black',
-      strokeWidth: 4
-    });
-    var imageObj = new Image();
-    //TODO: get image path - get path from server through client
-    imageObj.src = 'default_db/images/class_triangle';
-    circle.fillPatternImage(imageObj);
-    $scope.konvaLayer.add(circle);
-
     //==============KONVA METHODS==============//
 
+    $scope.createShape = function(shape){
+      //TODO: merge this method's logic into the bottom of setup() method???
+      if(shape === "Circle"){
+        let circle = new Konva.Circle({
+          x: 100,
+          y: 100,
+          radius: 70,
+          fill: 'red',
+          stroke: 'black',
+          strokeWidth: 4
+        });
+        //testing purposes
+        //TODO: get image path - get path from server through client
+        /*var imageObj = new Image();
+        imageObj.src = 'default_db/images/class_triangle';
+        circle.fillPatternImage(imageObj);
+        $scope.konvaLayer.add(circle);*/
 
+      }else if (shape === "Triangle"){
+
+      }else if(shape === "Square"){
+
+      }
+      return false;
+    };
+
+    $scope.updateShape = function(attribueClass, attributeValue){
+      //TODO: check which class was entered - and call konva to update the shape
+
+    };
 
     //=================METHODS=================//
 
@@ -100,6 +114,7 @@ class LevelThreeCtrl {
           $scope.editMode = true;
           $scope.class = currentTangible.class;
           $scope.setup($scope.class);
+          $scope.createShape($scope.class);
           $scope.$apply();
           return true;
         }else{
@@ -113,7 +128,6 @@ class LevelThreeCtrl {
           let newAttributeClass = currentTangible.class;//"Size","Colour","OutlineColour", or "Pattern"
           let newAttributeValue = currentTangible.value;
           let indexOfAtt = $scope.attributes.indexOf(newAttributeClass);
-
           if(indexOfAtt === -1){
             $scope.alertTitle = "Attribute not found in your class";
             $scope.alertMessage= "Please enter an attribute value for one of the fields in your custom class";
@@ -121,7 +135,7 @@ class LevelThreeCtrl {
             return false;
           }else{
             $scope.attributeValues[indexOfAtt] = newAttributeValue;
-            //TODO: draw using Konva (shapes)
+            $scope.updateShape(newAttributeClass, newAttributeValue);
             $scope.checkComplete();
             $scope.$apply();
             return false;
@@ -133,6 +147,7 @@ class LevelThreeCtrl {
           return false;
         }
       }
+      return false;
     };
 
     $scope.checkComplete = function(){
@@ -141,7 +156,7 @@ class LevelThreeCtrl {
           return;
         }
       }
-      //all attributes have a value
+      //all attributes have a value - finished instantiating
       $scope.complete = true;
     };
 
