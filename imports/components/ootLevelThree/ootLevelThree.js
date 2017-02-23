@@ -46,7 +46,6 @@ class LevelThreeCtrl {
     $scope.complete = false;
     $scope.class = "";
     $scope.attributes = [];
-    $scope.lowerCaseAttributes = [];
     $scope.attributeValues = [];
 
     //==============KONVA METHODS==============//
@@ -97,13 +96,11 @@ class LevelThreeCtrl {
       }
       $scope.attributes = templates[indexOfClass].attributes;
 
-      //convert to lowercase and add attributeValues array
+      //add attributeValues array
       for(j=0;j<$scope.attributes.length;j++){
-        $scope.lowerCaseAttributes.push($scope.attributes[j].toLowerCase());
         $scope.attributeValues.push("...")
       }
       console.log("$scope.attributes: "+$scope.attributes);
-      console.log("$scope.lowerCaseAttributes: "+$scope.lowerCaseAttributes);
       console.log("$scope.attributeValues: "+$scope.attributeValues);
     };
 
@@ -168,7 +165,6 @@ class LevelThreeCtrl {
       $scope.complete = false;
       $scope.class = "";
       $scope.attributes = [];
-      $scope.lowerCaseAttributes = [];
       $scope.attributeValues = [];
     };
 

@@ -21,6 +21,20 @@
             </md-list-item>
           </md-card-content>
         </md-card>
+        <md-card>
+            <md-card-title>
+              <md-card-title-text>
+                <span class="md-headline">Class: <span ng-bind="classInEdit"></span></span>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+              public class <span ng-bind="classInEdit"></span>{
+              <div ng-repeat="field in attributeList">
+                &emsp;private {{field}};</br>
+              </div>
+            }
+            </md-card-content>
+          </md-card>
       </div>
   </div>
 </div>
