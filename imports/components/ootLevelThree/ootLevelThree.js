@@ -114,6 +114,7 @@ class LevelThreeCtrl {
           $scope.editMode = true;
           $scope.class = currentTangible.class;
           $scope.setup($scope.class);
+          $scope.checkComplete();//TODO:what if class has no fields????
           $scope.createShape($scope.class);
           $scope.$apply();
           return true;

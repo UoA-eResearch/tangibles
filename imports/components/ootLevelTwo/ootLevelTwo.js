@@ -40,7 +40,7 @@ class LevelTwoCtrl {
 
     $scope.classEntered = false;
     $scope.classInEdit = "";
-    $scope.attributeList = ["Size"]; //size added by default
+    $scope.attributeList = [];
     $scope.alertTitle = "";
     $scope.alertMessage= "";
 
@@ -63,7 +63,8 @@ class LevelTwoCtrl {
       }else{
         if(currentTangible.type === "AttributeType"){
           let newAttributeType = currentTangible.class;
-          if($scope.attributeList.indexOf(newAttributeType) === -1){//if not already in the attribute list
+          //if not already in the attribute list
+          if($scope.attributeList.indexOf(newAttributeType) === -1){
             $scope.attributeList.push(newAttributeType);
           }
           $scope.$apply();
@@ -89,11 +90,11 @@ class LevelTwoCtrl {
       $scope.tangibleController.enable = true;
       $scope.classEntered = false;
       $scope.classInEdit = "";
-      $scope.attributeList = ["Size"];
+      $scope.attributeList = [];
       $ootService.classTemplates = [
-        {id: "Circle", attributes: ["Size"]},
-        {id: "Square", attributes: ["Size"]},
-        {id: "Triangle", attributes: ["Size"]}
+        {id: "Circle", attributes: []},
+        {id: "Square", attributes: []},
+        {id: "Triangle", attributes: []}
       ];
     };
 
