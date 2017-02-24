@@ -52,13 +52,22 @@ class LevelThreeCtrl {
     //==============KONVA METHODS==============//
 
     $scope.createShape = function(shape){
+      let index = $scope.attributes.indexOf("OutlineColour");
+      let strokeColour = "";
+      if(index === -1){
+        strokeColour = "black";
+      }else{
+        strokeColour = "#D3D3D3";
+      }
       if(shape === "Circle"){
         $scope.konvaShape = new Konva.Circle({
           x: 250,
           y: 200,
-          radius: 90,
-          stroke: '#D3D3D3',
+          radius: 80,
+          stroke: strokeColour,
           strokeWidth: 10,
+          lineCap: 'round',
+          lineJoin: 'round',
           draggable: true
         });
         $scope.konvaLayer.add($scope.konvaShape);
@@ -67,9 +76,11 @@ class LevelThreeCtrl {
           x: 250,
           y: 250,
           sides: 3,
-          radius: 90,
-          stroke: '#D3D3D3',
+          radius: 80,
+          stroke: strokeColour,
           strokeWidth: 10,
+          lineCap: 'round',
+          lineJoin: 'round',
           draggable: true
         });
         $scope.konvaLayer.add($scope.konvaShape);
@@ -77,10 +88,12 @@ class LevelThreeCtrl {
         $scope.konvaShape = new Konva.Rect({
           x: 160,
           y: 110,
-          width: 150,
-          height: 150,
-          stroke: '#D3D3D3',
+          width: 140,
+          height: 140,
+          stroke: strokeColour,
           strokeWidth: 10,
+          lineCap: 'round',
+          lineJoin: 'round',
           draggable: true
         });
         $scope.konvaLayer.add($scope.konvaShape);
@@ -124,8 +137,14 @@ class LevelThreeCtrl {
       }else if(attributeClass === "OutlineColour"){
         let outlineColourToFill = attributeValue.toLowerCase();
         $scope.konvaShape.stroke(outlineColourToFill);
-      }else if(attributeClass === "Pattern"){//TODO: change to stroke style
-        $scope.konvaShape.dash([20,10]);
+      }else if(attributeClass === "StrokeStyle"){
+        if(attributeValue === "Dashed"){
+          $scope.konvaShape.dash([30,20]);
+        }else if(attributeValue === "Alternating"){
+          $scope.konvaShape.dash([30, 20, 0.001, 20]);
+        }else if(attributeValue === "Dots"){
+          $scope.konvaShape.dash([0.001,20]);
+        }
       }
     };
 

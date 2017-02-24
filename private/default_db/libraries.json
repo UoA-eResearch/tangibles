@@ -97,7 +97,7 @@
           },
           {
             "x" : 285.9791259765625,
-            "y" : 318.1458435058594 
+            "y" : 318.1458435058594
           },
           {
             "x" : 198.64581298828125,
@@ -369,9 +369,9 @@
         ]
       },
       "attribute_pattern": {
-        "name": "Pattern Attribute",
+        "name": "Stroke Style Attribute",
         "type": "AttributeType",
-        "class": "Pattern",
+        "class": "StrokeStyle",
         "icon": false,
         "scale": 1.0,
         "startAngle": 0,
@@ -606,9 +606,9 @@
         ]
       },
       "pattern_dots": {
-        "name": "Pattern Dots",
+        "name": "Stroke Style Dots",
         "type": "AttributeValue",
-        "class": "Pattern",
+        "class": "StrokeStyle",
         "value": "Dots",
         "icon": false,
         "scale": 1.0,
@@ -630,10 +630,10 @@
         ]
       },
       "pattern_hexagon": {
-        "name": "Pattern Hexagon",
+        "name": "Stroke Style Dashed",
         "type": "AttributeValue",
-        "class": "Pattern",
-        "value": "Hexagon",
+        "class": "StrokeStyle",
+        "value": "Dashed",
         "icon": false,
         "scale": 1.0,
         "startAngle": 0,
@@ -654,10 +654,10 @@
         ]
       },
       "pattern_stripes": {
-        "name": "Pattern Stripes",
+        "name": "Stroke Style Alternating",
         "type": "AttributeValue",
-        "class": "Pattern",
-        "value": "Stripes",
+        "class": "StrokeStyle",
+        "value": "Alternating",
         "icon": false,
         "scale": 1.0,
         "startAngle": 0,
