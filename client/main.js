@@ -193,10 +193,16 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
 }).service('$ootService', function(){
   this.scale = 1.0;
   this.classTemplates = [
-    {id: "Circle", attributes: []},
-    {id: "Square", attributes: []},
-    {id: "Triangle", attributes: []}
+    {id: "Circle", attributes: ["Colour","OutlineColour","Size","Pattern"]},
+    {id: "Square", attributes: ["Colour","OutlineColour","Size","Pattern"]},
+    {id: "Triangle", attributes: ["Colour","OutlineColour","Size","Pattern"]}
   ];
+  //TODO
+  this.konvaSizes = {
+      small: { diameter: 100, width: 90, height: 90 },
+      medium: { diameter: 180, width: 150, height: 150 },
+      large: { diameter: 280, width: 250, height: 250 }
+    };
 }).service('$tgImages', Images);
 
 function onReady() {

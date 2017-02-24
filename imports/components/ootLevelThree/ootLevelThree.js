@@ -44,6 +44,7 @@ class LevelThreeCtrl {
 
     $scope.editMode = false;
     $scope.complete = false;
+    $scope.classEntered = false;
     $scope.class = "";
     $scope.attributes = [];
     $scope.attributeValues = [];
@@ -51,34 +52,81 @@ class LevelThreeCtrl {
     //==============KONVA METHODS==============//
 
     $scope.createShape = function(shape){
-      //TODO: merge this method's logic into the bottom of setup() method???
       if(shape === "Circle"){
-        let circle = new Konva.Circle({
-          x: 100,
-          y: 100,
-          radius: 70,
-          fill: 'red',
-          stroke: 'black',
-          strokeWidth: 4
+        $scope.konvaShape = new Konva.Circle({
+          x: 250,
+          y: 200,
+          radius: 90,
+          stroke: '#D3D3D3',
+          strokeWidth: 10,
+          draggable: true
         });
-        //testing purposes
-        //TODO: get image path - get path from server through client
-        /*var imageObj = new Image();
-        imageObj.src = 'default_db/images/class_triangle';
-        circle.fillPatternImage(imageObj);
-        $scope.konvaLayer.add(circle);*/
-
+        $scope.konvaLayer.add($scope.konvaShape);
       }else if (shape === "Triangle"){
-
+        $scope.konvaShape = new Konva.RegularPolygon({
+          x: 250,
+          y: 250,
+          sides: 3,
+          radius: 90,
+          stroke: '#D3D3D3',
+          strokeWidth: 10,
+          draggable: true
+        });
+        $scope.konvaLayer.add($scope.konvaShape);
       }else if(shape === "Square"){
-
+        $scope.konvaShape = new Konva.Rect({
+          x: 160,
+          y: 110,
+          width: 150,
+          height: 150,
+          stroke: '#D3D3D3',
+          strokeWidth: 10,
+          draggable: true
+        });
+        $scope.konvaLayer.add($scope.konvaShape);
       }
       return false;
     };
 
-    $scope.updateShape = function(attribueClass, attributeValue){
-      //TODO: check which class was entered - and call konva to update the shape
-
+    $scope.updateShape = function(attributeClass, attributeValue){
+      if(attributeClass === "Size"){
+        if($scope.class === "Circle"){
+          if(attributeValue === "Small"){
+            $scope.konvaShape.width($ootService.konvaSizes.small.diameter);
+          }else if(attributeValue === "Medium"){
+            $scope.konvaShape.width($ootService.konvaSizes.medium.diameter);
+          }else if(attributeValue === "Large"){
+            $scope.konvaShape.width($ootService.konvaSizes.large.diameter);
+          }
+        }else if($scope.class === "Triangle"){
+          if(attributeValue === "Small"){
+            $scope.konvaShape.width($ootService.konvaSizes.small.diameter);
+          }else if(attributeValue === "Medium"){
+            $scope.konvaShape.width($ootService.konvaSizes.medium.diameter);
+          }else if(attributeValue === "Large"){
+            $scope.konvaShape.width($ootService.konvaSizes.large.diameter);
+          }
+        }else if($scope.class === "Square"){
+          if(attributeValue === "Small"){
+            $scope.konvaShape.width($ootService.konvaSizes.small.width);
+            $scope.konvaShape.height($ootService.konvaSizes.small.height);
+          }else if(attributeValue === "Medium"){
+            $scope.konvaShape.width($ootService.konvaSizes.medium.width);
+            $scope.konvaShape.height($ootService.konvaSizes.medium.height);
+          }else if(attributeValue === "Large"){
+            $scope.konvaShape.width($ootService.konvaSizes.large.width);
+            $scope.konvaShape.height($ootService.konvaSizes.large.height);
+          }
+        }
+      }else if(attributeClass === "Colour"){
+        let colourToFill = attributeValue.toLowerCase();
+        $scope.konvaShape.fill(colourToFill);
+      }else if(attributeClass === "OutlineColour"){
+        let outlineColourToFill = attributeValue.toLowerCase();
+        $scope.konvaShape.stroke(outlineColourToFill);
+      }else if(attributeClass === "Pattern"){//TODO: change to stroke style
+        $scope.konvaShape.dash([20,10]);
+      }
     };
 
     //=================METHODS=================//
@@ -100,21 +148,20 @@ class LevelThreeCtrl {
       for(j=0;j<$scope.attributes.length;j++){
         $scope.attributeValues.push("...")
       }
-      console.log("$scope.attributes: "+$scope.attributes);
-      console.log("$scope.attributeValues: "+$scope.attributeValues);
     };
 
     $scope.tangibleEntered = function(containerID){
       let currentTangible = $scope.tangibleController.currentTangible;
-      if($scope.tangibleController.tangibleCount === 0){//first tangible entered
+      if($scope.classEntered === false){//first tangible entered
         if(currentTangible.type === "Class"){
+          $scope.classEntered = true;
           $scope.editMode = true;
           $scope.class = currentTangible.class;
           $scope.setup($scope.class);
           $scope.checkComplete();//TODO:what if class has no fields????
           $scope.createShape($scope.class);
           $scope.$apply();
-          return true;
+          return false;
         }else{
           $scope.alertTitle = "Incorrect tangible";
           $scope.alertMessage= "Please enter a class tangible to instantiate.";
@@ -159,10 +206,12 @@ class LevelThreeCtrl {
     };
 
     $scope.clear = function(){
+      $scope.konvaShape.destroy();
       $scope.tangibleController.clear();
       $scope.tangibleController.enable = true;
       $scope.editMode = false;
       $scope.complete = false;
+      $scope.classEntered = false;
       $scope.class = "";
       $scope.attributes = [];
       $scope.attributeValues = [];
