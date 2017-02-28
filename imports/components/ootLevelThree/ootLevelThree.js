@@ -54,9 +54,9 @@ class LevelThreeCtrl {
     $scope.createShape = function(shape){
       let index = $scope.attributes.indexOf("OutlineColour");
       let strokeColour = "";
-      if(index === -1){
+      if(index === -1){//if outline colour is not an attribute set outline colour to black
         strokeColour = "black";
-      }else{
+      }else{//otherwise set to light grey until user enters a colour
         strokeColour = "#D3D3D3";
       }
       if(shape === "Circle"){
@@ -155,12 +155,13 @@ class LevelThreeCtrl {
       let templates = $ootService.classTemplates;
       let indexOfClass = -1;
 
-      //get index of the class and get fields
+      //get index of the class
       for(i=0;i<templates.length;i++){
         if(templates[i].id === className){
           indexOfClass = i;
         }
       }
+      //save attributes of class
       $scope.attributes = templates[indexOfClass].attributes;
 
       //add attributeValues array
@@ -171,13 +172,13 @@ class LevelThreeCtrl {
 
     $scope.tangibleEntered = function(containerID){
       let currentTangible = $scope.tangibleController.currentTangible;
-      if($scope.classEntered === false){//first tangible entered
+      if($scope.classEntered === false){//first tangible entered must be a "Class" tangible
         if(currentTangible.type === "Class"){
           $scope.classEntered = true;
           $scope.editMode = true;
           $scope.class = currentTangible.class;
           $scope.setup($scope.class);
-          $scope.checkComplete();//TODO:what if class has no fields????
+          $scope.checkComplete();//if class has no fields - already instantiated?
           $scope.createShape($scope.class);
           $scope.$apply();
           return false;
@@ -189,7 +190,7 @@ class LevelThreeCtrl {
         }
       }else{//all other tangibles entered after first
         if(currentTangible.type === "AttributeValue"){
-          let newAttributeClass = currentTangible.class;//"Size","Colour","OutlineColour", or "Pattern"
+          let newAttributeClass = currentTangible.class;//"Size","Colour","OutlineColour", or "StrokeStyle"
           let newAttributeValue = currentTangible.value;
           let indexOfAtt = $scope.attributes.indexOf(newAttributeClass);
           if(indexOfAtt === -1){

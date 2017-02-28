@@ -48,6 +48,7 @@ class LevelTwoCtrl {
 
     $scope.tangibleEntered = function(containerID){
       let currentTangible = $scope.tangibleController.currentTangible;
+      //for the first tangible entered only allow "Class" tangibles
       if($scope.tangibleController.tangibleCount === 0){
         if(currentTangible.type === "Class"){
           $scope.classEntered = true;
@@ -60,10 +61,10 @@ class LevelTwoCtrl {
           $scope.showAlert();
           return false;
         }
-      }else{
+      }else{//after first all other tangibles entered must be attribute type
         if(currentTangible.type === "AttributeType"){
           let newAttributeType = currentTangible.class;
-          //if not already in the attribute list
+          //if not already in the attribute list, then add it(prevent duplicates)
           if($scope.attributeList.indexOf(newAttributeType) === -1){
             $scope.attributeList.push(newAttributeType);
           }
@@ -111,12 +112,14 @@ class LevelTwoCtrl {
     };
 
     $scope.openSummary = function(){
+      //must have at least 1 attribute for class entered
       if($scope.attributeList.length === 0){
         $scope.alertTitle = "Insufficient number of attributes";
         $scope.alertMessage= "Please enter at least one attribute to your custom class";
         $scope.showAlert();
       }else{
         $mdSidenav('right').toggle();
+        //save attribute list in level 2 to ootService
         for(i=0;i<$ootService.classTemplates.length;i++){
           if($ootService.classTemplates[i].id === $scope.classInEdit){
             $ootService.classTemplates[i].attributes = $scope.attributeList;

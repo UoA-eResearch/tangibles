@@ -45,6 +45,8 @@ class LevelOneCtrl {
     $scope.class = "";
     $scope.attributeOne = "";
     $scope.attributeTwo = "";
+    $scope.alertTitle = "";
+    $scope.alertMessage = "";
 
     //=================METHODS=================//
 
@@ -64,7 +66,6 @@ class LevelOneCtrl {
       if($scope.tangibleController.currentTangible.type !== "Object"){
         $scope.alertTitle = 'Sorry, please try again';
         $scope.alertMessage = 'Please enter an object tangible.';
-
         $scope.showAlert();
         return false;
       }else{

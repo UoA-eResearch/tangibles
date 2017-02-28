@@ -72,7 +72,7 @@ class SettingsCtrl {
           $ootService.scale = averageRegistered/averageTouch;
         }
         return false;
-      }else{//the other container
+      }else{//the other container (test container on the right side)
         return true;
       }
     };

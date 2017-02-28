@@ -134,7 +134,7 @@ export class TangibleController extends AbstractTangibleController{
         console.log("CURRENT SCALE: "+this.ootService.scale);
 
         this.levelCtrl = ootLevelCtrl
-        this.tangibleCount = 0;
+        this.tangibleCount = 0; //keeps track of number of tangible images on konva container
 
         this.containerID = containerID;
         this.enable = true;
@@ -399,6 +399,7 @@ export class TangibleController extends AbstractTangibleController{
     }
 
     getKonvaLayer(){
+      //main leyer which drawing is done on
       return this.deselectLayer;
     }
 
