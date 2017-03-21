@@ -236,11 +236,21 @@ export class TangibleController extends AbstractTangibleController{
     deleteSelected() {
         if(this.selectedVisual != null)
         {
+            this.tangibleCount = this.tangibleCount - 1;
             this.selectedVisual.remove();
+            console.log(this.tangibleCount);
             delete this.visuals[this.selectedVisual.id];
             this.selectedVisual = null;
             this.stage.draw();
         }
+    }
+
+    getSelectedName() {
+      if(this.selectedVisual != null){
+        return this.selectedVisual.template.name;
+      }else{
+        return false;
+      }
     }
 
     deleteAll() {
@@ -402,6 +412,7 @@ export class TangibleController extends AbstractTangibleController{
       //main leyer which drawing is done on
       return this.deselectLayer;
     }
+
 
 
     /** Visual detection loop TODO: customise for registration and active use

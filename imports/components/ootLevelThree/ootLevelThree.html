@@ -11,15 +11,23 @@
       <md-card>
           <md-card-title>
             <md-card-title-text>
-              <span class="md-headline">Instantiating <span ng-bind="class"></span>:</span>
+              <span class="md-headline">Class: <span ng-bind="class"></span></span>
             </md-card-title-text>
           </md-card-title>
           <md-card-content>
-            public class <span ng-bind="class"></span>{
-            <div ng-repeat="field in attributes">
-              &emsp;private {{field}} = <span ng-show="attributeValues[$index]==='...'">... </span>
-                <span ng-show="attributeValues[$index]!=='...'">{{attributeValues[$index]}};</span></br>
+            public class <span ng-bind="class"></span> {
+            <div ng-repeat="field in attributes track by $index">
+              &emsp;private {{field}} field{{$index+1}};</br>
             </div>
+          </br>&emsp; public <span ng-bind="class"></span>(
+              <span ng-repeat="field in attributes track by $index">
+                {{field}} parameter{{$index+1}}<span ng-show="$index!==attributes.length-1"> , </span>
+              </span>
+            ) {</br>
+              <div ng-repeat="field in attributes track by $index">
+                &emsp;&emsp;field{{$index+1}} = parameter{{$index+1}};</br>
+              </div>
+            &emsp;}</br>
           }
           </md-card-content>
         </md-card>
@@ -31,7 +39,7 @@
   <div flex ng-show="editMode">
     <md-card>
       <md-card-title-text>
-        <span class="md-headline">Java code:</span>
+        <span class="md-headline">Instatiating <span ng-bind="class"></span> object:</span>
       </md-card-title-text>
         <md-card-content>
           <span ng-bind="class"></span> myShape = new <span ng-bind="class"></span>(

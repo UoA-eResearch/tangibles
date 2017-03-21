@@ -5,7 +5,7 @@
     <md-card>
         <md-card-title>
           <md-card-title-text>
-            <span class="md-headline">Common Attribute(Superclass): <span ng-bind="typeAttribute"></span></span>
+            <span class="md-headline">Common Attribute: <span ng-bind="typeAttribute"></span></span>
           </md-card-title-text>
         </md-card-title>
         <md-card-content>
@@ -22,7 +22,8 @@
 
 <div layout="row">
   <div flex>
-    <md-button class="md-primary md-raised" ng-click="clear()">Clear</md-button>
+    <md-button class="md-primary md-raised" ng-click="clear()">Clear all</md-button>
+    <md-button class="md-primary md-raised" ng-click="deleteSelected()">Delete selected</md-button>
   </div>
 
   <md-button class="md-accent md-raised" ng-show="isCorrect" ng-click=openSummary()>

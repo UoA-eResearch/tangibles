@@ -28,10 +28,20 @@
               </md-card-title-text>
             </md-card-title>
             <md-card-content>
-              public class <span ng-bind="classInEdit"></span>{
-              <div ng-repeat="field in attributeList">
-                &emsp;private {{field}};</br>
+              public class <span ng-bind="classInEdit"></span> {
+              <div ng-repeat="field in attributeList track by $index">
+                &emsp;private {{field}} field{{$index+1}};</br>
               </div>
+            </br>&emsp; public <span ng-bind="classInEdit"></span>(
+                <span ng-repeat="field in attributeList track by $index">
+                  {{field}} parameter{{$index+1}}<span ng-show="$index!==attributeList.length-1"> , </span>
+                </span>
+              ) {</br>
+                <div ng-repeat="field in attributeList track by $index">
+                  &emsp;&emsp;field{{$index+1}} = parameter{{$index+1}};</br>
+                </div>
+              &emsp;}</br>
+
             }
             </md-card-content>
           </md-card>

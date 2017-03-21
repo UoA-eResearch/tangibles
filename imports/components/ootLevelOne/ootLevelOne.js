@@ -62,17 +62,40 @@ class LevelOneCtrl {
       $scope.attributeTwo = "";
     };
 
+    $scope.deleteSelected = function(){
+      let selectedName = $scope.tangibleController.getSelectedName();
+      if (selectedName !== false) {
+        $scope.tangibleController.deleteSelected();
+        let index = -1;
+        for (i = 0; i < $scope.tangibleShapes.length; i++) {
+          if (selectedName === $scope.tangibleShapes[i].name) {
+            index = i;
+            break;
+          }
+        }
+        if (index !== -1) {
+          $scope.tangibleShapes.splice(index, 1);
+        }
+        $scope.isCorrect = false;
+
+        if ($scope.tangibleController.tangibleCount < 3) {
+          $scope.tangibleController.enable = true;
+        }
+      }
+
+    }
+
     $scope.tangibleEntered = function(containerID){
       if($scope.tangibleController.currentTangible.type !== "Object"){
         $scope.alertTitle = 'Sorry, please try again';
         $scope.alertMessage = 'Please enter an object tangible.';
         $scope.showAlert();
         return false;
-      }else{
+       }else{
         //save tangible info
         $scope.tangibleShapes[$scope.tangibleController.tangibleCount] = $scope.tangibleController.currentTangible;
         console.log($scope.tangibleShapes);
-        //User has entered 3 ans - CHECK ANS
+        //User has entered 2 tangibles (plus current tangible)- CHECK ANS
         if($scope.tangibleController.tangibleCount === 2){
           //Prevent additional tangibles to be added to screen
           $scope.tangibleController.enable = false;
