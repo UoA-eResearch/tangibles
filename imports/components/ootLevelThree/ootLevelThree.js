@@ -45,6 +45,7 @@ class LevelThreeCtrl {
     $scope.editMode = false;
     $scope.complete = false;
     $scope.classEntered = false;
+    $scope.locked = false;
     $scope.class = "";
     $scope.attributes = [];
     $scope.attributeValues = [];
@@ -172,7 +173,7 @@ class LevelThreeCtrl {
 
     $scope.tangibleEntered = function(containerID){
       let currentTangible = $scope.tangibleController.currentTangible;
-      if($scope.classEntered === false){//first tangible entered must be a "Class" tangible
+      /*if($scope.classEntered === false){//first tangible entered must be a "Class" tangible
         if(currentTangible.type === "Class"){
           $scope.classEntered = true;
           $scope.editMode = true;
@@ -188,7 +189,8 @@ class LevelThreeCtrl {
           $scope.showAlert();
           return false;
         }
-      }else{//all other tangibles entered after first
+      }*/
+
         if(currentTangible.type === "AttributeValue"){
           let newAttributeClass = currentTangible.class;//"Size","Colour","OutlineColour", or "StrokeStyle"
           let newAttributeValue = currentTangible.value;
@@ -211,7 +213,7 @@ class LevelThreeCtrl {
           $scope.showAlert();
           return false;
         }
-      }
+
       return false;
     };
 
@@ -232,6 +234,7 @@ class LevelThreeCtrl {
       $scope.editMode = false;
       $scope.complete = false;
       $scope.classEntered = false;
+      $scope.locked = false;
       $scope.class = "";
       $scope.attributes = [];
       $scope.attributeValues = [];
@@ -246,12 +249,40 @@ class LevelThreeCtrl {
         .ok('Got it!');
       $mdDialog.show(alert)
         .finally(function(){
+          if($scope.locked === true){
+            $state.go("levelTwo");
+          }
         });
     };
+
+    $scope.checkLocked = function(){
+      //logic to check if level 3 is unlocked or not
+
+      let currentClass = "";
+      let classesArray = $ootService.classTemplates;
+      for(i=0;i<classesArray.length;i++){
+        if(classesArray[i].attributes.length > 0){
+          currentClass =  classesArray[i].id;
+        }
+      }
+      if(currentClass === ""){
+        //Reroute to level 2
+        $scope.locked = true;
+        $scope.alertTitle = "Level is currently locked";
+        $scope.alertMessage = "Please complete level 2 before attempting level 3";
+        $scope.showAlert();
+      }else{
+        $scope.editMode = true;
+        $scope.setup(currentClass);
+        $scope.createShape(currentClass);
+      }
+    }
 
     $scope.openSummary = function(){
       $mdSidenav('right').toggle();
     };
+
+    $scope.checkLocked();
 
   }
 
