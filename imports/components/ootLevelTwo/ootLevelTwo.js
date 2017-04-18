@@ -69,7 +69,7 @@ class LevelTwoCtrl {
             $scope.attributeList.push(newAttributeType);
           }
           $scope.$apply();
-          return false;
+          return true; //changed from return false
         }else{
           $scope.alertTitle = "Incorrect tangible";
           $scope.alertMessage= "Please enter an attribute type to add to your class.\n Hint: attribute type tangibles look like a puzzle piece.";
@@ -83,6 +83,10 @@ class LevelTwoCtrl {
       let index = $scope.attributeList.indexOf(attributeToRemove);
       if(index > -1){
         $scope.attributeList.splice(index,1);
+      //remove graphics in container
+      //let selectedName = $scope.tangibleController.getSelectedName();
+      //if (selectedName !== false) {
+        //$scope.tangibleController.deleteSelected();
       }
     };
 

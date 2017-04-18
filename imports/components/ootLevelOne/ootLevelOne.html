@@ -1,7 +1,7 @@
 <oot-toolbar></oot-toolbar>
-<h1 class="md-display-2">Welcome to Level 1</h1>
+<h1 class="md-display-2 level-header">Welcome to Level 1</h1>
 
-<div ng-show="isCorrect">
+<div ng-show="isCorrect" class="level-one-code">
     <md-card>
         <md-card-title>
           <md-card-title-text>
@@ -10,23 +10,23 @@
         </md-card-title>
         <md-card-content>
           <p>public class <span ng-bind="class"></span> {</br>
-            &emsp;//FIELDS</br>
-            &emsp;private <span ng-bind="attributeOne"></span>;</br>
-            &emsp;private <span ng-bind="attributeTwo"></span>;</br>
-          }</p>
+            &emsp; //FIELDS</br>
+            &emsp; private <span ng-bind="attributeOne"></span>;</br>
+            &emsp; private <span ng-bind="attributeTwo"></span>;</br>
+            }</p>
         </md-card-content>
       </md-card>
 </div>
 
 <div class="tangibleContainer levelOneContainer" id="tangibleContainer"></div>
 
-<div layout="row">
+<div layout="row" style="margin-left: 10%">
   <div flex>
-    <md-button class="md-primary md-raised" ng-click="clear()">Clear all</md-button>
-    <md-button class="md-primary md-raised" ng-click="deleteSelected()">Delete selected</md-button>
+    <md-button class="md-primary md-raised"  ng-click="clear()">Clear all</md-button>
+    <md-button class="md-primary md-raised"  ng-click="deleteSelected()">Delete selected</md-button>
   </div>
 
-  <md-button class="md-accent md-raised" ng-show="isCorrect" ng-click=openSummary()>
+  <md-button class="md-accent md-raised finish" ng-show="isCorrect" ng-click=openSummary()>
     Finish
   </md-button>
 </div>

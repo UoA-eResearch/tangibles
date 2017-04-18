@@ -2,7 +2,7 @@
 <div layout="row" layout-wrap layout-padding>
 
   <div flex="100">
-    <h1 class="md-display-2 center">Tangible Programming Tutor</h1>
+    <h1 class="md-display-2 center" style="color:green">Tangible Programming Tutor</h1>
     <h2 class="md-headline center">An Object Oriented Tutoring Application</h2>
   </div>
 
@@ -10,7 +10,7 @@
 
   <div flex="100">
 
-    <md-tabs class="md-primary" md-dynamic-height md-border-bottom md-stretch-tabs="always">
+  <md-tabs class="md-primary" md-dynamic-height md-border-bottom md-stretch-tabs="always">
       <md-tab label="Level 1">
         <md-content class="md-padding" >
           <h1 class="md-display-2">Level 1: Classes</h1>
@@ -34,5 +34,12 @@
         </md-content>
       </md-tab>
     </md-tabs>
+<!-- MENU option 2 using list items-->
+<!--    <md-list-item class="md-2-line md-long-text" ng-repeat="item in levels" ng-click="goToLevel(item)">
 
+          <div class="md-list-item-textb" layout="column">
+            <h2 class="md-title" style="color:green">{{ item.title }}</h2>
+            <h3 class="md-subhead">{{ item.description }}</h3>
+          </div>
+    </md-list-item>-->
 </div>

@@ -21,6 +21,50 @@
   background-color: #4caf50 !important;
 }
 
+//Update:  Style for Level header ootHome
+.level-header {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+.level-two-header{
+  margin-top: 5%;
+  margin-left: 15%;
+}
+//Update:  Style for Level1 isCorrect message
+.level-one-code {
+  margin-left: 70%;
+  margin-top: 5%;
+  margin-right: 10%;
+  margin-bottom: 10%;
+  position: absolute;
+  z-index: 20;
+}
+//Update:  Style for Level2 code
+.level-two-code {
+  margin-left: 50%;
+  margin-top: 5%;
+  //margin-right: 10%;
+  margin-bottom: 10%;
+  position: absolute;
+  z-index: 20;
+}
+//Update:  Style for Finish button
+.finish {
+  margin-right: 10%;
+}
+
+.float-left-screen-code {
+  display: flex;
+  flex-direction: column;
+  left: auto;
+  position: absolute;
+  right: 20%;
+  left: auto;
+  top: 20%;
+  bottom: auto;
+  z-index: 20;
+}
 //Update: Styling for new zoom buttons
 .float-bottom-right-column {
   bottom: 20px;
@@ -271,14 +315,23 @@ md-card{
 }
 
 .tangibleContainer{
-  margin-top: 10px;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: 10px;
+  margin-top: 5%; //10px
+  margin-left: 10%; //20px
+  margin-right: 50%; //20px
+  margin-bottom: 10%; //10px
   border-style: solid;
   border-color: green;
 }
 
+//not used.
+.tangibleContainerTwo{
+  margin-top: 5%; //10px
+  margin-left: 30%; //20px
+  margin-right: 50%; //20px
+  margin-bottom: 10%; //10px
+  border-style: solid;
+  border-color: green;
+}
 
 md-sidenav,
 md-sidenav.md-locked-open,
