@@ -123,12 +123,18 @@ export class AbstractTangibleController {
 
 export class TangibleController extends AbstractTangibleController{
 
-    constructor(containerID) {
+    constructor(containerID, ootLevelCtrl,$ootService) {
         super();
         this.visuals = {};
         this.scale = 1.0;
         this.selectedVisual = null;
         this.recogniser = new Recogniser();
+        this.ootService = $ootService;
+
+        console.log("CURRENT SCALE: "+this.ootService.scale);
+
+        this.levelCtrl = ootLevelCtrl
+        this.tangibleCount = 0; //keeps track of number of tangible images on konva container
 
         this.containerID = containerID;
         this.enable = true;
@@ -139,11 +145,14 @@ export class TangibleController extends AbstractTangibleController{
         this.width = rect.right - rect.left;
         this.height = rect.bottom - rect.top;
 
+        console.log("height of div: " + this.height);
+        console.log("width of div: " + this.width);
+
         this.stage = new Konva.Stage({
             container: this.containerID,
             width: this.width,
             height: this.height,
-            draggable: true,
+            draggable: false,
             x: this.width / 2,
             y: this.height / 2,
             offset: {
@@ -163,7 +172,7 @@ export class TangibleController extends AbstractTangibleController{
 
         this.deselected_rect.on('touchstart', this.onDeselected.bind(this));
         this.deselectLayer.add(this.deselected_rect);
-        
+
 
         //this.touchPointsLayer = new Konva.Layer();
         this.tangibleLayer = new Konva.Layer();
@@ -227,11 +236,21 @@ export class TangibleController extends AbstractTangibleController{
     deleteSelected() {
         if(this.selectedVisual != null)
         {
+            this.tangibleCount = this.tangibleCount - 1;
             this.selectedVisual.remove();
+            console.log(this.tangibleCount);
             delete this.visuals[this.selectedVisual.id];
             this.selectedVisual = null;
             this.stage.draw();
         }
+    }
+
+    getSelectedName() {
+      if(this.selectedVisual != null){
+        return this.selectedVisual.template.name;
+      }else{
+        return false;
+      }
     }
 
     deleteAll() {
@@ -291,12 +310,18 @@ export class TangibleController extends AbstractTangibleController{
     }
 
     clear() {
+        console.log("CLEARINGGGGGGG");
+        this.tangibleCount = 0;
         this.touchPointsLayer.destroyChildren();
-        this.tangibleLayer.destroyChildren();
+        this.tangibleLayer.destroyChildren();//error cannot read property _applyTransform
         this.visuals = {};
         this.stage.batchDraw();
+        console.log("DONEEE");
     }
 
+    clearTouchPoints(){
+      this.touchPointsLayer.destroyChildren();
+    }
 
     openDiagram(diagram, library, $tgImages) {
 
@@ -305,9 +330,11 @@ export class TangibleController extends AbstractTangibleController{
         this.library = library;
         this.$tgImages = $tgImages;
 
+        //load library
+        console.log(this.library);
         //Setup recogniser
-        let features = [];
-        let targets = [];
+        let features = []; //the data of the tangible
+        let targets = []; //the id of the tangible
 
         for (let [id, tangible] of Object.entries(this.library.tangibles)) {
             features.push(tangible.registrationPoints);
@@ -330,11 +357,11 @@ export class TangibleController extends AbstractTangibleController{
             instance.position = Point.add(instance.position, offset);
         }
 
-        //Setup visuals
-        for (let [id, instance] of Object.entries(this.diagram.tangibles)) {
+        //Setup visuals - not needed
+        /*for (let [id, instance] of Object.entries(this.diagram.tangibles)) {
             let template = this.library.tangibles[instance.type];
             this.addVisual(id, instance.type, instance, template, this.stage);
-        }
+        }*/
     }
 
     addVisual(instanceId, typeId, model, template, stage) {
@@ -360,7 +387,8 @@ export class TangibleController extends AbstractTangibleController{
     initVisual(model, visual) {
         //Set starting orientation and position
         visual.setPosition(model.position);
-        visual.setOrientation(model.orientation);
+        //disable orientation - always in right position
+        //visual.setOrientation(model.orientation);
         this.tangibleLayer.add(visual.shape);
 
         if(this.tangibleLayer.children.length == Object.entries(this.diagram.tangibles).length && this.init)
@@ -372,6 +400,21 @@ export class TangibleController extends AbstractTangibleController{
         this.stage.batchDraw();
     }
 
+    getCurrentTangibleTouchDistance(){
+      return this.recogniser.touchDistancesABC;
+    }
+
+    getKonvaStage(){
+      return this.stage
+    }
+
+    getKonvaLayer(){
+      //main leyer which drawing is done on
+      return this.deselectLayer;
+    }
+
+
+
     /** Visual detection loop TODO: customise for registration and active use
      *
      * @param event
@@ -379,6 +422,7 @@ export class TangibleController extends AbstractTangibleController{
      */
 
     onTouch(event) {
+        console.log("i've been touched");
         if (this.enable) {
             let points = this.toPoints(event.touches);
             let scaledPoints = this.toPoints(event.touches, true);
@@ -386,19 +430,27 @@ export class TangibleController extends AbstractTangibleController{
 
             //Get recognised tangible and add to surface
             if (event.touches.length > 2) {
-                let matches = this.recogniser.predict(points);
+                let scale = this.ootService.scale;
+                let matches = this.recogniser.predict(points,scale);
 
                 if (matches.length > 0) {
-                    let closestMatch = matches[0];
-                    let template = this.library.tangibles[closestMatch.target];
+                  let closestMatch = matches[0];
+                  let template = this.library.tangibles[closestMatch.target];
+                  let position = Points.getCentroid(scaledPoints);
+                  let orientation = Points.getOrientation(points) - Points.getOrientation(template.registrationPoints); //current-original orientation
 
-                    let position = Points.getCentroid(scaledPoints);
-                    let orientation = Points.getOrientation(points) - Points.getOrientation(template.registrationPoints); //current-original orientation
-
+                  console.log(template)
+                  //set tangible object as field - accessible by level controller.
+                  this.currentTangible = template;
+                  let validTangible = this.levelCtrl.$scope.tangibleEntered(this.containerID);
+                  console.log("Print Tangible on screen: "+validTangible);
+                  if(validTangible){
+                    this.tangibleCount++;
                     let id = Random.id();
                     let instance = {type: closestMatch.target, position: position, orientation: orientation, zIndex: 0};
                     this.diagram.tangibles[id] = instance;
                     this.addVisual(id, instance.type, instance, template, this.stage);
+                  }
                 }
             }
 

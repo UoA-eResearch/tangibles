@@ -27,11 +27,14 @@ export class Recogniser {
      * with the furthest distance from the centre. It then sorts the points that make up each triangle clockwise
      * and computes the similarity of each triangle by seeing how closely the lengths of each side match.
      *
+     * Uses scale which is given by the ootService. This can be changed in the calibration/settings menu
+     * This ensures the tangibles work on both large and small screens
+     *
      * @param points: a feature to predict a tangible from, a set of three touch points.
      * @returns []: an array of targets and their similarity to the detected touch points.
      */
 
-    predict(points) {
+    predict(points,scale) {
         let matches = [];
 
         // We need to have minimum of three touch points to identify the Visual and it's orientation.
@@ -41,9 +44,10 @@ export class Recogniser {
             // consistently compare the lengths of the triangle sides.
 
             // Find the length of each side of the detected triangle
-            let touchDistA = Point.distance(touchSorted[0], touchSorted[1]);
-            let touchDistB = Point.distance(touchSorted[0], touchSorted[2]);
-            let touchDistC = Point.distance(touchSorted[1], touchSorted[2]);
+            let touchDistA = Point.distance(touchSorted[0], touchSorted[1])*scale;
+            let touchDistB = Point.distance(touchSorted[0], touchSorted[2])*scale;
+            let touchDistC = Point.distance(touchSorted[1], touchSorted[2])*scale;
+            this.touchDistancesABC = [touchDistA, touchDistB, touchDistC];
 
             for (let i = 0; i < this.features.length; i++) {
                 let feature = this.features[i];

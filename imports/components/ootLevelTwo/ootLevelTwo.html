@@ -1,0 +1,72 @@
+<oot-toolbar></oot-toolbar>
+<h1 class="md-display-2 level-two-header" >Welcome to Level 2</h1>
+
+<div layout="row">
+  <div flex>
+    <!--<div class="tangibleContainerTwo levelTwoContainer"  id="tangibleTestContainer"></div>-->
+    <div class="tangibleContainerTwo levelTwoContainer"  id="tangibleContainer"></div>
+  </div>
+
+  <div flex style="margin-right: auto">
+    <div ng-show="classEntered">
+      <md-card>
+          <md-card-title>
+            <md-card-title-text>
+              <span class="md-headline"><span ng-bind="classInEdit"></span></span>
+            </md-card-title-text>
+          </md-card-title>
+          <md-card-content>
+            <md-list-item ng-repeat="attribute in attributeList">
+              <p>{{attribute}}</p>
+              <md-button class="md-warn md-raised"  ng-click="remove(attribute)">Remove</md-button>
+            </md-list-item>
+          </md-card-content>
+        </md-card>
+        <md-card>
+            <md-card-title>
+              <md-card-title-text>
+                <span class="md-headline">Class: <span ng-bind="classInEdit"></span></span>
+              </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+              public class <span ng-bind="classInEdit"></span> {
+              <div ng-repeat="field in attributeList track by $index">
+                &emsp;private {{field}} field{{$index+1}};</br>
+              </div>
+            </br>&emsp; public <span ng-bind="classInEdit"></span>(
+                <span ng-repeat="field in attributeList track by $index">
+                  {{field}} parameter{{$index+1}}<span ng-show="$index!==attributeList.length-1"> , </span>
+                </span>
+              ) {</br>
+                <div ng-repeat="field in attributeList track by $index">
+                  &emsp;&emsp;field{{$index+1}} = parameter{{$index+1}};</br>
+                </div>
+              &emsp;}</br>
+
+            }
+            </md-card-content>
+          </md-card>
+      </div>
+  </div>
+</div>
+
+<div layout="row">
+  <div flex>
+    <md-button class="md-primary md-raised" style="margin-left: 18%" ng-click="clear()">Clear</md-button>
+  </div>
+
+  <md-button class="md-accent md-raised finish"  ng-disabled="!classEntered" ng-click=openSummary()>Finish</md-button>
+</div>
+
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+
+  <md-toolbar class="md-theme-light">
+    <h1 class="md-toolbar-tools">Classes Overview</h1>
+  </md-toolbar>
+  <md-content layout-padding>
+    <md-button ng-click="goToLevelThree()" class="md-primary md-raised">
+      Next Level
+    </md-button>
+  </md-content>
+
+</md-sidenav>

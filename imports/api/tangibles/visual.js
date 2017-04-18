@@ -7,7 +7,7 @@ export class Visual {
         this.id = instanceId;
         this.template = template;
 
-        
+
         this.onTapCallback = null;
         this.onDragStartCallback = null;
         this.onDragEndCallback = null;
@@ -53,10 +53,10 @@ export class Visual {
             this.shape.on('dragstart', this.onDragStart.bind(this));
             this.shape.on('dragend', this.onDragEnd.bind(this));
 
-            // Enable two finger rotation
-            this.hammerStartAngle = 0;
+            // Disable two finger rotation
+            /*this.hammerStartAngle = 0;
             this.hammer = new hammer.Instance(this.shape, {});// hammer.Instance(this.shape, {});
-            this.hammer.on("transformstart", this.onStartRotate.bind(this)).on("transform", this.onEndRotate.bind(this));
+            this.hammer.on("transformstart", this.onStartRotate.bind(this)).on("transform", this.onEndRotate.bind(this));*/
         }
         else {
             this.shape.image(this.imageObj);
@@ -133,7 +133,7 @@ export class Visual {
             this.shape.drawHitFromCache();
         }
 
-        
+
     }
 
     deselect() {
@@ -178,6 +178,3 @@ export class Visual {
     }
 
 }
-
-
-

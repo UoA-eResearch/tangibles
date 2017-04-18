@@ -1,0 +1,92 @@
+<oot-toolbar></oot-toolbar>
+<h1 class="md-display-2 level-two-header">Welcome to Level 3</h1>
+
+<div layout="row">
+  <div flex="50">
+    <div class="tangibleContainerTwo levelThreeContainer" id="tangibleContainer"></div>
+  </div>
+
+  <div flex> <!--dive layout="row"--> <!--<div class="float-left-screen-code" flex>-->
+    <div flex ng-show="editMode">
+      <md-card>
+        <md-card-title-text>
+          <span class="md-headline">Instatiating <span ng-bind="class"></span> object:</span>
+        </md-card-title-text>
+          <md-card-content>
+            <span ng-bind="class"></span> myShape = new <span ng-bind="class"></span>(
+              <span ng-repeat="value in attributeValues track by $index">{{value}}
+                <span ng-show="$index!==attributeValues.length-1"> , </span>
+              </span>
+            );
+          </md-card-content>
+        </md-card>
+      </div>
+
+      <div flex="50"></div>
+      <!--moved sigment in-->
+      <div > <!--<div flex="50"> -->
+        <div ng-show="editMode">
+          <md-card>
+              <md-card-title>
+                <md-card-title-text>
+                  <span class="md-headline">Class: <span ng-bind="class"></span></span>
+                </md-card-title-text>
+              </md-card-title>
+              <md-card-content>
+                public class <span ng-bind="class"></span> {
+                <div ng-repeat="field in attributes track by $index">
+                  &emsp;private {{field}} field{{$index+1}};</br>
+                </div>
+              </br>&emsp; public <span ng-bind="class"></span>(
+                  <span ng-repeat="field in attributes track by $index">
+                    {{field}} parameter{{$index+1}}<span ng-show="$index!==attributes.length-1"> , </span>
+                  </span>
+                ) {</br>
+                  <div ng-repeat="field in attributes track by $index">
+                    &emsp;&emsp;field{{$index+1}} = parameter{{$index+1}};</br>
+                  </div>
+                &emsp;}</br>
+              }
+              </md-card-content>
+            </md-card>
+          </div>
+      </div>
+
+  </div>
+
+</div>
+<!--
+<div layout="row" style="margin-left: 15%">
+  <div flex ng-show="editMode">
+    <md-card>
+      <md-card-title-text>
+        <span class="md-headline">Instatiating <span ng-bind="class"></span> object:</span>
+      </md-card-title-text>
+        <md-card-content>
+          <span ng-bind="class"></span> myShape = new <span ng-bind="class"></span>(
+            <span ng-repeat="value in attributeValues track by $index">{{value}}
+              <span ng-show="$index!==attributeValues.length-1"> , </span>
+            </span>
+          );
+        </md-card-content>
+      </md-card>
+    </div>
+    <div flex="50"></div>
+</div>
+-->
+<div layout="row">
+  <div flex>
+  <!--  <md-button class="md-primary md-raised" ng-click="clear()">Clear</md-button>-->
+  </div>
+
+  <md-button class="md-accent md-raised finish" ng-disabled="!complete" ng-click=openSummary()>Finish</md-button>
+</div>
+
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="right">
+  <md-toolbar class="md-theme-light">
+    <h1 class="md-toolbar-tools">Classes Overview</h1>
+  </md-toolbar>
+  <md-content layout-padding>
+    Well done !!!
+  </md-content>
+</md-sidenav>

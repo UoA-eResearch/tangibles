@@ -21,6 +21,50 @@
   background-color: #4caf50 !important;
 }
 
+//Update:  Style for Level header ootHome
+.level-header {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+.level-two-header{
+  margin-top: 5%;
+  margin-left: 15%;
+}
+//Update:  Style for Level1 isCorrect message
+.level-one-code {
+  margin-left: 70%;
+  margin-top: 5%;
+  margin-right: 10%;
+  margin-bottom: 10%;
+  position: absolute;
+  z-index: 20;
+}
+//Update:  Style for Level2 code
+.level-two-code {
+  margin-left: 50%;
+  margin-top: 5%;
+  //margin-right: 10%;
+  margin-bottom: 10%;
+  position: absolute;
+  z-index: 20;
+}
+//Update:  Style for Finish button
+.finish {
+  margin-right: 10%;
+}
+
+.float-left-screen-code {
+  display: flex;
+  flex-direction: column;
+  left: auto;
+  position: absolute;
+  right: 20%;
+  left: auto;
+  top: 20%;
+  bottom: auto;
+  z-index: 20;
+}
 //Update: Styling for new zoom buttons
 .float-bottom-right-column {
   bottom: 20px;
@@ -38,7 +82,7 @@
   background-color: #4caf50 !important;
   border-color: #4caf50 !important;
   font-family: 'Roboto', sans-serif;
-  font-weight: 500;    
+  font-weight: 500;
 }
 
 .sign-in
@@ -58,7 +102,7 @@
 
 h1 {
   font-family: 'Roboto', sans-serif;
-  color: white;
+  color: black;
   font-size: 50px;
   line-height: 60px;
   font-weight: 500;
@@ -66,7 +110,7 @@ h1 {
 
 h2 {
   font-family: 'Roboto', sans-serif;
-  color: white;
+  color: black;
   font-weight: 500;
 }
 
@@ -236,6 +280,64 @@ div.vertical {
   max-height: 70px;
   max-width: 70px;
   //object-fit: contain;
+}
+
+//=========================
+//ootTangibles below here
+//=========================
+
+md-card{
+  max-width: 700px;
+}
+
+.description-width{
+  width: 70%;
+}
+//TODO: try viewport for width and height?
+.settingsContainer{
+  height: 400px;
+  width: 500px;
+}
+
+.levelOneContainer{
+    height: 400px;
+}
+
+.levelTwoContainer{
+  width: 500px;
+  height: 400px;
+}
+
+.levelThreeContainer{
+  width: 500px;
+  height: 400px;
+}
+
+.tangibleContainer{
+  margin-top: 5%; //10px
+  margin-left: 10%; //20px
+  margin-right: 50%; //20px
+  margin-bottom: 10%; //10px
+  border-style: solid;
+  border-color: green;
+}
+
+//not used.
+.tangibleContainerTwo{
+  margin-top: 5%; //10px
+  margin-left: 30%; //20px
+  margin-right: 50%; //20px
+  margin-bottom: 10%; //10px
+  border-style: solid;
+  border-color: green;
+}
+
+md-sidenav,
+md-sidenav.md-locked-open,
+md-sidenav.md-closed.md-locked-open-add-active {
+    min-width: 400px !important;
+    width: 85vw !important;
+    max-width: 700px !important;
 }
 
 img {}

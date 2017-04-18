@@ -2,6 +2,13 @@ import angular from 'angular';
 import angularMeteor from 'angular-meteor';
 import ngMaterial from 'angular-material';
 import angularUiRouter from 'angular-ui-router';
+
+import ootHome from '../imports/components/ootHome/ootHome';
+import ootSettings from '../imports/components/ootSettings/ootSettings';
+import ootLevelOne from '../imports/components/ootLevelOne/ootLevelOne';
+import ootLevelTwo from '../imports/components/ootLevelTwo/ootLevelTwo';
+import ootLevelThree from '../imports/components/ootLevelThree/ootLevelThree';
+
 import home from '../imports/components/tgHome/tgHome';
 import diagram from '../imports/components/tgDiagram/tgDiagram';
 import libraries from '../imports/components/tgLibraries/tgLibraries';
@@ -14,8 +21,7 @@ if (!Object.entries) {
     entries.shim();
 }
 
-
-defaultImageUrl = function () {
+/*defaultImageUrl = function () {
     let rootUrl = __meteor_runtime_config__.ROOT_URL;
     let imagePath = 'images/stamp.png';
     let imageUrl = rootUrl;
@@ -27,12 +33,12 @@ defaultImageUrl = function () {
 
     return imageUrl;
 };
-
+*/
 Accounts.ui.config({
     passwordSignupFields: 'USERNAME_ONLY'
 });
 
-angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.ui', home.name, diagram.name, libraries.name])
+angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.ui', home.name, diagram.name, libraries.name, ootHome.name, ootSettings.name, ootLevelOne.name, ootLevelTwo.name, ootLevelThree.name])
     .constant("$const", {
         "APP": "Tangibles",
         "NEW": "New diagram",
@@ -42,7 +48,7 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
         "LIBRARIES": "Libraries",
         "LIBRARY": "Library",
         "DEFAULT_LIBRARY_ID": "M5q3SwPNcgCCKDWQL",
-        "DEFAULT_IMAGE_URL": defaultImageUrl()
+        /*"DEFAULT_IMAGE_URL": defaultImageUrl()*/
     })
     .config(function ($mdThemingProvider, $mdIconProvider, $stateProvider, $urlRouterProvider, $const) {
         'ngInject';
@@ -83,7 +89,7 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
             }
         };
 
-        $urlRouterProvider.otherwise('home/diagram///');
+        $urlRouterProvider.otherwise('/oot_home');
 
         $stateProvider
             .state('home', {
@@ -95,6 +101,63 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
                     }
                 },
                 resolve: resolve
+            })
+            .state('ootHome', {
+              url: "/oot_home",
+              views: {
+                'main-view': {
+                  component: ootHome.name
+                }
+              },
+              resolve: resolve
+            })
+            .state('settings', {
+              url: "/oot_settings",
+              views: {
+                'main-view': {
+                  component: ootSettings.name
+                }
+              },
+              resolve: resolve,
+              onEnter: ['$tgSharedData', function ($tgSharedData) {
+                  $tgSharedData.data.stateName = 'settings';
+              }]
+            })
+            .state('levelOne',{
+              url: "/level_one",
+              views: {
+                'main-view': {
+                  component: ootLevelOne.name
+                }
+              },
+              resolve: resolve,
+              onEnter: ['$tgSharedData', function ($tgSharedData) {
+                  $tgSharedData.data.stateName = 'levelOne';
+              }]
+            })
+            .state('levelTwo',{
+              url: "/level_two",
+              views: {
+                'main-view': {
+                  component: ootLevelTwo.name
+                }
+              },
+              resolve: resolve,
+              onEnter: ['$tgSharedData', function ($tgSharedData) {
+                  $tgSharedData.data.stateName = 'levelTwo';
+              }]
+            })
+            .state('levelThree',{
+              url: "/level_three",
+              views: {
+                'main-view': {
+                  component: ootLevelThree.name
+                }
+              },
+              resolve: resolve,
+              onEnter: ['$tgSharedData', function ($tgSharedData) {
+                  $tgSharedData.data.stateName = 'levelThree';
+              }]
             })
             .state('home.diagram', {
                 url: "/diagram/:diagramId/:isNewDiagram/:libraryId",
@@ -127,6 +190,18 @@ angular.module('tangibles', [angularMeteor, ngMaterial, 'ui.router', 'accounts.u
         }
     };
     return service;
+}).service('$ootService', function(){
+  this.scale = 1.0;
+  this.classTemplates = [
+    {id: "Circle", attributes: []},
+    {id: "Square", attributes: []},
+    {id: "Triangle", attributes: []}
+  ];
+  this.konvaSizes = {
+      small: { diameter: 100, width: 90, height: 90 },
+      medium: { diameter: 180, width: 150, height: 150 },
+      large: { diameter: 280, width: 250, height: 250 }
+    };
 }).service('$tgImages', Images);
 
 function onReady() {

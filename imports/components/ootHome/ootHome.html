@@ -1,0 +1,45 @@
+
+<div layout="row" layout-wrap layout-padding>
+
+  <div flex="100">
+    <h1 class="md-display-2 center" style="color:green">Tangible Programming Tutor</h1>
+    <h2 class="md-headline center">An Object Oriented Tutoring Application</h2>
+  </div>
+
+  <md-button class="md-raised md-warn" ui-sref="settings">Calibrate</md-button>
+
+  <div flex="100">
+
+  <md-tabs class="md-primary" md-dynamic-height md-border-bottom md-stretch-tabs="always">
+      <md-tab label="Level 1">
+        <md-content class="md-padding" >
+          <h1 class="md-display-2">Level 1: Classes</h1>
+          <p class="description-width">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p>
+          </br>
+          <md-button class="md-raised md-primary" ui-sref="levelOne">Play</md-button>
+        </md-content>
+      </md-tab>
+      <md-tab label="Level 2">
+        <md-content class="md-padding">
+          <h1 class="md-display-2">Level 2: Class Creation</h1>
+          <p class="description-width">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p>
+          <md-button class="md-raised md-primary" ui-sref="levelTwo">Play</md-button>
+        </md-content>
+      </md-tab>
+      <md-tab label="Level 3">
+        <md-content class="md-padding">
+          <h1 class="md-display-2">Level 3: Object Instantiation</h1>
+          <p class="description-width">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p>
+          <md-button class="md-raised md-primary" ui-sref="levelThree">Play</md-button>
+        </md-content>
+      </md-tab>
+    </md-tabs>
+<!-- MENU option 2 using list items-->
+<!--    <md-list-item class="md-2-line md-long-text" ng-repeat="item in levels" ng-click="goToLevel(item)">
+
+          <div class="md-list-item-textb" layout="column">
+            <h2 class="md-title" style="color:green">{{ item.title }}</h2>
+            <h3 class="md-subhead">{{ item.description }}</h3>
+          </div>
+    </md-list-item>-->
+</div>

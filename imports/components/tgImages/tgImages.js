@@ -23,7 +23,6 @@ export class Images
                 break;
             }
         }
-
         return this.getUrl(image);
     }
 
@@ -42,4 +41,3 @@ export class Images
         return this.$const.DEFAULT_IMAGE_URL;
     }
 }
-
