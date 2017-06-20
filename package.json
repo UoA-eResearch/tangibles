@@ -15,7 +15,6 @@
     "angular-simple-logger": "^0.1.7",
     "angular-ui-router": "1.0.0-alpha.4",
     "base64-js": "1.1.2",
-    "canvas2image": "git://github.com/jdddog/canvas2image.git",
     "hammerjs": "^1.0.7",
     "html2canvas": "^0.5.0-beta4",
     "konva": "^0.12.2",

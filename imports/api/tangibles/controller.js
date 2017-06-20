@@ -2,7 +2,7 @@ import Konva from 'konva';
 import {Points, Point} from './points';
 import {Visual} from './visual';
 import {Recogniser} from './recogniser';
-import {Canvas2Image} from 'canvas2image';
+import {Canvas2Image} from '../canvas2image/canvas2image';
 import html2canvas from 'html2canvas';
 
 export class AbstractTangibleController {
